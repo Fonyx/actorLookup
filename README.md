@@ -22,25 +22,39 @@ cdn css link:
 cdn js src:  
     script src="//cdn.muicss.com/mui-0.10.3/js/mui.min.js">    
 
+
+
 ## On API Choices: 
 ref-https://rapidapi.com/collection/list-of-free-apis  
 
-## Ideas - descending order of difficulty:  
 
+
+
+
+## Ideas - descending order of difficulty:  
 ### 1: A movie lookup using:
 https://rapidapi.com/apidojo/api/imdb8/  
 https://rapidapi.com/rapidapi/api/movie-database-imdb-alternative/  
 User gives us names of an actor, director etc, we return list of movies  
-++ We could let the user sort by IMDB rating, year produced etc 
++ We could let the user sort by IMDB rating, year produced etc  
++ We can check if the movie is available on netflix in your current country  
+https://rapidapi.com/rasiqueira/api/netflix-unofficial/  
+and on disney+  
+https://disneyapi.dev/docs  
 
-### 2: A cocktail recipe maker using:  
+### 2: A language translator  
+User provides text and desired language  
+https://rapidapi.com/googlecloud/api/google-translate1/  
+browser reads out the new language  
+
+### 3: A cocktail recipe maker using:  
 https://rapidapi.com/thecocktaildb/api/the-cocktail-db/  
 User selects ingredients from a list and we return what they can make  
-++ We could do some cool things with image styling with this one  
++ We could do some cool things with image styling with this one  
 
-### 3: A currency converter using:  
+### 4: A currency converter using:  
 https://rapidapi.com/warting/api/currency-converter/  
 User inputs a to and from currencies, and we return the converted value  
-++ We could look up historic trends for context i.e. is this a good time to exchange or should you wait?  
++ We could look up historic trends for context i.e. is this a good time to exchange or should you wait?  
 
 
