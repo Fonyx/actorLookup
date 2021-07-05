@@ -1,12 +1,25 @@
 # Group Project 1
 Group details to be decided
 
+## Tutorials for group work
+starting point: https://www.youtube.com/watch?v=jhtbhSpV5YA 
+### Github projects use
+github projects overview - https://www.youtube.com/watch?v=ff5cBkPg-bQ
+
+### Git pull request summary
+How to let everyone else know - https://www.youtube.com/watch?v=2VX1ISk9XH8
+
+### Git group work process 
+branching - https://www.youtube.com/watch?v=JTE2Fn_sCZs  
+merging - https://www.youtube.com/watch?v=0iuqXh0oojo  
+## Structure of our repository
+![Alt text](https://zepel.io/blog/content/images/2020/05/feature-branch-with-develop-git-workflow-2.png)
+
 
 ## On CSS framework choices: 
 ref-https://www.slant.co/topics/3943/~best-material-design-css-frameworks#2  
 
 ### 1. Materialize:
-
 docs: https://materializecss.com/getting-started.html  
 cdn css link:  
     link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet" type="text/css"  
@@ -26,8 +39,6 @@ cdn js src:
 
 ## On API Choices: 
 ref-https://rapidapi.com/collection/list-of-free-apis  
-
-
 
 
 
