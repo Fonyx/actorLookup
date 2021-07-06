@@ -43,7 +43,6 @@ cdn js src:
 -!NOT MUCH SUPPORT AS IT IS SMALL
 
 
-
 ## On API Choices: 
 ref-https://rapidapi.com/collection/list-of-free-apis  
 
