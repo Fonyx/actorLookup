@@ -1,3 +1,6 @@
+# Remove OSX store
+.DS_Store
+
 # Logs
 logs
 *.log
