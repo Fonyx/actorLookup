@@ -19,12 +19,15 @@ merging - https://www.youtube.com/watch?v=0iuqXh0oojo
 ## On CSS framework choices: 
 ref-https://www.slant.co/topics/3943/~best-material-design-css-frameworks#2  
 
-### 1. Materialize:
+### 1. Materialize - MY SUGGESTION:
 docs: https://materializecss.com/getting-started.html  
 cdn css link:  
     link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet" type="text/css"  
 cdn js script src:  
-    script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"  
+    script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js" 
+-GREAT DOCUMENTATION
+-FAIRLY LITE
+-VERY POWERFUL VISUAL FUNCTIONS - LIKE PARALLAX
 
 
 
@@ -34,6 +37,10 @@ cdn css link:
     link href="//cdn.muicss.com/mui-0.10.3/css/mui.min.css" rel="stylesheet" type="text/css"  
 cdn js src:  
     script src="//cdn.muicss.com/mui-0.10.3/js/mui.min.js">    
+-ENDORSED BY GOOGLE STYLE GUIDE
+-LITE
+-GROWING IN POPULARITY
+-!NOT MUCH SUPPORT AS IT IS SMALL
 
 
 
