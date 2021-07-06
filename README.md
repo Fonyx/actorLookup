@@ -1,5 +1,7 @@
 # Group Project 1
 Group details to be decided
+Google docs: https://docs.google.com/document/d/1qt4B9-Txtpu4CxRwyemj_UdSn8CZuvV0msMBBmU5FkY/edit
+Google slides: https://docs.google.com/presentation/d/1UiaCCcJ_GaImNjX6xvIHQznuwP9pO0OgAYXBSSx-SCQ/edit#slide=id.ge29cba3059_0_421
 
 ## Tutorials for group work
 starting point: https://www.youtube.com/watch?v=jhtbhSpV5YA 
@@ -45,7 +47,7 @@ cdn js src:
 
 ## On API Choices: 
 ref-https://rapidapi.com/collection/list-of-free-apis  
-
+ref2-https://rapidapi.com/collection/omdb-imdb-apis
 
 
 ## Ideas - descending order of difficulty:  
