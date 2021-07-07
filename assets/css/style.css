@@ -1,6 +1,64 @@
+/* https://color.adobe.com/explore */
+:root{
+    --primary: #F22738;
+    --secondary: #A63247;
+    --tertiary: #3E3740;
+    --quaternary: #F2DDD0;
+    --quinary: #A5AAA3;
+}
+
+
 .icon-block {
     padding: 0 15px;
-  }
-  .icon-block .material-icons {
-      font-size: inherit;
-  }
+}
+
+.icon-block .material-icons {
+    font-size: inherit;
+}
+  
+/* Materialize requires these body settings for the footer to stick to page bottom */
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+main {
+flex: 1 0 auto;
+}
+
+
+/* || Color override section */
+.pri_bg_color{
+    background-color: var(--primary);
+}
+.sec_bg_color{
+    background-color: var(--secondary);
+}
+.tert_bg_color{
+    background-color: var(--tertiary);
+}
+.quat_bg_color{
+    background-color: var(--quaternary);
+}
+.quin_bg_color{
+    background-color: var(--quinary);
+}
+
+.pri_text_color{
+    color: var(--primary);
+}
+.sec_text_color{
+    color: var(--secondary);
+}
+.tert_text_color{
+    color: var(--tertiary);
+}
+.quat_text_color{
+    color: var(--quaternary);
+}
+.quin_text_color{
+    color: var(--quinary);
+}
+/* || Color override section */
+
+      
