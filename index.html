@@ -25,7 +25,7 @@
   <body class="quat_bg_color">
     <nav class="tert_bg_color" role="navigation">
       <div class="nav-wrapper container">
-        <a id="logo-container" href="#" class="brand-logo sec_text_color">SAMLUD: by wenk</a>
+        <a id="logo-container" href="#" class="brand-logo sec_text_color">SAMLUD<span class="hide-on-small-and-down">: by wenk</span></a>
         <ul class="right hide-on-med-and-down">
           <li><a href="#" class="sec_text_color">WILL</a></li>
           <li><a href="#" class="sec_text_color">ELLA</a></li>
@@ -52,23 +52,25 @@
       <!-- Top headlines -->
       <section class="section no-pad-bot" id="index-banner">
         <div class="container">
-          <h1 class="header center pri_text_color">Find Movies With Your Favorite Actors Instantly</h1>
-          <div class="row center">
-            <h5 class="header col s12 lite pri_text_color">Simply add the actors names into the boxes below!</h5>
+          <h2 class="header center pri_text_color">Find Movies <span class="hide-on-med-and-down">With Your Favorite Actors</span></h2>
+          <div class="row center hide-on-small-and-down">
+            <h5 class="header col s12 lite pri_text_color">Simply add the actors names below!</h5>
           </div>
+        </div>
+        <div class="container">
           <!-- Input Actors Name -->
           <div class="row center">
             <form class="col s12">
               <div class="row">
-                  <div class="input-field col s3 offset-s2">
+                  <div class="input-field col s12 m5">
                     <i class="material-icons prefix sec_text_color">account_circle</i>
                     <input id="icon_prefix" type="text" id="Actor1" class="actor sec_text_color">
                     <label for="icon_prefix sec_text_color">Actors Name</label>
                   </div>
-                  <div class="col s2">
+                  <div class="col s6 offset-s3 m2">
                     <i class="medium material-icons sec_text_color">add</i>
                   </div>
-                  <div class="input-field col s3">
+                  <div class="input-field col s12 m5">
                     <i class="material-icons prefix sec_text_color">account_circle</i>
                     <input id="icon_prefix" type="text" id="Actor2" class="actor sec_text_color">
                     <label for="icon_prefix sec_text_color">Actors Name</label>
