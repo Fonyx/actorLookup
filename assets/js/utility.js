@@ -4,6 +4,7 @@ let tertiaries =   ['#FDD272','#B7B3CC','#3E3740','#698FB6','#04BFAD','#F2F2F2',
 let quaternaries = ['#3EB2A2','#E2C3CC','#F2DDD0','#91B7D9','#F2AF5C','#E4E4E4','#384D59','#CB4BF2','#F28705','#0BD0DE','#BF04A0'];
 let quinaries =    ['#385663','#F8CACC','#F2F2F2','#E4E4E4','#F2695C','#F2695C','#A9C6D9','#E848DB','#F27405','#0CFACA','#F2059F'];
 
+// test
 // random color generator
 function getRandomColorIndex(){
     let max = primaries.length;
