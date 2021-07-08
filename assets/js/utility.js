@@ -23,7 +23,7 @@ function getRandomOrderFromArray(arrayLength){
     let tempArray = [];
     for(let i =0; i < arrayLength; i ++){
         // generate a number between 0 and arraylength
-        let random = getRandomIntFromRange(0, arrayLength);
+        let random = getRandomIntFromRange(0, arrayLength-1);
 
         // append item if first pass
         if(i > 0){
@@ -45,6 +45,7 @@ function shufflePalletteArrangement(){
     console.log('shuffling palette');
     // get the style variables in root
     let r = document.querySelector(':root');
+    let rs = getComputedStyle(r);
     let randomOrder = getRandomOrderFromArray(5);
 
     for (let i = 0; i < 5; i++){
@@ -60,11 +61,18 @@ function shufflePalletteArrangement(){
             r.style.setProperty('--quinary', currentPallette[randomOrder[i]]);
         }
     }
+    console.log(`Primary Color: ${rs.getPropertyValue('--primary')}`);
+    console.log(`Secondary Color: ${rs.getPropertyValue('--secondary')}`);
+    console.log(`Tertiary Color: ${rs.getPropertyValue('--tertiary')}`);
+    console.log(`Quaternary Color: ${rs.getPropertyValue('--quaternary')}`);
+    console.log(`Quinary Color: ${rs.getPropertyValue('--quinary')}`);
+
 }
 
 function updateColorPallette(){
     // get the style variables in root
     let r = document.querySelector(':root');
+    let rs = getComputedStyle(r);
     // set all the properties to the new index
     currentPallette = randomPallette();
     r.style.setProperty('--primary', currentPallette[0]);
@@ -72,12 +80,18 @@ function updateColorPallette(){
     r.style.setProperty('--tertiary', currentPallette[2]);
     r.style.setProperty('--quaternary', currentPallette[3]);
     r.style.setProperty('--quinary', currentPallette[4]);
-    console.log(r.style);
+    
+    console.log(`Primary Color: ${rs.getPropertyValue('--primary')}`);
+    console.log(`Secondary Color: ${rs.getPropertyValue('--secondary')}`);
+    console.log(`Tertiary Color: ${rs.getPropertyValue('--tertiary')}`);
+    console.log(`Quaternary Color: ${rs.getPropertyValue('--quaternary')}`);
+    console.log(`Quinary Color: ${rs.getPropertyValue('--quinary')}`);
 }
 
 // generate a random integer inside a range
 function getRandomIntFromRange(min, max){
-    return Math.floor(Math.random()*(max-min+1)+min);
+    let result = Math.floor(Math.random()*(max-min+1)+min);
+    return result
 };
 
 // get a random color pallette
