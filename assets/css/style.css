@@ -1,0 +1,89 @@
+/* https://color.adobe.com/explore */
+:root {
+  --primary: none;
+  --secondary: none;
+  --tertiary: none;
+  --quaternary: none;
+  --quinary: none;
+}
+
+.icon-block {
+  padding: 0 15px;
+}
+
+.icon-block .material-icons {
+  font-size: inherit;
+}
+
+/* Materialize requires these body settings for the footer to stick to page bottom */
+body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+main {
+  flex: 1 0 auto;
+}
+
+/* || Color override section */
+.pri_bg_color {
+  background-color: var(--primary) !important;
+}
+.sec_bg_color {
+  background-color: var(--secondary) !important;
+}
+.tert_bg_color {
+  background-color: var(--tertiary) !important;
+}
+.quat_bg_color {
+  background-color: var(--quaternary) !important;
+}
+.quin_bg_color {
+  background-color: var(--quinary) !important;
+}
+
+.pri_text_color {
+  color: var(--primary) !important;
+}
+.sec_text_color {
+  color: var(--secondary) !important;
+}
+.tert_text_color {
+  color: var(--tertiary) !important;
+}
+.quat_text_color {
+  color: var(--quaternary) !important;
+}
+.quin_text_color {
+  color: var(--quinary) !important;
+}
+
+/* label color */
+.input-field label {
+  color: var(--tertiary) !important;
+}
+/* label focus color */
+.input-field input[type="text"]:focus + label {
+  color: var(--tertiary) !important;
+}
+/* label underline focus color */
+.input-field input[type="text"]:focus {
+  border-bottom: 1px solid var(--tertiary) !important;
+  box-shadow: 0 1px 0 0 var(--tertiary) !important;
+}
+/* valid color */
+.input-field input[type="text"].valid {
+  border-bottom: 1px solid var(--tertiary) !important;
+  box-shadow: 0 1px 0 0 var(--tertiary) !important;
+}
+/* invalid color */
+.input-field input[type="text"].invalid {
+  border-bottom: 1px solid var(--tertiary) !important;
+  box-shadow: 0 1px 0 0 var(--tertiary) !important;
+}
+/* icon prefix focus color */
+.input-field .prefix.active {
+  color: var(--tertiary) !important;
+}
+
+/* || Color override section */
