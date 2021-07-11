@@ -14,6 +14,10 @@
 .icon-block .material-icons {
   font-size: inherit;
 }
+/* Cards */
+.checked {
+  color: orange;
+}
 
 /* Materialize requires these body settings for the footer to stick to page bottom */
 body {
