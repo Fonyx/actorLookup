@@ -1,63 +1,65 @@
 /* https://color.adobe.com/explore */
-:root{
-    --primary: #F22738;
-    --secondary: #A63247;
-    --tertiary: #3E3740;
-    --quaternary: #F2DDD0;
-    --quinary: #A5AAA3;
+:root {
+  --primary: none;
+  --secondary: none;
+  --tertiary: none;
+  --quaternary: none;
+  --quinary: none;
 }
 
-
 .icon-block {
-    padding: 0 15px;
+  padding: 0 15px;
 }
 
 .icon-block .material-icons {
-    font-size: inherit;
+  font-size: inherit;
 }
-  
+/* Cards */
+.checked {
+  color: orange;
+}
+
 /* Materialize requires these body settings for the footer to stick to page bottom */
 body {
-    display: flex;
-    min-height: 100vh;
-    flex-direction: column;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
 }
 main {
-flex: 1 0 auto;
+  flex: 1 0 auto;
 }
-
 
 /* || Color override section */
-.pri_bg_color{
-    background-color: var(--primary) !important;
+.pri_bg_color {
+  background-color: var(--primary) !important;
 }
-.sec_bg_color{
-    background-color: var(--secondary) !important;
+.sec_bg_color {
+  background-color: var(--secondary) !important;
 }
-.tert_bg_color{
-    background-color: var(--tertiary) !important;
+.tert_bg_color {
+  background-color: var(--tertiary) !important;
 }
-.quat_bg_color{
-    background-color: var(--quaternary) !important;
+.quat_bg_color {
+  background-color: var(--quaternary) !important;
 }
-.quin_bg_color{
-    background-color: var(--quinary) !important;
+.quin_bg_color {
+  background-color: var(--quinary) !important;
 }
 
-.pri_text_color{
-    color: var(--primary) !important;
+.pri_text_color {
+  color: var(--primary) !important;
 }
-.sec_text_color{
-    color: var(--secondary) !important;
+.sec_text_color {
+  color: var(--secondary) !important;
 }
-.tert_text_color{
-    color: var(--tertiary) !important;
+.tert_text_color {
+  color: var(--tertiary) !important;
 }
-.quat_text_color{
-    color: var(--quaternary) !important;
+.quat_text_color {
+  color: var(--quaternary) !important;
 }
-.quin_text_color{
-    color: var(--quinary) !important;
+.quin_text_color {
+  color: var(--quinary) !important;
 }
 
 /* label color */

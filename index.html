@@ -13,6 +13,11 @@
     <!-- Google font framework-->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
+    <!-- Font Awesome Icon Library -->
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+  />
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
@@ -25,14 +30,15 @@
   <body class="quat_bg_color">
     <nav class="tert_bg_color" role="navigation">
       <div class="nav-wrapper container">
-        <a id="logo-container" href="#" class="brand-logo sec_text_color">SAMLUD: by wenk</a>
+        <a id="logo-container" href="#" class="brand-logo sec_text_color">SAMLUD<span class="hide-on-small-and-down">: by wenk</span></a>
         <ul class="right hide-on-med-and-down">
           <li><a href="#" class="sec_text_color">WILL</a></li>
           <li><a href="#" class="sec_text_color">ELLA</a></li>
           <li><a href="#" class="sec_text_color">NICK</a></li>
           <li><a href="#" class="sec_text_color">CHRIS</a></li>
           <!-- for development testing -->
-          <li><button id="color_change_button" class="btn red">Shuffle Colors</button></li>
+          <li><button id="shuffle_pallette_button" class="btn red">Shuffle Palette</button></li>
+          <li><button id="change_pallete_button" class="btn red">Change Palette</button></li>
         </ul>
   
         <ul id="nav-mobile" class="sidenav sec_text_color">
@@ -52,29 +58,31 @@
       <!-- Top headlines -->
       <section class="section no-pad-bot" id="index-banner">
         <div class="container">
-          <h1 class="header center pri_text_color">Find Movies With Your Favorite Actors Instantly</h1>
-          <div class="row center">
-            <h5 class="header col s12 lite pri_text_color">Simply add the actors names into the boxes below!</h5>
+          <h2 class="header center pri_text_color">Find Movies <span class="hide-on-med-and-down">With Your Favorite Actors</span></h2>
+          <div class="row center hide-on-small-and-down">
+            <h5 class="header col s12 lite pri_text_color">Simply add the actors names below!</h5>
           </div>
+        </div>
+        <div class="container">
           <!-- Input Actors Name -->
           <div class="row center">
             <form class="col s12">
               <div class="row">
-                  <div class="input-field col s3 offset-s2">
+                  <div class="input-field col s12 m5">
                     <i class="material-icons prefix sec_text_color">account_circle</i>
-                    <input id="icon_prefix" type="text" id="Actor1" class="actor sec_text_color">
-                    <label for="icon_prefix sec_text_color">Actors Name</label>
+                    <input type="text" id="Actor1" class="actor sec_text_color">
+                    <label for="userInput_1" class="sec_text_color">Actors Name</label>
                   </div>
-                  <div class="col s2">
+                  <div class="col s6 offset-s3 m2">
                     <i class="medium material-icons sec_text_color">add</i>
                   </div>
-                  <div class="input-field col s3">
+                  <div class="input-field col s12 m5">
                     <i class="material-icons prefix sec_text_color">account_circle</i>
-                    <input id="icon_prefix" type="text" id="Actor2" class="actor sec_text_color">
-                    <label for="icon_prefix sec_text_color">Actors Name</label>
+                    <input type="text" id="Actor2" class="actor sec_text_color">
+                    <label for="userInput_2" class="sec_text_color">Actors Name</label>
                   </div>
               </div>
-              <button class="btn-large waves-effect waves-light sec_text_color tert_bg_color" type="submit" name="action">Search
+              <button id="search_button" class="btn-large waves-effect waves-light sec_text_color tert_bg_color" type="submit" name="action">Search
                 <i class="material-icons right sec_text_color tert_bg_color">search</i>
               </button>
             </form>
@@ -84,8 +92,78 @@
       
       <!--   Results Section   -->
       <section class="container">
+        <h4>Results</h4>
         <div class="section">
           <div class="row">
+            <div class="carousel-item">
+              <div class="col s4">
+                <div class="card horizontal">
+                  <div class="card-image">
+                    <img src="https://lorempixel.com/100/190/nature/6" />
+                  </div>
+                  <div class="card-stacked">
+                    <div class="card-content">
+                      <h6>Title</h6>
+                      <span class="fa fa-star checked"></span>
+                      <span class="fa fa-star checked"></span>
+                      <span class="fa fa-star checked"></span>
+                      <span class="fa fa-star"></span>
+                      <span class="fa fa-star"></span>
+                      <p>
+                        I am a very simple card. I am good at containing small
+                        bits of information.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="carousel-item">
+              <div class="col s4">
+                <div class="card horizontal">
+                  <div class="card-image">
+                    <img src="https://lorempixel.com/100/190/nature/6" />
+                  </div>
+                  <div class="card-stacked">
+                    <div class="card-content">
+                      <h6>Title</h6>
+                      <span class="fa fa-star checked"></span>
+                      <span class="fa fa-star checked"></span>
+                      <span class="fa fa-star checked"></span>
+                      <span class="fa fa-star"></span>
+                      <span class="fa fa-star"></span>
+                      <p>
+                        I am a very simple card. I am good at containing small
+                        bits of information.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="carousel-item">
+              <div class="col s4">
+                <div class="card horizontal">
+                  <div class="card-image">
+                    <img src="https://lorempixel.com/100/190/nature/6" />
+                  </div>
+                  <div class="card-stacked">
+                    <div class="card-content">
+                      <h6>Title</h6>
+                      <span class="fa fa-star checked"></span>
+                      <span class="fa fa-star checked"></span>
+                      <span class="fa fa-star checked"></span>
+                      <span class="fa fa-star"></span>
+                      <span class="fa fa-star"></span>
+                      <p>
+                        I am a very simple card. I am good at containing small
+                        bits of information.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -114,7 +192,8 @@
     <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <!-- We leave this script to load materialize faster -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-    <script src="assets/js/scripts.js"></script>
     <script src="assets/js/utility.js"></script>
+    <script src="assets/js/scripts.js"></script>
+    <script src="assets/js/api-nick.js"></script>
   </body>
 </html>

@@ -1,49 +1,155 @@
-let primaries =    ['#FF7F60','#8DA4CF','#F22738','#2E4159','#D93662','#385663','#87878C','#4850E8','#0388A6','#0C2CFA','#F2F2F2'];
-let secondaries =  ['#FFB26D','#9EA9CE','#A63247','#51718C','#3A3873','#F8CACC','#01070D','#724BF2','#63D8F2','#0B5FDE','#F2B705'];
-let tertiaries =   ['#FDD272','#B7B3CC','#3E3740','#698FB6','#04BFAD','#F2F2F2','#0A1926','#954FDB','#F29F05','#00A3F5','#0477BF'];
-let quaternaries = ['#3EB2A2','#E2C3CC','#F2DDD0','#91B7D9','#F2AF5C','#E4E4E4','#384D59','#CB4BF2','#F28705','#0BD0DE','#BF04A0'];
-let quinaries =    ['#385663','#F8CACC','#F2F2F2','#E4E4E4','#F2695C','#F2695C','#A9C6D9','#E848DB','#F27405','#0CFACA','#F2059F'];
+// global pallet combinations, primary-secondary-tertiary etc limited to 5
+pallettes = [
+    ['#FF7F60', '#FFB26D', '#FDD272', '#3EB2A2', '#385663'],
+    ['#8DA4CF', '#9EA9CE', '#B7B3CC', '#E2C3CC', '#F8CACC'],
+    ['#F22738', '#A63247','#3E3740','#F2DDD0','#F2F2F2'],
+    ['#2E4159', '#51718C','#698FB6','#91B7D9','#E4E4E4'],
+    // nicks additions
+    ['#330136','#5E1742','#962E40','#C9463D','#FF5E35'],
+    ['#EFEDEF','#ACB1B6','#787A76','#04060A','#95050C'],
+    ['#D9D9D9','#260B01','#A68F7B','#594B3F','#D9A566'],
+]
 
-// test
-// random color generator
-function getRandomColorIndex(){
-    let max = primaries.length;
-    return Math.floor(Math.random()*max+1);
-}
+currentPallette = randomPallette();
+ChangeColorPallette();
+
+// makes a jquery element with class and Id
+function makeNewJqueryElement(elementType, classString, idString, textString){
+    let newElement = $('<'+elementType+'>');
+    if(classString){
+        newElement.addClass(classString);
+    }
+    if(idString){
+        newElement.attr('id', idString);
+    }
+    if(textString){
+      newElement.text(textString);
+    }
+    return newElement;
+  }
 
 // change colors in :root dom element
-function ChangeColor(){
-    // get the style variables in root
-    let r = document.querySelector(':root');
-    // get the computed style of that element
-    let rs = getComputedStyle(r);
-    // get the index in the primaries array from the current style value
-    let currentIndex = getCurrentPrimaryScheme(rs.getPropertyValue('--primary'));
-    // increment
-    let newIndex = currentIndex + 1;
-
-    // make sure no overload
-    if (newIndex === primaries.length){
-        newIndex=0;
-    }
-
-    // set all the properties to the new index
-    r.style.setProperty('--primary', primaries[newIndex]);
-    r.style.setProperty('--secondary', secondaries[newIndex]);
-    r.style.setProperty('--tertiary', tertiaries[newIndex]);
-    r.style.setProperty('--quaternary', quaternaries[newIndex]);
-    r.style.setProperty('--quinary', quinaries[newIndex]);
-
-    console.log(r.style);
+function ChangeColorPallette(){
+    currentPallette = randomPallette();
+    updateColorPallette();
 }
 
-// get current primary value index from color schemes - figure out where the current scheme is in the arrays
-function getCurrentPrimaryScheme(colorCode) {
-    return primaries.findIndex(x => x === colorCode);
+function getRandomOrderFromArray(arrayLength){
+    let tempArray = [];
+    for(let i =0; i < arrayLength; i ++){
+        // generate a number between 0 and arraylength
+        let random = getRandomIntFromRange(0, arrayLength-1);
+
+        // append item if first pass
+        if(i > 0){
+            // if item is already in array, don't push it and move I back 1 space
+            if(tempArray.includes(random)){
+                i -= 1;
+            } else {
+                tempArray.push(random);
+            }
+        } else {
+            tempArray.push(random);
+        }
+    }
+    console.log(tempArray);
+    return tempArray;
+}
+
+function shufflePalletteArrangement(){
+    console.log('shuffling palette');
+    // get the style variables in root
+    let r = document.querySelector(':root');
+    let rs = getComputedStyle(r);
+    let randomOrder = getRandomOrderFromArray(5);
+
+    for (let i = 0; i < 5; i++){
+        if(i===0){
+            r.style.setProperty('--primary', currentPallette[randomOrder[i]]);
+        } else if (i === 1){
+            r.style.setProperty('--secondary', currentPallette[randomOrder[i]]);
+        } else if (i === 2){
+            r.style.setProperty('--tertiary', currentPallette[randomOrder[i]]);
+        } else if (i === 3){
+            r.style.setProperty('--quaternary', currentPallette[randomOrder[i]]);
+        } else if (i === 4){
+            r.style.setProperty('--quinary', currentPallette[randomOrder[i]]);
+        }
+    }
+    console.log(`Primary Color: ${rs.getPropertyValue('--primary')}`);
+    console.log(`Secondary Color: ${rs.getPropertyValue('--secondary')}`);
+    console.log(`Tertiary Color: ${rs.getPropertyValue('--tertiary')}`);
+    console.log(`Quaternary Color: ${rs.getPropertyValue('--quaternary')}`);
+    console.log(`Quinary Color: ${rs.getPropertyValue('--quinary')}`);
+
+}
+
+function updateColorPallette(){
+    // get the style variables in root
+    let r = document.querySelector(':root');
+    let rs = getComputedStyle(r);
+    // set all the properties to the new index
+    currentPallette = randomPallette();
+    r.style.setProperty('--primary', currentPallette[0]);
+    r.style.setProperty('--secondary', currentPallette[1]);
+    r.style.setProperty('--tertiary', currentPallette[2]);
+    r.style.setProperty('--quaternary', currentPallette[3]);
+    r.style.setProperty('--quinary', currentPallette[4]);
+    
+    console.log(`Primary Color: ${rs.getPropertyValue('--primary')}`);
+    console.log(`Secondary Color: ${rs.getPropertyValue('--secondary')}`);
+    console.log(`Tertiary Color: ${rs.getPropertyValue('--tertiary')}`);
+    console.log(`Quaternary Color: ${rs.getPropertyValue('--quaternary')}`);
+    console.log(`Quinary Color: ${rs.getPropertyValue('--quinary')}`);
+}
+
+// generate a random integer inside a range
+function getRandomIntFromRange(min, max){
+    let result = Math.floor(Math.random()*(max-min+1)+min);
+    return result
+};
+
+// get a random color pallette
+function randomPallette(){
+    let palletteCount = pallettes.length
+    let randomPallette = pallettes[getRandomIntFromRange(0, palletteCount)];
+    return randomPallette;
 }
 
 // get the change color button as element
-let changeC = $('#color_change_button');
+let changeP = $('#change_pallete_button');
 
 // add event listener to color change button
-changeC.on('click', ChangeColor);
+changeP.on('click', ChangeColorPallette);
+
+// get the shuffle pallette button as element
+let shuffleP = $('#shuffle_pallette_button');
+
+// add event listener to color change button
+shuffleP.on('click', shufflePalletteArrangement);
+
+
+
+// || SCREEN SIZE MODE CHANGER
+window.addEventListener('resize', logPixelSizeAndMaterializePrefix);
+
+function logPixelSizeAndMaterializePrefix(){
+    let currentWidth = window.innerWidth;
+
+    // console.log(`New Width: ${currentWidth}`);
+
+    if(currentWidth <= 600){
+        // console.log(`width: ${currentWidth} Materialize prefix: s`);
+        console.log(' Materialize prefix: s')
+    } else if (currentWidth > 600 && currentWidth <= 992){
+        // console.log(`width: ${currentWidth} Materialize prefix: m`)
+        console.log(' Materialize prefix: m')
+    } else if (currentWidth > 992 && currentWidth <= 1200){
+        // console.log(`width: ${currentWidth} Materialize prefix: l`)
+        console.log(' Materialize prefix: l')
+    } else {
+        // console.log(`width: ${currentWidth} Materialize prefix: xl`)
+        console.log(' Materialize prefix: xl')
+    }
+
+}
