@@ -21,7 +21,7 @@ searchObject = {
 */
 
 storageName = 'searchListObjects'
-testMemoryFunctions();
+// testMemoryFunctions();
 
 function testMemoryFunctions(){
     let testSearchObject = 'This is a test';
@@ -84,7 +84,7 @@ function loadSearchObjects(){
 }
 
 // used to completely remove local storage elements
-function resetMemory(event){
+function resetMemory(){
     localStorage.clear();
     console.log('Memory reset')
 }
