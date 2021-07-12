@@ -26,5 +26,5 @@ searchObject = {
   actor_id: "nm1231234",
   actor_name: "natalie portman",
   actor_img_url: "path to url for actor",
-  movie_objs = [movieObject1, movieObject2,] 
+  movie_objs: ['movieObject1', 'movieObject2',] 
 }
