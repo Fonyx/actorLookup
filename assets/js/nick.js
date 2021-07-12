@@ -1,25 +1,5 @@
 // functions to save and load movie objects
 
-/*
-movie_details_obj = {
-  id: 'tt1234567',
-  title: 'v for vendetta',
-  released: moment().format('y'),
-  ratingsCount : 300,
-  rating: 4.5,
-  imageUrl: "path_to_url",
-  Genres: ['x', 'y', 'z'],
-  plotOutline: "a long string describing the movie",
-}
-
-searchObject = {
-  actor_id: "nm1231234",
-  actor_name: "natalie portman",
-  actor_img_url: "path to url for actor",
-  movie_objs = [movieObject1, movieObject2,] 
-}
-*/
-
 storageName = 'searchListObjects'
 // testMemoryFunctions();
 
@@ -87,4 +67,77 @@ function loadSearchObjects(){
 function resetMemory(){
     localStorage.clear();
     console.log('Memory reset')
+}
+
+// class accepts
+/*
+actor_id            -str eg 'nm1234567'
+actor_name          -str eg 'natalie portman'
+actor_img           -str eg 'http://path_to_thing.png'
+movie_object_list   -list of MovieObjects eg [MovieObject1, MovieObject2,]
+*/
+// constructor that builds SearchObjects
+class ActorObject {
+    constructor(actor_id, actor_name, actor_img, movie_object_list){
+        this.actor_id = actor_id;
+        this.actor_name = actor_name;
+        this.actor_img = actor_img;
+        this.movie_object_list = movie_object_list;
+    }
+}
+
+// constructor that build Movie sub objects
+// class accepts 
+/* 
+id              -number eg 1
+title           -string eg 'v for vendetta'
+released        -moment().format('y) object 
+ratingsCount    -number
+rating          -number
+imageUrl        -string
+genres          -list of strings eg ['action', 'comedy', 'drama']
+plotOutline     -string
+*/
+class MovieObject {
+    constructor(id, title, released, ratingsCount, rating, imageUrl, genres, plotOutline){
+        this.id = id;
+        this.title = title;
+        this.released = released;
+        this.ratingsCount = ratingsCount;
+        this.rating = rating;
+        this.imageUrl = imageUrl;
+        this.genres = genres;
+        this.plotOutline = plotOutline;
+    }
+}
+
+testConstructors();
+
+function testConstructors(){
+    let movieObject1 = new MovieObject('tt1234567', 
+        'V for vendetta', 
+        2009, 
+        1300, 
+        3.5, 
+        'https://m.media-amazon.com/images/M/MV5BOTI5ODc3NzExNV5BMl5BanBnXkFtZTcwNzYxNzQzMw@@._V1_.jpg',
+        ['drama', 'action'],
+        'A guy blows up a building with a mask on')
+
+    let movieObject2 = new MovieObject('tt2345678', 
+        'star wars episode 1', 
+        2004, 
+        3000, 
+        3.1, 
+        'https://static.wikia.nocookie.net/starwars/images/b/ba/Ep1_PC_front.jpg/revision/latest?cb=20170521222822',
+        ['sci-fi', 'action'],
+        'The jedi do stuff')
+    
+
+    let search = new ActorObject('nm1234567', 
+        'natalie portman',
+        'https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQ-umCzL4zUJ6W1OCXyoYkbwHhkKLS9ks8YP3rh6y1W_iQtPOnh',
+        [movieObject1, movieObject2]
+        )
+
+    console.log(search);
 }
