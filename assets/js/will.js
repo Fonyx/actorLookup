@@ -3,7 +3,13 @@ let searchButton = $('#search_button');
 searchButton.on('click', validateFormDetails);
 actorList = [];
 
-
+apiDetails = {
+    "method": "GET",
+    "headers": {
+        "x-rapidapi-key": "b848faf30dmshb6025eea31e365cp1f247djsndf3f818dbefb",
+        "x-rapidapi-host": "imdb8.p.rapidapi.com"
+    }
+}
 
 // validating the form details
 function validateFormDetails(event){
@@ -35,7 +41,7 @@ function validateFormDetails(event){
 function buildQueryStringForIMDb(userInput){
     // using IMDb API
     // https://rapidapi.com/apidojo/api/imdb8/
-    rootFilmographyApi = "https://imdb8.p.rapidapi.com/auto-complete?q="
+    let rootFilmographyApi = "https://imdb8.p.rapidapi.com/auto-complete?q="
 
     // this trims leading and trailing spaces, and replaces middle spaces with
     // %20 character as required by api
@@ -48,13 +54,8 @@ function buildQueryStringForIMDb(userInput){
 
 
 function getFilmography(actorId){ //rip the title ids from the filmography to the actor objects
-    fetch("https://imdb8.p.rapidapi.com/actors/get-all-filmography?nconst=" + actorId, {
-	"method": "GET",
-	"headers": {
-		"x-rapidapi-key": "d50580de85mshf5490ea0cca2bd9p1e342fjsn61b6890e257d",
-		"x-rapidapi-host": "imdb8.p.rapidapi.com"
-	}
-})
+    let filmographyApiUrlRoot = "https://imdb8.p.rapidapi.com/actors/get-all-filmography?nconst="
+    fetch(filmographyApiUrlRoot + actorId, apiDetails)
 .then(response => {
 	return response.json();
 })
@@ -80,13 +81,7 @@ function queryFilmographyApi(queryStrings){
     console.log(queryStrings);
     queryStrings.forEach((element) => {
 
-        fetch(element, {
-            "method": "GET",
-            "headers": {
-                "x-rapidapi-key": "b848faf30dmshb6025eea31e365cp1f247djsndf3f818dbefb",
-                "x-rapidapi-host": "imdb8.p.rapidapi.com"
-            }
-        })
+        fetch(element, apiDetails)
         .then(response => {
             return response.json();
         })
@@ -108,13 +103,9 @@ function queryFilmographyApi(queryStrings){
 }
 
 function obtainMovieData(ID){
-    fetch("https://imdb8.p.rapidapi.com/title/get-overview-details?tconst=" + ID + "7&currentCountry=US", {
-	"method": "GET",
-	"headers": {
-		"x-rapidapi-key": "d50580de85mshf5490ea0cca2bd9p1e342fjsn61b6890e257d",
-		"x-rapidapi-host": "imdb8.p.rapidapi.com"
-	}
-})
+    let overviewApiUrlRoot = "https://imdb8.p.rapidapi.com/title/get-overview-details?tconst=";
+    let urlDetail = "7&currentCountry=US";
+    fetch(overviewApiUrlRoot + ID + urlDetail, apiDetails)
 .then(response => {
 	return response.json();
 })
