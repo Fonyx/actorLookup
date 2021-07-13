@@ -1,6 +1,7 @@
 // functions to save and load movie objects
 
 storageName = 'searchListObjects'
+globalSearchObjects = [];
 // testMemoryFunctions();
 
 function testMemoryFunctions(){
@@ -111,9 +112,9 @@ class MovieObject {
     }
 }
 
-testConstructors();
+makeFakeMoviesAndSaveToStorage();
 
-function testConstructors(){
+function makeFakeMoviesAndSaveToStorage(){
     let movieObject1 = new MovieObject('tt1234567', 
         'V for vendetta', 
         2009, 
@@ -121,7 +122,7 @@ function testConstructors(){
         3.5, 
         'https://m.media-amazon.com/images/M/MV5BOTI5ODc3NzExNV5BMl5BanBnXkFtZTcwNzYxNzQzMw@@._V1_.jpg',
         ['drama', 'action'],
-        'A guy blows up a building with a mask on')
+        'A guy blows up a building with a mask on');
 
     let movieObject2 = new MovieObject('tt2345678', 
         'star wars episode 1', 
@@ -130,14 +131,33 @@ function testConstructors(){
         3.1, 
         'https://static.wikia.nocookie.net/starwars/images/b/ba/Ep1_PC_front.jpg/revision/latest?cb=20170521222822',
         ['sci-fi', 'action'],
-        'The jedi do stuff')
+        'The jedi do stuff');
     
+    let movieObject3 = new MovieObject('tt3456789',
+        'Priscilla queen of the desert',
+        2003,
+        12000,
+        4.7,
+        'https://flxt.tmsimg.com/assets/p17043_p_v10_ac.jpg',
+        ['drama', 'LGBTQ'],
+        '3 drag queens drive through australia');
 
-    let search = new ActorObject('nm1234567', 
+    let searchObj1 = new ActorObject('nm1234567', 
         'natalie portman',
         'https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQ-umCzL4zUJ6W1OCXyoYkbwHhkKLS9ks8YP3rh6y1W_iQtPOnh',
         [movieObject1, movieObject2]
         )
 
-    console.log(search);
+    let searchObj2 = new ActorObject('nm2345678', 
+        'hugo weaving',
+        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqGkJXzir7KYyIwm7acViaMTg2B8FMyJ4oDA&usqp=CAU',
+        [movieObject1, movieObject3]
+        )
+
+    
+    resetMemory();
+    saveSearchObject(searchObj1);
+    saveSearchObject(searchObj2);
+    fakeGlobalSearchObject = loadSearchObjects();
+    console.log(fakeGlobalSearchObject);
 }
