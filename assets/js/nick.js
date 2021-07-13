@@ -158,6 +158,6 @@ function makeFakeMoviesAndSaveToStorage(){
     resetMemory();
     saveSearchObject(searchObj1);
     saveSearchObject(searchObj2);
-    fakeGlobalSearchObject = loadSearchObjects();
-    console.log(fakeGlobalSearchObject);
+    fakeGlobalSearchObjects = loadSearchObjects();
+    console.log(fakeGlobalSearchObjects);
 }
