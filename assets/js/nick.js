@@ -1,7 +1,7 @@
 // functions to save and load movie objects
 
 storageName = 'searchListObjects'
-globalSearchObjects = [];
+fakeGlobalSearchObjects = [];
 // testMemoryFunctions();
 
 function testMemoryFunctions(){
