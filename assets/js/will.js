@@ -1,6 +1,9 @@
 // add event listener for the form
 let searchButton = $('#search_button');
 searchButton.on('click', validateFormDetails);
+actorObj = [];
+
+
 
 // validating the form details
 function validateFormDetails(event){
@@ -42,10 +45,41 @@ function buildQueryStringForIMDb(userInput){
     return queryString;
 }
 
+
+
+function getFilmography(actorId){ //rip the title ids from the filmography to the actor objects
+    fetch("https://imdb8.p.rapidapi.com/actors/get-all-filmography?nconst=" + actorId, {
+	"method": "GET",
+	"headers": {
+		"x-rapidapi-key": "d50580de85mshf5490ea0cca2bd9p1e342fjsn61b6890e257d",
+		"x-rapidapi-host": "imdb8.p.rapidapi.com"
+	}
+})
+.then(response => {
+	return response.json();
+})
+.then(data => {
+    console.log(data);
+    console.log(data.filmography.length);
+    for(let i=0; i < data.filmography.length; i++){
+        if(data.filmography[i].titleType == "movie", data.filmography[i].category == "actor"){
+            let MVID = data.filmography[i].id;
+            MVID = MVID.substring(7, 15);
+            actorMvList.push(MVID);
+        }
+    }
+    console.log(actorMvList)
+})
+.catch(err => {
+	console.error(err);
+});
+}
+
+
 function queryFilmographyApi(queryStrings){
     console.log(queryStrings);
-
     queryStrings.forEach((element) => {
+
         fetch(element, {
             "method": "GET",
             "headers": {
@@ -63,14 +97,12 @@ function queryFilmographyApi(queryStrings){
                 console.log(data.d[i].s)
                 console.log(data.d[i].rank)
             } 
-            const actorId = data.d[0].id //creating variables to be inserted into constructors
-            const actorName = data.d[0].l
-            const actorImg = data.d[0].i.imageUrl
-            console.log(actorId)
-            console.log(actorName)
-            console.log(actorImg)
-            let Actor00 = new ActorObject(actorId, actorName, actorImg)
-            console.log(Actor00)
+            actorMvList = [];
+            getFilmography(data.d[0].id);
+            let actor = new ActorObject(data.d[0].id, data.d[0].l, data.d[0].i.imageUrl, actorMvList);
+            actorObj.push(actor);
+            console.log(actorObj);
+            actorMvList.length = 0;
         })
         .catch(err => {
             console.error(err);
