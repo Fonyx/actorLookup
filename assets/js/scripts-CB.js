@@ -30,22 +30,25 @@ searchObject = {
 }
 
 
+function getMovieIds (actorObject) {
+  let temparray = [];
+  for (let i = 0; i<actorObject.movie_details_obj.length; i++){
+    temparray.push(actorObject.movie_details_obj[i].id);
+  }
+  return temparray;
+}
 
-function countDubMovies(CD) {
-  var tempCompare1 = movieObject1.id;
-  var tempCompare2 = movieObject2.id;
-  var id = [];
-  var count = 1;
-
-  for(var i = 0; i<tempCompare1.length;i++){
-    if(tempCompare1[i]=== tempCompare2[i+1]) {
-      count++;
-    }
-    else {
-      let value = `${count}${tempCompare1[i]}`;
-      id = [...id,value];
-      count=1
+function getCommonMovieIds (list1,list2) {
+  let temparray = [];
+  for (let i = 0; i<list1.length; i++){
+    console.log(list1[i]);
+    for (let j = 0; j<list2.length; j++){
+      console.log(list2[j]);   
+      if (list1[i] === list2[j]){
+        temparray.push(list1[i])
+      }
     }
   }
-  return id
+  return temparray;
 }
+
