@@ -113,7 +113,6 @@ function getCommonMovieIds (list1,list2) {
   return tempArray;
 }
 
-
 // finds a given id, returns corresponding movie object
 function lookupMovieFromId(ids, actor){
   let results = [];
@@ -147,8 +146,6 @@ function getMatchingMovies(){
 
   return sharedMovieObjects;
 }
-
-getMatchingMovies();
 
 console.log('change');
 let searchObjects = loadSearchObjects();
