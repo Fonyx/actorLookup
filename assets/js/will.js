@@ -35,7 +35,7 @@ function validateFormDetails(event){
         buildQueryStringForIMDb(UserInputText1),
         buildQueryStringForIMDb(UserInputText2),
     ]
-    queryFilmographyApi(queryStrings);
+    getActorIdsFromInputs(queryStrings);
 }
 
 function buildQueryStringForIMDb(userInput){
@@ -51,33 +51,7 @@ function buildQueryStringForIMDb(userInput){
     return queryString;
 }
 
-
-
-function getFilmography(actorId){ //rip the title ids from the filmography to the actor objects
-    let filmographyApiUrlRoot = "https://imdb8.p.rapidapi.com/actors/get-all-filmography?nconst="
-    fetch(filmographyApiUrlRoot + actorId, apiDetails)
-.then(response => {
-	return response.json();
-})
-.then(data => {
-    console.log(data);
-    console.log(data.filmography.length);
-    for(let i=0; i < data.filmography.length; i++){
-        if(data.filmography[i].titleType == "movie", data.filmography[i].category == "actor"){
-            let MovieId = data.filmography[i].id;
-            MovieId = MovieId.substring(7, 16);
-            actorMovieList.push(MovieId);
-        }
-    }
-    console.log(actorMovieList);
-})
-.catch(err => {
-	console.error(err);
-});
-}
-
-
-function queryFilmographyApi(queryStrings){
+function getActorIdsFromInputs(queryStrings){
     console.log(queryStrings);
     queryStrings.forEach((element) => {
 
@@ -86,20 +60,45 @@ function queryFilmographyApi(queryStrings){
             return response.json();
         })
         .then(data =>{
-            console.log(data);
+            // console.log(data);
             let ActorId = data.d[0].id;
             let ActorName = data.d[0].l;
             let ActorImage = data.d[0].i.imageUrl;
-            actorMovieList = [];
-            getFilmography(data.d[0].id);
+            // await this function call as it is an asynchronous fetch
+            let actorMovieList = getFilmographyFromActorId(data.d[0].id);
+            // then make new object
+            console.log('Actor: ',ActorName,'returned: ',actorMovieList.length,' movies');
             let actor = new ActorObject(ActorId, ActorName, ActorImage, actorMovieList);
             actorList.push(actor);
-            console.log(actorList);
         })
         .catch(err => {
             console.error(err);
         });
     });
+}
+
+async function getFilmographyFromActorId(actorId){ //rip the title ids from the filmography to the actor objects
+    let filmographyApiUrlRoot = "https://imdb8.p.rapidapi.com/actors/get-all-filmography?nconst="
+    let actorMovieList = [];
+    try{
+        let response = await fetch(filmographyApiUrlRoot + actorId, apiDetails);
+        let json = await response.json();
+
+        console.log(json);
+        console.log(json.filmography.length);
+        for(let i=0; i < json.filmography.length; i++){
+            if(json.filmography[i].titleType == "movie", 
+                json.filmography[i].category == "actor"){
+                    let MovieId = json.filmography[i].id;
+                    MovieId = MovieId.substring(7, 16);
+                    actorMovieList.push(MovieId);
+            }
+        }
+        return actorMovieList;
+
+    }catch{(error => {
+        console.log(error);
+    })}
 }
 
 function obtainMovieData(ID){
