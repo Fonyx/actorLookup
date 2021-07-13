@@ -1,7 +1,7 @@
 // add event listener for the form
 let searchButton = $('#search_button');
 searchButton.on('click', validateFormDetails);
-actorObj = [];
+actorList = [];
 
 
 
@@ -63,12 +63,12 @@ function getFilmography(actorId){ //rip the title ids from the filmography to th
     console.log(data.filmography.length);
     for(let i=0; i < data.filmography.length; i++){
         if(data.filmography[i].titleType == "movie", data.filmography[i].category == "actor"){
-            let MVID = data.filmography[i].id;
-            MVID = MVID.substring(7, 15);
-            actorMvList.push(MVID);
+            let MovieId = data.filmography[i].id;
+            MovieId = MovieId.substring(7, 16);
+            actorMovieList.push(MovieId);
         }
     }
-    console.log(actorMvList)
+    console.log(actorMovieList);
 })
 .catch(err => {
 	console.error(err);
@@ -92,21 +92,44 @@ function queryFilmographyApi(queryStrings){
         })
         .then(data =>{
             console.log(data);
-            for(let i=0; i < data.d.length; i++){
-                console.log(data.d[i].l)
-                console.log(data.d[i].s)
-                console.log(data.d[i].rank)
-            } 
-            actorMvList = [];
+            let ActorId = data.d[0].id;
+            let ActorName = data.d[0].l;
+            let ActorImage = data.d[0].i.imageUrl;
+            actorMovieList = [];
             getFilmography(data.d[0].id);
-            let actor = new ActorObject(data.d[0].id, data.d[0].l, data.d[0].i.imageUrl, actorMvList);
-            actorObj.push(actor);
-            console.log(actorObj);
-            actorMvList.length = 0;
+            let actor = new ActorObject(ActorId, ActorName, ActorImage, actorMovieList);
+            actorList.push(actor);
+            console.log(actorList);
         })
         .catch(err => {
             console.error(err);
         });
     });
 }
+
+function obtainMovieData(ID){
+    fetch("https://imdb8.p.rapidapi.com/title/get-overview-details?tconst=" + ID + "7&currentCountry=US", {
+	"method": "GET",
+	"headers": {
+		"x-rapidapi-key": "d50580de85mshf5490ea0cca2bd9p1e342fjsn61b6890e257d",
+		"x-rapidapi-host": "imdb8.p.rapidapi.com"
+	}
+})
+.then(response => {
+	return response.json();
+})
+.then(data =>{
+    let MvTitle = data.title.title;
+    let MvReleased = data.title.year;
+    let MvRatingscount = data.ratings.ratingsCount;
+    let MvRating = data.ratings.rating;
+    let MvImageUrl = data.title.image.url;
+    let MvGenres = data.genres;
+    let MvPlotOutline = data.plotOutline.text;
+})
+.catch(err => {
+	console.error(err);
+});
+}
     
+
