@@ -62,7 +62,15 @@ function queryFilmographyApi(queryStrings){
                 console.log(data.d[i].l)
                 console.log(data.d[i].s)
                 console.log(data.d[i].rank)
-            }
+            } 
+            const actorId = data.d[0].id //creating variables to be inserted into constructors
+            const actorName = data.d[0].l
+            const actorImg = data.d[0].i.imageUrl
+            console.log(actorId)
+            console.log(actorName)
+            console.log(actorImg)
+            let Actor00 = new ActorObject(actorId, actorName, actorImg)
+            console.log(Actor00)
         })
         .catch(err => {
             console.error(err);
