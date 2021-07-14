@@ -29,10 +29,10 @@ $(document).ready(function () {
 //   movie_objs: [movieObject1, movieObject2,],
 // }
 
-makeFakeMoviesAndSaveToStorage();
+// makeFakeMoviesAndSaveToStorage();
 
 function makeFakeMoviesAndSaveToStorage(){
-    let movieObject1 = new MovieObject('tt1234567', 
+    let movieObject1 = new movieObject('tt1234567', 
         'V for vendetta', 
         2009, 
         1300, 
@@ -41,7 +41,7 @@ function makeFakeMoviesAndSaveToStorage(){
         ['drama', 'action'],
         'A guy blows up a building with a mask on');
 
-    let movieObject2 = new MovieObject('tt2345678', 
+    let movieObject2 = new movieObject('tt2345678', 
         'star wars episode 1', 
         2004, 
         3000, 
@@ -50,7 +50,7 @@ function makeFakeMoviesAndSaveToStorage(){
         ['sci-fi', 'action'],
         'The jedi do stuff');
     
-    let movieObject3 = new MovieObject('tt3456789',
+    let movieObject3 = new movieObject('tt3456789',
         'Priscilla queen of the desert',
         2003,
         12000,
@@ -59,13 +59,13 @@ function makeFakeMoviesAndSaveToStorage(){
         ['drama', 'LGBTQ'],
         '3 drag queens drive through australia');
 
-    let searchObj1 = new ActorObject('nm1234567', 
+    let searchObj1 = new actorObject('nm1234567', 
         'natalie portman',
         'https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQ-umCzL4zUJ6W1OCXyoYkbwHhkKLS9ks8YP3rh6y1W_iQtPOnh',
         [movieObject1, movieObject2]
         )
 
-    let searchObj2 = new ActorObject('nm2345678', 
+    let searchObj2 = new actorObject('nm2345678', 
         'hugo weaving',
         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqGkJXzir7KYyIwm7acViaMTg2B8FMyJ4oDA&usqp=CAU',
         [movieObject1, movieObject3]
