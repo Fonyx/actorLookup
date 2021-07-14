@@ -36,7 +36,7 @@ function validateFormAndSearch(event){
   runSearchWithInputValues(inputStringArray);
 }
 
-// details for the api queries
+// details for the api queries - currently Ella's key
 apiDetails = {
     "method": "GET",
     "headers": {
@@ -82,16 +82,25 @@ async function fetchMovieListFromActor(actorObj){
 async function fetchMovieGeneralDetailsResponse(movieNumberList){
     let movieDetailsList = [];
     
-    for(let i = 0; i < movieNumberList; i++){
-        let movieNumber = movieNumberList[i];
-        let movieOverviewEndpointUrl = "https://imdb8.p.rapidapi.com/title/get-overview-details?tconst="+movieNumber+"7&currentCountry=US";
+    for(let i = 0; i < movieNumberList.length; i++){
+        try{
+            let movieNumber = movieNumberList[i];
 
-        let response = await fetch(movieOverviewEndpointUrl, apiDetails);
-        let movieDetails = await response.json();
+            let movieOverviewEndpointUrl = "https://imdb8.p.rapidapi.com/title/get-overview-details?tconst="+movieNumber+"7&currentCountry=US";
+    
+            console.log('Querying with url: ',movieOverviewEndpointUrl);
+            console.log('Using settings: ',apiDetails);
 
-        // filter the details down
+            let response = await fetch(movieOverviewEndpointUrl, apiDetails);
+            let movieDetails = await response.json();
+            console.log('Movie details found: ',movieDetails)
 
-        movieDetailsList.push(movieDetails);
+            // filter the details down
+            movieDetailsList.push(movieDetails);
+
+        }catch{(error)=>{
+            console.log(error);
+        }}
     }
     return movieDetailsList;
 }
@@ -192,8 +201,18 @@ async function runSearchWithInputValues(searchStrings){
     // make the list of objects that match and save it to the search object
     let matchedMovieNumbers = getCommonMovieObjects(movieNumberList1, movieNumberList2);
 
+    //sanity log
+    if(debug){
+        console.log('Matched movie strings: ',matchedMovieNumbers)
+    }
+
     // run fetch on movie numbers to get movie general details
     let matchedMovieDetailObjects = await fetchMovieGeneralDetailsResponse(matchedMovieNumbers);
+
+    // sanity log
+    if(debug){
+        console.log('Matched movie objects: ',matchedMovieDetailObjects)
+    }
 
     // create a new search object with both actor objects and the matched movie list
     new_search_object = new searchObject(actor1obj, actor2obj, matchedMovieDetailObjects);
