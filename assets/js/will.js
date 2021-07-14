@@ -1,7 +1,7 @@
 // add event listener for the form
 let searchButton = $('#search_button');
 searchButton.on('click', validateFormDetails);
-actorList = [];
+// actorList = [];
 
 apiDetails = {
     "method": "GET",
@@ -31,11 +31,12 @@ function validateFormDetails(event){
     console.log(UserInputText1);
     console.log(UserInputText2);
     // this method should scale to any number of query's
-    let queryStrings = [
+    let inputStringArray = [
         buildQueryStringForIMDb(UserInputText1),
         buildQueryStringForIMDb(UserInputText2),
     ]
-    getActorIdsFromInputs(queryStrings);
+    // getActorIdsFromInputs(inputStringArray);
+    fetchMoviesFromInput(inputStringArray);
 }
 
 function buildQueryStringForIMDb(userInput){
@@ -60,15 +61,15 @@ function getActorIdsFromInputs(queryStrings){
             return response.json();
         })
         .then(data =>{
-            // console.log(data);
+            // get the actor details from the first element of the returned data - most popular video they did I think
             let ActorId = data.d[0].id;
             let ActorName = data.d[0].l;
             let ActorImage = data.d[0].i.imageUrl;
             // await this function call as it is an asynchronous fetch
             let actorMovieList = getFilmographyFromActorId(data.d[0].id);
             // then make new object
-            console.log('Actor: ',ActorName,'returned: ',actorMovieList.length,' movies');
-            let actor = new ActorObject(ActorId, ActorName, ActorImage, actorMovieList);
+            console.log('Actor: ',ActorName,'returned: ',actorMovieList.length,' movies from the filmography function');
+            let actor = new actorObject(ActorId, ActorName, ActorImage, actorMovieList);
             actorList.push(actor);
         })
         .catch(err => {
@@ -83,22 +84,129 @@ async function getFilmographyFromActorId(actorId){ //rip the title ids from the 
     try{
         let response = await fetch(filmographyApiUrlRoot + actorId, apiDetails);
         let json = await response.json();
-
-        console.log(json);
-        console.log(json.filmography.length);
+        
+        
+        console.log('found: ',json.filmography.length,' movies in the api call');
         for(let i=0; i < json.filmography.length; i++){
             if(json.filmography[i].titleType == "movie", 
-                json.filmography[i].category == "actor"){
-                    let MovieId = json.filmography[i].id;
-                    MovieId = MovieId.substring(7, 16);
-                    actorMovieList.push(MovieId);
+            json.filmography[i].category == "actor"){
+                let MovieId = json.filmography[i].id;
+                MovieId = MovieId.substring(7, 16);
+                actorMovieList.push(MovieId);
             }
         }
         return actorMovieList;
-
+        
     }catch{(error => {
         console.log(error);
     })}
+}
+
+async function fetchMovieListFromActor(actorObj){
+    let filmographyApiUrlRoot = "https://imdb8.p.rapidapi.com/actors/get-all-filmography?nconst=";
+    let response = await fetch(filmographyApiUrlRoot + actorObj.actor_id, apiDetails);
+    return response;
+}
+
+function processMovieListJson(jsonObject){
+    let actorMovieList = [];
+
+    for(let i=0; i < jsonObject.filmography.length; i++){
+
+        let movie = jsonObject.filmography[i];
+
+        let titleType = movie.titleType;
+        let category = movie.category;
+        let movieId = movie.id.substring(7, 16);
+        // note that hugo weaving was an actor and Natalie Portman was an actress
+        if(titleType === "movie" && (category === "actor" || category === "actress")){
+            actorMovieList.push(movieId);
+        }
+    }
+    return actorMovieList;
+}
+
+async function fetchMoviesFromInput(searchStrings){
+    let input1 = searchStrings[0];
+    let input2 = searchStrings[1];
+    let debug = true;
+
+    const [ActorId1Response, ActorId2Response] = await Promise.all([
+        /* fetch is a function that is declared as an async function i.e. async function fetch(){}; 
+        so the await function in the promise understands how to handle waiting for it 
+        We should be able to make our own functions like the fetch function that are 
+        asynchronous and can be 'awaited' similarly*/
+        fetch(input1, apiDetails),
+        fetch(input2, apiDetails),
+    ])
+
+    let actor1data = await ActorId1Response.json();
+    let actor2data = await ActorId2Response.json();
+
+    // sanity log of returned data
+    if(debug){
+        console.log('actor 1 returned data: ',actor1data);
+        console.log('actor 2 returned data: ',actor2data);
+    }
+
+    // get actor id's from the actor query objects
+    let actor1obj = new actorObject(
+        // note the use of keyword assignment, this is for clarity
+        actor_id = actor1data.d[0].id, 
+        actor_name = actor1data.d[0].l, 
+        actor_img = actor1data.d[0].i.imageUrl
+    )
+
+    let actor2obj = new actorObject(
+        actor_id = actor2data.d[0].id, 
+        actor_name = actor2data.d[0].l, 
+        actor_image = actor2data.d[0].i.imageUrl
+    )
+
+    // sanity log of returned data
+    if(debug){
+        console.log('actor1 object is: ',actor1obj);
+        console.log('actor2 object is: ',actor2obj);
+    }
+    
+    // query movie list for the actors
+    let [movieListResponse1, movieListResponse2] = await Promise.all([
+        fetchMovieListFromActor(actor1obj),
+        fetchMovieListFromActor(actor2obj),
+    ]);
+
+    // process responses from movie list api
+    let movieListJson1 = await movieListResponse1.json();
+    let movieListJson2 = await movieListResponse2.json();
+
+    // log out the json object for both
+    if(debug){
+        console.log('Movie list 1 json is: ', movieListJson1);
+        console.log('Movie list 2 json is: ', movieListJson2);
+    }
+
+    let movieList1 = processMovieListJson(movieListJson1);
+    let movieList2 = processMovieListJson(movieListJson2);
+    
+    // sanity check that the movie lists are not empty and are returned when expected
+    if(debug){
+        console.log('movie list 1 object is: ',movieList1);
+        console.log('movie list 2 object is: ',movieList2);
+    }
+
+    // append the movie objects to the actor objects
+    actor1obj.movie_object_list = movieList1;
+    actor2obj.movie_object_list = movieList2;
+
+    // this is where we use chris's matching function to get the shared movie list
+
+    //placeholder
+    chrisMatchedMovieList = ['', '', ''];
+
+    // create a new search object with both actor objects and the matched movie list
+    search_object = new SearchObject(actor1obj, actor2obj, chrisMatchedMovieList)
+
+    saveSearchObject(search_object);
 }
 
 function obtainMovieData(ID){
