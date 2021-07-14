@@ -2,6 +2,7 @@
 
 storageName = 'searchListObjects'
 fakeGlobalSearchObjects = [];
+resetMemory();
 // testMemoryFunctions();
 
 function testMemoryFunctions(){
@@ -70,6 +71,22 @@ function resetMemory(){
     console.log('Memory reset')
 }
 
+// class that builds searchObjects
+// class accepts
+/*
+actorObj1           - actorObject
+actorObj2           - actorObject
+shared_movie_list   - list of movieObjects - after filter
+*/
+class SearchObject{
+    constructor(actor1, actor2, movieList){
+        this.actor1 = actor1;
+        this.actor2 = actor2;
+        this.movieList = movieList;
+    }
+}
+
+
 // class accepts
 /*
 actor_id            -str eg 'nm1234567'
@@ -77,8 +94,8 @@ actor_name          -str eg 'natalie portman'
 actor_img           -str eg 'http://path_to_thing.png'
 movie_object_list   -list of MovieObjects eg [MovieObject1, MovieObject2,]
 */
-// constructor that builds SearchObjects
-class ActorObject {
+// constructor that builds Actor Objects
+class actorObject {
     constructor(actor_id, actor_name, actor_img, movie_object_list){
         this.actor_id = actor_id;
         this.actor_name = actor_name;
@@ -99,7 +116,7 @@ imageUrl        -string
 genres          -list of strings eg ['action', 'comedy', 'drama']
 plotOutline     -string
 */
-class MovieObject {
+class movieObject {
     constructor(id, title, released, ratingsCount, rating, imageUrl, genres, plotOutline){
         this.id = id;
         this.title = title;
@@ -112,3 +129,33 @@ class MovieObject {
     }
 }
 
+// testConstructors();
+
+function testConstructors(){
+    let movieObject1 = new movieObject('tt1234567', 
+        'V for vendetta', 
+        2009, 
+        1300, 
+        3.5, 
+        'https://m.media-amazon.com/images/M/MV5BOTI5ODc3NzExNV5BMl5BanBnXkFtZTcwNzYxNzQzMw@@._V1_.jpg',
+        ['drama', 'action'],
+        'A guy blows up a building with a mask on')
+
+    let movieObject2 = new movieObject('tt2345678', 
+        'star wars episode 1', 
+        2004, 
+        3000, 
+        3.1, 
+        'https://static.wikia.nocookie.net/starwars/images/b/ba/Ep1_PC_front.jpg/revision/latest?cb=20170521222822',
+        ['sci-fi', 'action'],
+        'The jedi do stuff')
+    
+
+    let search = new actorObject('nm1234567', 
+        'natalie portman',
+        'https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQ-umCzL4zUJ6W1OCXyoYkbwHhkKLS9ks8YP3rh6y1W_iQtPOnh',
+        [movieObject1, movieObject2]
+        )
+
+    console.log(search);
+}
