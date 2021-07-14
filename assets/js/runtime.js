@@ -81,7 +81,9 @@ async function fetchMovieListFromActor(actorObj){
 // fetches the general movie details from a list of movie numbers
 async function fetchMovieGeneralDetailsResponse(movieNumberList){
     let movieDetailsList = [];
-    movieNumberList.forEach((movieNumber) => {
+    
+    for(let i = 0; i < movieNumberList; i++){
+        let movieNumber = movieNumberList[i];
         let movieOverviewEndpointUrl = "https://imdb8.p.rapidapi.com/title/get-overview-details?tconst="+movieNumber+"7&currentCountry=US";
 
         let response = await fetch(movieOverviewEndpointUrl, apiDetails);
@@ -90,8 +92,7 @@ async function fetchMovieGeneralDetailsResponse(movieNumberList){
         // filter the details down
 
         movieDetailsList.push(movieDetails);
-
-    })
+    }
     return movieDetailsList;
 }
 

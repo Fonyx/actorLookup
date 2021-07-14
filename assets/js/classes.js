@@ -19,16 +19,16 @@ function renderMovieNameToLogResultsDiv(searchObject){
     let logResultsDiv = $('#log_results'); 
 
     
-    searchObject.movieList.forEach((element) => {
+    searchObject.movieObjectList.forEach((movieObj) => {
 
-        console.log('Adding movie to dom: ',element.title);
+        console.log('Adding movie to dom: ',movieObj.title);
 
         //<div class="row" id="log_results">
             // collected above as logResultsDiv
             //<div class="col s6 l3">
             let newColEl = makeNewJqueryElement('div', 'col s6 l3')
                 //<p class="pri_text_color">$element.title</p>
-                let newEl = makeNewJqueryElement('p', 'pri_text_color', null, element.title+":"+element.rating);
+                let newEl = makeNewJqueryElement('p', 'pri_text_color', null, movieObj.title+":"+movieObj.rating);
             newColEl.append(newEl);
             //</div>
         logResultsDiv.append(newColEl)
