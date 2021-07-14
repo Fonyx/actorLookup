@@ -2,13 +2,18 @@
 let searchButton = $('#search_button');
 searchButton.on('click', validateFormAndSearch);
 
+// load local on reload case
+searchObjects = loadSearchObjects();
+currentSearchObjectIndex = 0;
+console.log('Found local results: ',searchObjects);
+
 // run search
 // validating the form details
 function validateFormAndSearch(event){
   event.preventDefault();
 
   let buttonElement = $(event.target)
-  let parentForm = buttonElement.parent();
+  let parentForm = buttonElement.parents('form');
 
   // get the two input fields from the form
   let userInputs = parentForm.children().find('input');
