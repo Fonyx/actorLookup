@@ -40,7 +40,7 @@ function validateFormAndSearch(event){
 apiDetails = {
     "method": "GET",
     "headers": {
-        "x-rapidapi-key": "b848faf30dmshb6025eea31e365cp1f247djsndf3f818dbefb",
+        "x-rapidapi-key": "ab94207db6mshf69c29d83b5ee26p1abc45jsnff5a13e8da6d",
         "x-rapidapi-host": "imdb8.p.rapidapi.com"
     }
 }
