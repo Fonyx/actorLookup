@@ -46,12 +46,12 @@ apiDetails = {
 }
 
 // Chris's matching function
-function getCommonMovieObjects(actorObj1, actorObj2){
+function getCommonMovieObjects(movie_number_list_1, movie_number_list_2){
   let resultMovieList = [];
-  for(let j=0; j< actorObj2.movie_object_list.length; j++){
-    for(let i = 0; i<actorObj1.movie_object_list.length; i++){
-      if(actorObj2.movie_object_list[j].id === actorObj1.movie_object_list[i].id){
-        resultMovieList.push(actorObj1.movie_object_list[i]);
+  for(let i = 0; i < movie_number_list_1.length; i++){
+    for(let j = 0; j < movie_number_list_2.length; j++){
+      if(movie_number_list_2[j] === movie_number_list_1[i]){
+        resultMovieList.push(movie_number_list_1[i]);
       }
     }
   }
@@ -78,8 +78,25 @@ async function fetchMovieListFromActor(actorObj){
     return response;
 }
 
+// fetches the general movie details from a list of movie numbers
+async function fetchMovieGeneralDetailsResponse(movieNumberList){
+    let movieDetailsList = [];
+    movieNumberList.forEach((movieNumber) => {
+        let movieOverviewEndpointUrl = "https://imdb8.p.rapidapi.com/title/get-overview-details?tconst="+movieNumber+"7&currentCountry=US";
+
+        let response = await fetch(movieOverviewEndpointUrl, apiDetails);
+        let movieDetails = await response.json();
+
+        // filter the details down
+
+        movieDetailsList.push(movieDetails);
+
+    })
+    return movieDetailsList;
+}
+
 // processes the movie list json object into a js object
-function processMovieListJson(jsonObject){
+function processMovieNumberListJson(jsonObject){
     let actorMovieList = [];
 
     for(let i=0; i < jsonObject.filmography.length; i++){
@@ -88,10 +105,10 @@ function processMovieListJson(jsonObject){
 
         let titleType = movieObj.titleType;
         let category = movieObj.category;
-        // let movieId = movieObj.id.substring(7, 16);
+        let movieId = movieObj.id.substring(7, 16);
         // note that hugo weaving was an actor and Natalie Portman was an actress
         if(titleType === "movie" && (category === "actor" || category === "actress")){
-            actorMovieList.push(movieObj);
+            actorMovieList.push(movieId);
         }
     }
     return actorMovieList;
@@ -157,27 +174,33 @@ async function runSearchWithInputValues(searchStrings){
         console.log('Movie list 2 json is: ', movieListJson2);
     }
 
-    let movieList1 = processMovieListJson(movieListJson1);
-    let movieList2 = processMovieListJson(movieListJson2);
+    let movieNumberList1 = processMovieNumberListJson(movieListJson1);
+    let movieNumberList2 = processMovieNumberListJson(movieListJson2);
     
     // sanity check that the movie lists are not empty and are returned when expected
     if(debug){
-        console.log('movie list 1 object is: ',movieList1);
-        console.log('movie list 2 object is: ',movieList2);
+        console.log('movie list 1 object is: ',movieNumberList1);
+        console.log('movie list 2 object is: ',movieNumberList2);
     }
 
-    // append the movie objects to the actor objects
-    actor1obj.movie_object_list = movieList1;
-    actor2obj.movie_object_list = movieList2;
+    // append the movie number lists to the actor objects - to make lookups easier in the future
+    actor1obj.movie_number_list = movieNumberList1;
+    actor2obj.movie_number_list = movieNumberList2;
 
     // this is where we use chris's matching function to get the shared movie list
     // make the list of objects that match and save it to the search object
-    let matchedMovies = getCommonMovieObjects(actor1obj, actor2obj);
+    let matchedMovieNumbers = getCommonMovieObjects(movieNumberList1, movieNumberList2);
+
+    // run fetch on movie numbers to get movie general details
+    let matchedMovieDetailObjects = await fetchMovieGeneralDetailsResponse(matchedMovieNumbers);
 
     // create a new search object with both actor objects and the matched movie list
-    new_search_object = new searchObject(actor1obj, actor2obj, matchedMovies);
+    new_search_object = new searchObject(actor1obj, actor2obj, matchedMovieDetailObjects);
+
     // save the new object
     saveSearchObject(new_search_object);
-    renderMovieNameToLogResultsDiv(new_search_object)
+
+    // dev: render to front page to confirm all is well with gathered results
+    renderMovieNameToLogResultsDiv(new_search_object);
 
 }

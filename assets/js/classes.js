@@ -148,10 +148,10 @@ actorObj2           - actorObject
 shared_movie_list   - list of movieObjects - after filter
 */
 class searchObject{
-    constructor(actor1, actor2, movieList){
+    constructor(actor1, actor2, movieObjectList){
         this.actor1 = actor1;
         this.actor2 = actor2;
-        this.movieList = movieList;
+        this.movieObjectList = movieObjectList;
     }
 }
 
@@ -164,11 +164,11 @@ movie_object_list   -list of MovieObjects eg [MovieObject1, MovieObject2,]
 */
 // constructor that builds Actor Objects
 class actorObject {
-    constructor(actor_id, actor_name, actor_img, movie_object_list){
+    constructor(actor_id, actor_name, actor_img, movie_number_list){
         this.actor_id = actor_id;
         this.actor_name = actor_name;
         this.actor_img = actor_img;
-        this.movie_object_list = movie_object_list;
+        this.movie_number_list = movie_number_list;
     }
 }
 
