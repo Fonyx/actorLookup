@@ -27,7 +27,7 @@ function loadSearchObjects(){
 // used to completely remove local storage elements
 function resetMemory(){
     localStorage.clear();
-    console.log('Memory reset')
+    console.log('Memory reset');
 }
 
 // accepts a searchObject and appends it to locally stored results, if empty, creates a storage list

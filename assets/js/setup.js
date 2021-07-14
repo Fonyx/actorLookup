@@ -8,5 +8,3 @@
 $(document).ready(function () {
     $(".carousel").carousel();
 });
-
-resetMemory();

@@ -29,6 +29,10 @@ main {
   flex: 1 0 auto;
 }
 
+h1{
+  margin-top: 0.6rem;
+}
+
 /* || Color override section */
 .pri_bg_color {
   background-color: var(--primary) !important;

@@ -32,20 +32,20 @@
       <div class="nav-wrapper container">
         <a id="logo-container" href="#" class="brand-logo sec_text_color">SAMLUD<span class="hide-on-small-and-down">: by wenk</span></a>
         <ul class="right hide-on-med-and-down">
-          <li><a href="#" class="sec_text_color">WILL</a></li>
-          <li><a href="#" class="sec_text_color">ELLA</a></li>
-          <li><a href="#" class="sec_text_color">NICK</a></li>
-          <li><a href="#" class="sec_text_color">CHRIS</a></li>
+          <li><a href="https://github.com/Wgobrie1" class="sec_text_color">WILL</a></li>
+          <li><a href="https://github.com/EllaFerreira" class="sec_text_color">ELLA</a></li>
+          <li><a href="https://github.com/Fonyx" class="sec_text_color">NICK</a></li>
+          <li><a href="https://github.com/ChristopherBz" class="sec_text_color">CHRIS</a></li>
           <!-- for development testing -->
           <li><button id="shuffle_pallette_button" class="btn red">Shuffle Palette</button></li>
           <li><button id="change_pallete_button" class="btn red">Change Palette</button></li>
         </ul>
   
         <ul id="nav-mobile" class="sidenav sec_text_color">
-          <li><a href="#" class="sec_text_color">WILL</a></li>
-          <li><a href="#" class="sec_text_color">ELLA</a></li>
-          <li><a href="#" class="sec_text_color">NICK</a></li>
-          <li><a href="#" class="sec_text_color">CHRIS</a></li>
+          <li><a href="https://github.com/Wgobrie1" class="sec_text_color">WILL</a></li>
+          <li><a href="https://github.com/EllaFerreira" class="sec_text_color">ELLA</a></li>
+          <li><a href="https://github.com/Fonyx" class="sec_text_color">NICK</a></li>
+          <li><a href="https://github.com/ChristopherBz" class="sec_text_color">CHRIS</a></li>
         </ul>
         <a href="#" data-target="nav-mobile" class="sidenav-trigger sec_text_color"><i class="material-icons">menu</i></a>
       </div>
@@ -58,7 +58,9 @@
       <!-- Top headlines -->
       <section class="section no-pad-bot" id="index-banner">
         <div class="container">
-          <h2 class="header center pri_text_color">Find Movies <span class="hide-on-med-and-down">With Your Favorite Actors</span></h2>
+          <h1 class="header center pri_text_color">Find Movies
+            <span class="hide-on-med-and-down"> With Your Favorite Actors</span>
+          </h1>
           <div class="row center hide-on-small-and-down">
             <h5 class="header col s12 lite pri_text_color">Simply add the actors names below!</h5>
           </div>
@@ -68,22 +70,30 @@
           <div class="row center">
             <form class="col s12">
               <div class="row">
-                  <div class="input-field col s12 m5">
+                  <div class="input-field col s12 m5 l3 offset-l2">
                     <i class="material-icons prefix sec_text_color">account_circle</i>
                     <input type="text" id="Actor1" class="actor sec_text_color">
                     <label for="userInput_1" class="sec_text_color">Actors Name</label>
                   </div>
-                  <div class="col s6 offset-s3 m2">
-                    <i class="medium material-icons sec_text_color">add</i>
+                  <div class="col s6 offset-s3 m2 l2">
+                    <i class="medium material-icons hide-on-small-only sec_text_color">add</i>
                   </div>
-                  <div class="input-field col s12 m5">
+                  <div class="input-field col s12 m5 l3">
                     <i class="material-icons prefix sec_text_color">account_circle</i>
                     <input type="text" id="Actor2" class="actor sec_text_color">
                     <label for="userInput_2" class="sec_text_color">Actors Name</label>
                   </div>
               </div>
-              <button id="search_button" class="btn-large waves-effect waves-light sec_text_color tert_bg_color" type="submit" name="action">Search
-                <i class="material-icons right sec_text_color tert_bg_color">search</i>
+              <div class="row">
+                <div class="col s6 m6 l3 offset-l3">
+                  <button id="search_button" class="btn-large waves-effect waves-light sec_text_color tert_bg_color" type="submit" name="action">Search
+                    <i class="material-icons right sec_text_color tert_bg_color">search</i>
+                </div>
+                <div class="col s6 m6 l3">
+                  <button id="reset_button" class="btn-large waves-effect waves-light sec_text_color tert_bg_color" type="button" name="action" onclick="resetMemory();">Reset
+                    <i class="material-icons right sec_text_color tert_bg_color">loop</i>
+                </div>
+              </div>
               </button>
             </form>
           </div>
