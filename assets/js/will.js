@@ -1,7 +1,7 @@
 // add event listener for the form
 let searchButton = $('#search_button');
 searchButton.on('click', validateFormDetails);
-// actorList = [];
+actorList = [];
 
 apiDetails = {
     "method": "GET",
