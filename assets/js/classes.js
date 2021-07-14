@@ -11,6 +11,31 @@ function getMostRecentSearchObject(){
     }
 }
 
+//function that prints movie cards to log_results id
+function renderMovieNameToLogResultsDiv(searchObject){
+    // clear the dom text for div
+    resetDomLogResultText();
+
+    let logResultsDiv = $('#log_results'); 
+
+    
+    searchObject.movieList.forEach((element) => {
+
+        console.log('Adding movie to dom: ',element.title);
+
+        //<div class="row" id="log_results">
+            // collected above as logResultsDiv
+            //<div class="col s6 l3">
+            let newColEl = makeNewJqueryElement('div', 'col s6 l3')
+                //<p class="pri_text_color">$element.title</p>
+                let newEl = makeNewJqueryElement('p', 'pri_text_color', null, element.title+":"+element.rating);
+            newColEl.append(newEl);
+            //</div>
+        logResultsDiv.append(newColEl)
+        //</div>
+    })
+}
+
 // function that loads all search Objects from local storage and returns them in a list
 // - if local storage is empty returns special null - not string
 function loadSearchObjects(){
@@ -28,6 +53,15 @@ function loadSearchObjects(){
 function resetMemory(){
     localStorage.clear();
     console.log('Memory reset');
+    resetDomLogResultText();
+    console.log('reset the dom log results div text');
+}
+
+// function to reset any text we need to set to zero
+function resetDomLogResultText(){
+    let logResultsDiv = $('#log_results'); 
+    // empty out the div to avoid overflow
+    logResultsDiv.text("");
 }
 
 // accepts a searchObject and appends it to locally stored results, if empty, creates a storage list

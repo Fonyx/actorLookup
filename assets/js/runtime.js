@@ -175,7 +175,9 @@ async function runSearchWithInputValues(searchStrings){
     let matchedMovies = getCommonMovieObjects(actor1obj, actor2obj);
 
     // create a new search object with both actor objects and the matched movie list
-    let search_object = new searchObject(actor1obj, actor2obj, matchedMovies);
+    new_search_object = new searchObject(actor1obj, actor2obj, matchedMovies);
+    // save the new object
+    saveSearchObject(new_search_object);
+    renderMovieNameToLogResultsDiv(new_search_object)
 
-    saveSearchObject(search_object);
 }
