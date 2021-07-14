@@ -28,7 +28,7 @@ function renderMovieNameToLogResultsDiv(searchObject){
             //<div class="col s6 l3">
             let newColEl = makeNewJqueryElement('div', 'col s6 l3')
                 //<p class="pri_text_color">$element.title</p>
-                let newEl = makeNewJqueryElement('p', 'pri_text_color', null, movieObj.title+":"+movieObj.rating);
+                let newEl = makeNewJqueryElement('p', 'pri_text_color', null, movieObj.title.title+" Rating: "+movieObj.ratings.rating);
             newColEl.append(newEl);
             //</div>
         logResultsDiv.append(newColEl)

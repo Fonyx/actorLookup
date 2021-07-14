@@ -86,7 +86,7 @@ async function fetchMovieGeneralDetailsResponse(movieNumberList){
         try{
             let movieNumber = movieNumberList[i];
 
-            let movieOverviewEndpointUrl = "https://imdb8.p.rapidapi.com/title/get-overview-details?tconst="+movieNumber+"7&currentCountry=US";
+            let movieOverviewEndpointUrl = "https://imdb8.p.rapidapi.com/title/get-overview-details?tconst="+movieNumber+"&currentCountry=US";
     
             console.log('Querying with url: ',movieOverviewEndpointUrl);
             console.log('Using settings: ',apiDetails);
