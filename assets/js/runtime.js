@@ -40,12 +40,21 @@ function validateFormAndSearch(event){
   console.log(UserInputText1);
   console.log(UserInputText2);
   // this method should scale to any number of query's
-  let inputStringArray = [
+  let inputStringsArray = [
       buildQueryStringForIMDb(UserInputText1),
       buildQueryStringForIMDb(UserInputText2),
   ]
-  // getActorIdsFromInputs(inputStringArray);
-  runSearchWithInputValues(inputStringArray);
+  // check if we have already run this search before and if so, will return the index of the search object, else it will be null
+  let duplicateIndex = getDuplicateSearchIndex(inputStringsArray);
+  if(duplicateIndex){
+      // run a new search
+      runSearchWithInputValues(inputStringsArray);
+  }else{
+      // set the current search object to the object we already have
+      currentSearchObjectIndex = duplicateIndex;
+      // render the object we had in history again
+      renderCurrentSearchObject();
+  }
 }
 
 // Chris's matching function
@@ -59,6 +68,12 @@ function getCommonMovieObjects(movie_number_list_1, movie_number_list_2){
     }
   }
   return resultMovieList;
+}
+
+// check the searchObject list we have for the user inputs, if we find them in forwards or backwards order, return the index of the search object
+function getDuplicateSearchIndex(inputStringsArray){
+    // placeholder return so we run a fresh search until this function has been built
+    return null;
 }
 
 // function makes the query string from user input to query the auto-complete endpoint
