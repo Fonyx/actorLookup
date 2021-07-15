@@ -74,7 +74,7 @@ function buildQueryStringForIMDb(userInput){
 // fetches the movie list response from the filmography endpoint
 async function fetchMovieListFromActor(actorObj){
     let filmographyApiUrlRoot = "https://imdb8.p.rapidapi.com/actors/get-all-filmography?nconst=";
-    let response = await fetch(filmographyApiUrlRoot + actorObj.actor_id, apiDetails);
+    let response = await fetch(filmographyApiUrlRoot + actorObj.id, apiDetails);
     return response;
 }
 
@@ -150,16 +150,17 @@ async function runSearchWithInputValues(searchStrings){
 
     // get actor id's from the actor query objects
     let actor1obj = new actorObject(
-        // note the use of keyword assignment, this is for clarity
-        actor_id = actor1data.d[0].id, 
-        actor_name = actor1data.d[0].l, 
-        actor_img = actor1data.d[0].i.imageUrl
+        // parameters are id, name and imgUrl
+        actor1data.d[0].id, 
+        actor1data.d[0].l, 
+        actor1data.d[0].i.imageUrl
     )
-
+        
     let actor2obj = new actorObject(
-        actor_id = actor2data.d[0].id, 
-        actor_name = actor2data.d[0].l, 
-        actor_image = actor2data.d[0].i.imageUrl
+        // parameters are id, name and imgUrl
+        actor2data.d[0].id, 
+        actor2data.d[0].l, 
+        actor2data.d[0].i.imageUrl
     )
 
     // sanity log of returned data
