@@ -10,7 +10,7 @@ let currentSearchObjectIndex = 0;
 apiDetails = {
     "method": "GET",
     "headers": {
-        "x-rapidapi-key": "ab94207db6mshf69c29d83b5ee26p1abc45jsnff5a13e8da6d",
+        "x-rapidapi-key": "d50580de85mshf5490ea0cca2bd9p1e342fjsn61b6890e257d",
         "x-rapidapi-host": "imdb8.p.rapidapi.com"
     }
 }
@@ -134,10 +134,20 @@ async function fetchMovieGeneralDetailsResponse(movieNumberList){
 
             let response = await fetch(movieOverviewEndpointUrl, apiDetails);
             let movieDetails = await response.json();
-            console.log('Movie details found: ',movieDetails)
+            //console.log('Movie details found: ',movieDetails);
 
             // filter the details down
-            movieDetailsList.push(movieDetails);
+            let id = movieDetails.id.substring(7,16);
+            let title = movieDetails.title.title;
+            let released = movieDetails.title.year;
+            let ratingCount = movieDetails.ratings.ratingCount;
+            let rating = movieDetails.ratings.rating;
+            let imageUrl = movieDetails.title.image.url;
+            let genres = movieDetails.genres;
+            let plotOutline = movieDetails.plotOutline.text;
+            let movieOBJ = new movieObject(id, title, released, ratingCount, rating, imageUrl, genres, plotOutline)
+            console.log('display each movieOBJ: ', movieOBJ);
+            movieDetailsList.push(movieOBJ);
 
         }catch{(error)=>{
             console.log(error);
