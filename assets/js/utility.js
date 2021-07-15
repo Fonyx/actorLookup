@@ -14,7 +14,7 @@ currentPallette = randomPallette();
 ChangeColorPallette();
 
 // makes a jquery element with class and Id
-function makeNewJqueryElement(elementType, classString, idString, textString){
+function makeNewJqueryElement(elementType, classString, idString, textString, dataValue){
     let newElement = $('<'+elementType+'>');
     if(classString){
         newElement.addClass(classString);
@@ -25,8 +25,11 @@ function makeNewJqueryElement(elementType, classString, idString, textString){
     if(textString){
       newElement.text(textString);
     }
+    if(dataValue){
+        newElement.attr('data-'+dataValue.name, dataValue.value);
+    }
     return newElement;
-  }
+}
 
 // change colors in :root dom element
 function ChangeColorPallette(){
@@ -112,7 +115,7 @@ function getRandomIntFromRange(min, max){
 // get a random color pallette
 function randomPallette(){
     let palletteCount = pallettes.length
-    let randomPallette = pallettes[getRandomIntFromRange(0, palletteCount)];
+    let randomPallette = pallettes[getRandomIntFromRange(0, palletteCount-1)];
     return randomPallette;
 }
 
@@ -127,8 +130,6 @@ let shuffleP = $('#shuffle_pallette_button');
 
 // add event listener to color change button
 shuffleP.on('click', shufflePalletteArrangement);
-
-
 
 // || SCREEN SIZE MODE CHANGER
 window.addEventListener('resize', logPixelSizeAndMaterializePrefix);
