@@ -29,7 +29,7 @@ function makeNewJqueryElement(elementType, classString, idString, textString, da
         newElement.attr('data-'+dataValue.name, dataValue.value);
     }
     return newElement;
-  }
+}
 
 // change colors in :root dom element
 function ChangeColorPallette(){
@@ -130,8 +130,6 @@ let shuffleP = $('#shuffle_pallette_button');
 
 // add event listener to color change button
 shuffleP.on('click', shufflePalletteArrangement);
-
-
 
 // || SCREEN SIZE MODE CHANGER
 window.addEventListener('resize', logPixelSizeAndMaterializePrefix);

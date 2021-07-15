@@ -5,6 +5,15 @@ searchButton.on('click', validateFormAndSearch);
 // global variable name for the list of history objects
 searchObjectHistory = [];
 
+// details for the api queries - currently Ella's key
+apiDetails = {
+    "method": "GET",
+    "headers": {
+        "x-rapidapi-key": "ab94207db6mshf69c29d83b5ee26p1abc45jsnff5a13e8da6d",
+        "x-rapidapi-host": "imdb8.p.rapidapi.com"
+    }
+}
+
 // load local on reload case
 searchObjectHistory = loadSearchObjects();
 currentSearchObjectIndex = 0;
@@ -37,15 +46,6 @@ function validateFormAndSearch(event){
   ]
   // getActorIdsFromInputs(inputStringArray);
   runSearchWithInputValues(inputStringArray);
-}
-
-// details for the api queries - currently Ella's key
-apiDetails = {
-    "method": "GET",
-    "headers": {
-        "x-rapidapi-key": "ab94207db6mshf69c29d83b5ee26p1abc45jsnff5a13e8da6d",
-        "x-rapidapi-host": "imdb8.p.rapidapi.com"
-    }
 }
 
 // Chris's matching function
@@ -221,10 +221,10 @@ async function runSearchWithInputValues(searchStrings){
     // create a new search object with both actor objects and the matched movie list
     new_search_object = new searchObject(actor1obj, actor2obj, matchedMovieDetailObjects);
 
-    // save the new object
+    // save the new object - note this triggers a reload of local data and sets currentSearchObjectIndex = 0
     saveSearchObject(new_search_object);
 
     // dev: render to front page to confirm all is well with gathered results
-    renderMovieNameToLogResultsDiv(new_search_object);
+    renderCurrentSearchObject();
 
 }

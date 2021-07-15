@@ -9,18 +9,26 @@ function renderMovieNameToLogResultsDiv(searchObj){
 
         //<div class="row" id="log_results">
             // collected above as logResultsDiv
-            //<div class="col s6 l3" data-search-index="$currentSearchObjectIndex">
-            let newColEl = makeNewJqueryElement('div', 'col s6 l3', null, null, {'name': 'search-index','value':currentSearchObjectIndex});
-                //<p class="pri_text_color" data-index=$currentSearchObjectIndex>$searchObj.actor1.name+":"+$searchObj.actor2.name</p>
-                let actorTextEl = makeNewJqueryElement('p', 'pri_text_color', null, searchObj.actor1.name+" + "+searchObj.actor2.name);
+            //<div class="col s6 l3">
+            let newColEl = makeNewJqueryElement('div', 'col');
                 //<p class="pri_text_color">$movieObj.title</p>
-                let newEl = makeNewJqueryElement('p', 'pri_text_color', null, movieObj.title.title+" Rating: "+movieObj.ratings.rating);
-            newColEl.append(actorTextEl);
+                let newEl = makeNewJqueryElement('p', 'center-align pri_text_color', null, movieObj.title.title+" Rating: "+movieObj.ratings.rating);
             newColEl.append(newEl);
             //</div>
         logResultsDiv.append(newColEl)
         //</div>
     })
+}
+
+// render a button for the search object
+function renderSearchObjectButton(searchObj, index){
+    let searchHistoryEl = $('#search_history');
+    // append the search obj button to this element
+
+    //<p class="pri_text_color" data-search-index="$currentSearchObjectIndex">$searchObj.actor1.name+":"+$searchObj.actor2.name</p>
+    let actorTextEl = makeNewJqueryElement('button', 'pri_bg_color sec_text_color btn', null, searchObj.actor1.name+" + "+searchObj.actor2.name, {'name': 'search-index','value':index});
+
+    searchHistoryEl.append(actorTextEl);
 }
 
 // function to reset any text we need to set to zero
@@ -37,5 +45,6 @@ function resetDomLogResultText(){
 function renderCurrentSearchObject(){
     let currentSearchObject = searchObjectHistory[currentSearchObjectIndex];
     console.log('rendering search object: ',currentSearchObject);
+    renderSearchObjectButton(currentSearchObject, currentSearchObjectIndex);
     renderMovieNameToLogResultsDiv(currentSearchObject);
 }

@@ -15,7 +15,9 @@ function getMostRecentSearchObject(){
 function loadSearchObjects(){
     let PastStorage = JSON.parse(localStorage.getItem(storageName));
     if (PastStorage){
-        console.log('Found results in local storage')
+        console.log('Found results in local storage');
+        console.log('resetting current choice index to first element [0]');
+        currentSearchObjectIndex = 0;
         return PastStorage;
     } else {
         console.log('No results in local storage at the moment, returning null')
@@ -48,6 +50,9 @@ function saveSearchObject(newSearchObject){
     let stringStorage = JSON.stringify(storage);
     // save to local storage
     localStorage.setItem(storageName, stringStorage);
+
+    // load the memory into the global list to update
+    searchObjectHistory = loadSearchObjects();
 }
 
 function testMemoryFunctions(){
