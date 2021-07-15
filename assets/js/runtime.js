@@ -2,15 +2,11 @@
 let searchButton = $('#search_button');
 searchButton.on('click', validateFormAndSearch);
 
-// global variable name for the list of history objects
-let searchObjectHistory = [];
-let currentSearchObjectIndex = 0;
-
-// details for the api queries - currently Ella's key
+// details for the api queries - currently Will's key
 apiDetails = {
     "method": "GET",
     "headers": {
-        "x-rapidapi-key": "ab94207db6mshf69c29d83b5ee26p1abc45jsnff5a13e8da6d",
+        "x-rapidapi-key": "d50580de85mshf5490ea0cca2bd9p1e342fjsn61b6890e257d",
         "x-rapidapi-host": "imdb8.p.rapidapi.com"
     }
 }
@@ -23,16 +19,20 @@ window.addEventListener('load', loadAndRenderSearchObjects);
 // then calls render on the last searchObject as that was the most recent
 function loadAndRenderSearchObjects(){
     // note the global function and that loadSearchObjects returns null if there are none
-    searchObjectHistory = loadSearchObjects();
+    let searchObjectHistory = loadSearchObjects();
+    
     // check there are some
     if(searchObjectHistory){
+        // set current index to the last search object
+        currentSearchObjectIndex = searchObjectHistory.length-1;
+        console.log('resetting current choice index to: ',currentSearchObjectIndex);
+
         console.log('Found local results: ',searchObjectHistory);
+
         for(let i = 0; i < searchObjectHistory.length; i++){
             console.log('rendering button for search object: ',searchObjectHistory[i]);
             renderSearchObjectButton(searchObjectHistory[i]);
         }
-        // set current index to the last search element
-        currentSearchObjectIndex = searchObjectHistory.length-1;
         let currentSearchObject = searchObjectHistory[currentSearchObjectIndex];
         console.log('Now rendering current object: ',currentSearchObject),
         // call the render method for the movie cards of the current search object
@@ -258,16 +258,12 @@ async function runSearchWithInputValues(searchStrings){
 
     // create a new search object with both actor objects and the matched movie list
     // set the index to the current search object index
-    new_search_object = new searchObject(actor1obj, actor2obj, matchedMovieDetailObjects, 
-        currentSearchObjectIndex);
+    new_search_object = new searchObject(actor1obj, actor2obj, matchedMovieDetailObjects);
 
-    // increment the search object index as we will add a new entry to the end
-    currentSearchObjectIndex += 1;
-
-    // save the new object - note this triggers a reload of local data and sets currentSearchObjectIndex = 0
-    saveSearchObject(new_search_object);
+    // save the new object - this sets the index value for the search result as it pushes it to the list
+    let indexSavedObj = saveSearchObject(new_search_object);
 
     // dev: render to front page to confirm all is well with gathered results
-    renderSearchObject(new_search_object);
+    renderSearchObject(indexSavedObj);
 
 }
