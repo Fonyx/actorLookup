@@ -1,5 +1,5 @@
 # Group Project 1
-Group details to be decided
+Google Drive: https://drive.google.com/drive/folders/1M8NNKxuqYeKaVUS6RNCmXUf0YGkADUF8?usp=sharing
 Google docs: https://docs.google.com/document/d/1qt4B9-Txtpu4CxRwyemj_UdSn8CZuvV0msMBBmU5FkY/edit
 Google slides: https://docs.google.com/presentation/d/1UiaCCcJ_GaImNjX6xvIHQznuwP9pO0OgAYXBSSx-SCQ/edit#slide=id.ge29cba3059_0_421
 
