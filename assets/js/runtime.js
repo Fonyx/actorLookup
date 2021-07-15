@@ -194,8 +194,8 @@ async function runSearchWithInputValues(searchStrings){
     }
 
     // append the movie number lists to the actor objects - to make lookups easier in the future
-    actor1obj.movie_number_list = movieNumberList1;
-    actor2obj.movie_number_list = movieNumberList2;
+    actor1obj.movieNumberList = movieNumberList1;
+    actor2obj.movieNumberList = movieNumberList2;
 
     // this is where we use chris's matching function to get the shared movie list
     // make the list of objects that match and save it to the search object

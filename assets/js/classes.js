@@ -164,11 +164,11 @@ movie_object_list   -list of MovieObjects eg [MovieObject1, MovieObject2,]
 */
 // constructor that builds Actor Objects
 class actorObject {
-    constructor(actor_id, actor_name, actor_img, movie_number_list){
-        this.actor_id = actor_id;
-        this.actor_name = actor_name;
-        this.actor_img = actor_img;
-        this.movie_number_list = movie_number_list;
+    constructor(id, name, imgUrl, movieNumberList){
+        this.id = id;
+        this.name = name;
+        this.imgUrl = imgUrl;
+        this.movieNumberList = movieNumberList;
     }
 }
 
