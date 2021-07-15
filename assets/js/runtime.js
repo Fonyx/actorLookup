@@ -6,7 +6,7 @@ searchButton.on('click', validateFormAndSearch);
 apiDetails = {
     "method": "GET",
     "headers": {
-        "x-rapidapi-key": "d50580de85mshf5490ea0cca2bd9p1e342fjsn61b6890e257d",
+        "x-rapidapi-key": "b28e386a35mshed01fb31f068486p1ab734jsnaa20602c76bb",
         "x-rapidapi-host": "imdb8.p.rapidapi.com"
     }
 }
@@ -29,7 +29,7 @@ function loadAndRenderSearchObjects(){
 
         console.log('Found local results: ',searchObjectHistory);
 
-        for(let i = 0; i < searchObjectHistory.length-1; i++){
+        for(let i = 0; i < searchObjectHistory.length; i++){
             console.log('rendering button for search object: ',searchObjectHistory[i]);
             renderSearchObjectButton(searchObjectHistory[i]);
         }
@@ -106,8 +106,10 @@ function buildQueryStringForIMDb(userInput){
 
     // this trims leading and trailing spaces, and replaces middle spaces with
     // %20 character as required by api
-    let encodedUserInput = encodeURIComponent(userInput.trim());
+    let encodedUserInput = userInput.replace(/\W/g, "").replace(/[0-9]/g, "");
+    encodedUserInput = encodeURIComponent(encodedUserInput.trim());
     let queryString = rootFilmographyApi + encodedUserInput;
+    console.log(encodedUserInput)
     
     return queryString;
 }
