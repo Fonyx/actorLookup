@@ -134,10 +134,20 @@ async function fetchMovieGeneralDetailsResponse(movieNumberList){
 
             let response = await fetch(movieOverviewEndpointUrl, apiDetails);
             let movieDetails = await response.json();
-            console.log('Movie details found: ',movieDetails)
+            //console.log('Movie details found: ',movieDetails);
 
             // filter the details down
-            movieDetailsList.push(movieDetails);
+            let id = movieDetails.id.substring(7,16);
+            let title = movieDetails.title.title;
+            let released = movieDetails.title.year;
+            let ratingCount = movieDetails.ratings.ratingCount;
+            let rating = movieDetails.ratings.rating;
+            let imageUrl = movieDetails.title.image.url;
+            let genres = movieDetails.genres;
+            let plotOutline = movieDetails.plotOutline.text;
+            let movieOBJ = new movieObject(id, title, released, ratingCount, rating, imageUrl, genres, plotOutline)
+            console.log('display each movieOBJ: ', movieOBJ);
+            movieDetailsList.push(movieOBJ);
 
         }catch{(error)=>{
             console.log(error);
