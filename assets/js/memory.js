@@ -1,6 +1,8 @@
 // name used by save and load functions to refer to the file object
 storageName = 'searchListObjects'
 
+// testMemoryFunctions();
+
 // function that gets the most recent search
 function getMostRecentSearchObject(){
     if(searchObjectHistory){
@@ -16,8 +18,6 @@ function loadSearchObjects(){
     let PastStorage = JSON.parse(localStorage.getItem(storageName));
     if (PastStorage){
         console.log('Found results in local storage');
-        console.log('resetting current choice index to first element [0]');
-        currentSearchObjectIndex = PastStorage.length-1;
         return PastStorage;
     } else {
         console.log('No results in local storage at the moment, returning null')
@@ -37,9 +37,13 @@ function saveSearchObject(newSearchObject){
     let storage = JSON.parse(localStorage.getItem(storageName));
     // if it finds there are results already, add the result to the end
     if(storage){
+        // stamp the id of the searchObject as the element in the array
+        newSearchObject.index = storage.length;
         console.log('Found search objects in storage, appended element onto list');
         storage.push(newSearchObject);
     } else {
+        // stamp the id of the searchObject as the element in the array
+        newSearchObject.index = 0;
         // creates an empty string and puts the searchObject into the list for saving
         console.log('Created new local storage list and appended result')
         storage = [newSearchObject, ];
@@ -49,8 +53,8 @@ function saveSearchObject(newSearchObject){
     // save to local storage
     localStorage.setItem(storageName, stringStorage);
 
-    // load the memory into the global list to update
-    searchObjectHistory = loadSearchObjects();
+    // returns the number of elements in storage after save
+    return newSearchObject;
 }
 
 function testMemoryFunctions(){
@@ -62,11 +66,11 @@ function testMemoryFunctions(){
     console.log('\tShould have printed out: Memory reset')
     
     // empty state test
-    saveSearchObject(testSearchObject);
+    storedObjectCount = saveSearchObject(testSearchObject);
     console.log('\tShould have printed out: Created new local storage list and appended result');
 
     // adding to state test
-    saveSearchObject(test2SearchObject);
+    storedObjectCount = saveSearchObject(test2SearchObject);
     console.log('\tShould have printed out: Found search objects in storage, appended element onto list');
 
     // checking load test

@@ -12,7 +12,7 @@ function renderMovieNameToLogResultsDiv(searchObj){
             //<div class="col s6 l3">
             let newColEl = makeNewJqueryElement('div', 'col');
                 //<p class="pri_text_color">$movieObj.title</p>
-                let newEl = makeNewJqueryElement('p', 'center-align pri_text_color', null, movieObj.title.title+" Rating: "+movieObj.ratings.rating);
+                let newEl = makeNewJqueryElement('p', 'center-align pri_text_color', null, movieObj.title+" Rating: "+movieObj.rating);
             newColEl.append(newEl);
             //</div>
         logResultsDiv.append(newColEl)
@@ -68,7 +68,6 @@ function fullResetOfPage(){
 }
 
 // render all search object history buttons -- ELLA
-
 
 // render current search object
 function renderSearchObject(searchObj){
