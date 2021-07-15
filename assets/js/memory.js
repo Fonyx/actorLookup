@@ -17,7 +17,7 @@ function loadSearchObjects(){
     if (PastStorage){
         console.log('Found results in local storage');
         console.log('resetting current choice index to first element [0]');
-        currentSearchObjectIndex = 0;
+        currentSearchObjectIndex = PastStorage.length-1;
         return PastStorage;
     } else {
         console.log('No results in local storage at the moment, returning null')
@@ -29,8 +29,6 @@ function loadSearchObjects(){
 function resetMemory(){
     localStorage.clear();
     console.log('Memory reset');
-    resetDomLogResultText();
-    console.log('reset the dom log results div text');
 }
 
 // accepts a searchObject and appends it to locally stored results, if empty, creates a storage list

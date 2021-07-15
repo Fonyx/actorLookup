@@ -90,7 +90,7 @@
                     <i class="material-icons right sec_text_color tert_bg_color">search</i>
                 </div>
                 <div class="col s6 m6 l3">
-                  <button id="reset_button" class="btn-large waves-effect waves-light sec_text_color tert_bg_color" type="button" name="action" onclick="resetMemory();">Reset
+                  <button id="reset_button" class="btn-large waves-effect waves-light sec_text_color tert_bg_color" type="button" name="action" onclick="fullResetOfPage();">Reset
                     <i class="material-icons right sec_text_color tert_bg_color">loop</i>
                 </div>
               </div>
@@ -105,12 +105,15 @@
       <section class="container" id="results_container">
         <!-- this div needs a delegated event handler for when the user clicks a button in the search history 
         it should read the button's data-search-index and pass that for rendering -->
+        <h4>Search History</h4>
+
         <div class="row" id="search_history">
           
         </div>
 
         <h4>Results</h4>
-        <div class="row">
+
+        <div class="row" id="cards_list">
           <div class="carousel-item">
             <div class="col s4">
               <div class="card horizontal">
@@ -182,7 +185,8 @@
           </div>
         </div>
 
-        
+        <h4>Movie Log</h4>
+
         <div class="row" id="log_results">
           
         </div>

@@ -3,7 +3,8 @@ let searchButton = $('#search_button');
 searchButton.on('click', validateFormAndSearch);
 
 // global variable name for the list of history objects
-searchObjectHistory = [];
+let searchObjectHistory = [];
+let currentSearchObjectIndex = 0;
 
 // details for the api queries - currently Ella's key
 apiDetails = {
@@ -14,10 +15,30 @@ apiDetails = {
     }
 }
 
-// load local on reload case
-searchObjectHistory = loadSearchObjects();
-currentSearchObjectIndex = 0;
-console.log('Found local results: ',searchObjectHistory);
+// add event handler for body tag onload to load storage and render
+window.addEventListener('load', loadAndRenderSearchObjects);
+
+// function that loads elements from storage
+// then calls render on all searchObjects for their buttons
+// then calls render on the last searchObject as that was the most recent
+function loadAndRenderSearchObjects(){
+    // note the global function and that loadSearchObjects returns null if there are none
+    searchObjectHistory = loadSearchObjects();
+    // check there are some
+    if(searchObjectHistory){
+        console.log('Found local results: ',searchObjectHistory);
+        for(let i = 0; i < searchObjectHistory.length; i++){
+            console.log('rendering button for search object: ',searchObjectHistory[i]);
+            renderSearchObjectButton(searchObjectHistory[i]);
+        }
+        // set current index to the last search element
+        currentSearchObjectIndex = searchObjectHistory.length-1;
+        let currentSearchObject = searchObjectHistory[currentSearchObjectIndex];
+        console.log('Now rendering current object: ',currentSearchObject),
+        // call the render method for the movie cards of the current search object
+        renderSearchObject(currentSearchObject);
+    }
+}
 
 // run search
 // validating the form details
@@ -46,14 +67,16 @@ function validateFormAndSearch(event){
   ]
   // check if we have already run this search before and if so, will return the index of the search object, else it will be null
   let duplicateIndex = getDuplicateSearchIndex(inputStringsArray);
-  if(duplicateIndex){
+  if(!duplicateIndex){
       // run a new search
+      console.log('No duplicates found in history, new api search');
       runSearchWithInputValues(inputStringsArray);
   }else{
       // set the current search object to the object we already have
-      currentSearchObjectIndex = duplicateIndex;
+      let currentSearchObject = searchObjectHistory[duplicateIndex];
+      console.log('rendering previous search result: ', currentSearchObject)
       // render the object we had in history again
-      renderCurrentSearchObject();
+      renderSearchObject(currentSearchObject, duplicateIndex);
   }
 }
 
@@ -234,12 +257,17 @@ async function runSearchWithInputValues(searchStrings){
     }
 
     // create a new search object with both actor objects and the matched movie list
-    new_search_object = new searchObject(actor1obj, actor2obj, matchedMovieDetailObjects);
+    // set the index to the current search object index
+    new_search_object = new searchObject(actor1obj, actor2obj, matchedMovieDetailObjects, 
+        currentSearchObjectIndex);
+
+    // increment the search object index as we will add a new entry to the end
+    currentSearchObjectIndex += 1;
 
     // save the new object - note this triggers a reload of local data and sets currentSearchObjectIndex = 0
     saveSearchObject(new_search_object);
 
     // dev: render to front page to confirm all is well with gathered results
-    renderCurrentSearchObject();
+    renderSearchObject(new_search_object);
 
 }
