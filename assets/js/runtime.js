@@ -2,10 +2,13 @@
 let searchButton = $('#search_button');
 searchButton.on('click', validateFormAndSearch);
 
+// global variable name for the list of history objects
+searchObjectHistory = [];
+
 // load local on reload case
-searchObjects = loadSearchObjects();
+searchObjectHistory = loadSearchObjects();
 currentSearchObjectIndex = 0;
-console.log('Found local results: ',searchObjects);
+console.log('Found local results: ',searchObjectHistory);
 
 // run search
 // validating the form details

@@ -14,7 +14,7 @@ currentPallette = randomPallette();
 ChangeColorPallette();
 
 // makes a jquery element with class and Id
-function makeNewJqueryElement(elementType, classString, idString, textString){
+function makeNewJqueryElement(elementType, classString, idString, textString, dataValue){
     let newElement = $('<'+elementType+'>');
     if(classString){
         newElement.addClass(classString);
@@ -24,6 +24,9 @@ function makeNewJqueryElement(elementType, classString, idString, textString){
     }
     if(textString){
       newElement.text(textString);
+    }
+    if(dataValue){
+        newElement.attr('data-'+dataValue.name, dataValue.value);
     }
     return newElement;
   }
