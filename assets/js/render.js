@@ -69,7 +69,6 @@ function fullResetOfPage(){
 
 // render all search object history buttons -- ELLA
 
-
 // render current search object
 function renderSearchObject(searchObj){
     console.log('rendering search object: ',searchObj);
