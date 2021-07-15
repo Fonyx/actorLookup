@@ -29,7 +29,7 @@ function loadAndRenderSearchObjects(){
 
         console.log('Found local results: ',searchObjectHistory);
 
-        for(let i = 0; i < searchObjectHistory.length; i++){
+        for(let i = 0; i < searchObjectHistory.length-1; i++){
             console.log('rendering button for search object: ',searchObjectHistory[i]);
             renderSearchObjectButton(searchObjectHistory[i]);
         }

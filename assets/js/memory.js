@@ -1,7 +1,7 @@
 // name used by save and load functions to refer to the file object
 storageName = 'searchListObjects'
 
-testMemoryFunctions();
+// testMemoryFunctions();
 
 // function that gets the most recent search
 function getMostRecentSearchObject(){
