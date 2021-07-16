@@ -158,7 +158,14 @@ function renderCards(searchObj) {
   let cardImg = $("div.card-image");
   let cardStacked = $("<div>").addClass(["card", "stacked"]);
   let cardContent = $("div.card-content").children();
-
   body.appendChild(cardHorizontal, cardImg, cardStacked, cardContent);
   console.log(searchObj);
+  
+  // let resultSection = $('#search_history');
+  // let cardHorizontal = makeNewJqueryElement('div', 'card horizontal');
+  // let cardImg = makeNewJqueryElement('div', 'card-image');
+  // let cardStacked = makeNewJqueryElement('div', 'card stacked');
+  // let cardContent = makeNewJqueryElement('div', 'card content');
+  // resultSection.append(cardHorizontal, cardImg, cardStacked, cardContent);
+  
 }
