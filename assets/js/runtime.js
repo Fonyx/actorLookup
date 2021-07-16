@@ -12,11 +12,11 @@ var searchObjectHistory = [];
 var currentSearchObj = null;
 
 
-// details for the api queries - currently Chris's key
+// details for the api queries - currently Nicks second key
 apiDetails = {
     "method": "GET",
     "headers": {
-        "x-rapidapi-key": "a4ec962206mshf309408bd994b33p1bda1fjsn30b09c0bd162",
+        "x-rapidapi-key": "9d20b81794msh3353fe733317fafp15261fjsn250e70a8d8f1",
         "x-rapidapi-host": "imdb8.p.rapidapi.com"
     }
 }
@@ -33,7 +33,6 @@ function updateCurrentSearchIndexAndObj(index){
         console.log('No objects to update to, setting current to null')
         currentSearchObj = null;
     }
-
 }
 
 // add event handler for body tag onload to load storage and render
@@ -79,7 +78,11 @@ function loadAndRenderSearchObjects(){
 function validateFormAndSearch(event){
     event.preventDefault();
 
-    let buttonElement = $(event.target)
+    // disable search button
+    let startButton = document.getElementById('search_button');
+    startButton.disabled = true;
+
+    let buttonElement = $(event.target);
     let parentForm = buttonElement.parents('form');
 
     // get the two input fields from the form
@@ -121,6 +124,9 @@ function validateFormAndSearch(event){
         // render the object we had in history again
         renderCurrentSearchObject();
     }
+
+    // enable search button
+    startButton.disabled = false;
 }
 
 // Chris's matching function
