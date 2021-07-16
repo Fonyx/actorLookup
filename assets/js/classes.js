@@ -12,7 +12,6 @@ class searchObject{
         this.index = index;
     }
 }
-
 // class accepts
 /*
 actor_id            -str eg 'nm1234567'
@@ -29,7 +28,6 @@ class actorObject {
         this.movieNumberList = movieNumberList;
     }
 }
-
 // constructor that build Movie sub objects
 // class accepts 
 /* 

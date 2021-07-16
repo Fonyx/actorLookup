@@ -2,8 +2,11 @@
 var searchButton = $('#search_button');
 searchButton.on('click', validateFormAndSearch);
 var singleActorMovieLimit = 5;
+// this count limit keeps the low popularity/familiarity movies out
+var ratingCountLimit = 200;
 
 // details for the api queries - currently Chris's key
+// next key is nick 2 - 9d20b81794msh3353fe733317fafp15261fjsn250e70a8d8f1
 apiDetails = {
     "method": "GET",
     "headers": {
@@ -52,31 +55,41 @@ function validateFormAndSearch(event){
     // get the two input fields from the form
     let userInputs = parentForm.children().find('input');
 
-    // get text from user inputs
-    let queryStrings = [];
+    // get text elements out of strings
     let userInputTexts = [];
-    for(let i =0; i<userInputs.length; i++){
-        let userInputEl = userInputs[i]
-        let userInputText = userInputEl.value;
-        let queryString = buildQueryStringForIMDb(userInputText);
-        userInputTexts.push(userInputText);
-        queryStrings.push(queryString);
+    for(let i = 0; i < userInputs.length; i++){
+        let userInputEl = userInputs[i];
+        console.log('Input element: ',userInputEl);
+        let textValue = userInputEl.value;
+        console.log('Text value of input was: ',textValue);
+        // filter out empty strings as they are falsy
+        if(textValue){
+            userInputTexts.push(textValue);
+        }
     }
   
-    console.log('Query strings are: ',queryStrings);
-
     // check if we have already run this search before and if so, will return the index of the search object, else it will be null
     let duplicateIndex = getDuplicateSearchIndex(userInputTexts);
     if(!duplicateIndex){
         // run a new search
         console.log('No duplicates found in history, new api search');
+
+        // build new query strings
+        // take all valid user text values, build a query string for IMDB and make array
+        let queryStrings = userInputTexts.map((inputText) => {
+            let queryString = buildQueryStringForIMDb(inputText);
+            return queryString;
+        });
+
+        console.log('Query strings are: ',queryStrings);
+
         runSearchWithInputValues(queryStrings);
     }else{
         // set the current search object to the object we already have
         let duplicateSearchObject = searchObjectHistory[duplicateIndex];
         console.log('rendering previous search result: ', duplicateSearchObject)
         // render the object we had in history again
-        renderSearchObject(duplicateSearchObject, duplicateIndex);
+        renderSearchObject(duplicateSearchObject);
     }
 }
 
@@ -148,14 +161,20 @@ async function fetchMovieGeneralDetailsResponse(movieNumberList){
                 // if we get a result that doesn't have this structure, log error and don't append it to list
             }catch(error) {
                 console.log('Movie details were: ',movieJson);
-                console.log('but they failed because: ',error);
+                console.log('but something went wrong for a detail: ',error);
             }
-            return new movieObject(id, title, released, ratingCount, rating, imageUrl, genres, plotOutline);
+            // filter out low rating results
+            if(ratingCount > ratingCountLimit){
+                return new movieObject(id, title, released, ratingCount, rating, imageUrl, genres, plotOutline);
+            } else {
+                return 'Movie Too Small';
+            }
         })
     )
-
-    console.log('Actor Movie Lists: ',movieObjectsLists);
-    return movieObjectsLists;
+    // remove elements that are too small (unpopular < ratingCountLimit)
+    let popularMovieObjectLists = movieObjectsLists.filter(movie => movie !== 'Movie Too Small');
+    console.log('Popular Actor Movie Lists: ',popularMovieObjectLists);
+    return popularMovieObjectLists;
 }
 
 // function that query's multiple query strings to get actor details
@@ -163,6 +182,7 @@ async function fetchActorObjects(queryStringList){
     // https://dev.to/jamesliudotcc/how-to-use-async-await-with-map-and-promise-all-1gb5
     actorObjectList = await Promise.all(
         queryStringList.map(async queryString => {
+            console.log('Attempting query string: ',queryString);
             let filmResponse = await fetch(queryString, apiDetails)
             let ActorData =  await filmResponse.json();
             return new actorObject(
@@ -196,9 +216,21 @@ async function fetchActorFilmographyList(actorObjs){
                 let titleType = movieObj.titleType;
                 let category = movieObj.category;
                 let movieId = movieObj.id.substring(7, 16);
-                // note that hugo weaving was an actor and Natalie Portman was an actress
+                let acceptedStatus = ["completed", "released"]
+                /* filters: 
+                titleType = movie
+                category = actor or actress
+                image.url exists!
+                status is in []
+                */
                 if(titleType === "movie" && (category === "actor" || category === "actress")){
-                    actorMovieList.push(movieId);
+                    // if it has an image
+                    if(movieObj.image){
+                        // if the status is either completed or released
+                        if(acceptedStatus.includes(movieObj.status)){
+                            actorMovieList.push(movieId);
+                        }
+                    }
                 }
             }
             return actorMovieList;
@@ -223,7 +255,7 @@ async function runSearchWithInputValues(searchStrings){
     // append the movie number lists to the actor objects - to make lookups easier in the future
     // since movie lists and actor objects must be the same length by design we can assume their lengths match
     for(let i = 0; i < actorObjs.length; i++){
-        actorObjs[1].movieNumberList = movieNumberLists[i];
+        actorObjs[i].movieNumberList = movieNumberLists[i];
     }
 
     // this is where we use chris's matching function to get the shared movie list

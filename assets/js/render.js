@@ -25,10 +25,13 @@ function renderMovieNameToLogResultsDiv(searchObj){
     // clear the dom text for div
     resetDomLogResultDiv();
 
-    let logResultsDiv = $('#log_results'); 
-    searchObj.movieObjectList.forEach((movieObj) => {
-        console.log('Adding movie to dom: ',movieObj.title);
+    console.log(searchObj);
 
+    let logResultsDiv = $('#log_results'); 
+    for(let i = 0; i < searchObj.movieObjectList.length; i++){
+
+        let movieObj = searchObj.movieObjectList[i];
+        console.log('Adding movie to dom: ',movieObj.title);
         //<div class="row" id="log_results">
             // collected above as logResultsDiv
             //<div class="col s6 l3">
@@ -39,7 +42,7 @@ function renderMovieNameToLogResultsDiv(searchObj){
             //</div>
         logResultsDiv.append(newColEl)
         //</div>
-    })
+    }
 }
 
 // render a button for the search object
