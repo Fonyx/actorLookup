@@ -19,6 +19,11 @@
   color: orange;
 }
 
+#selected_history_button{
+  background-color: var(--secondary) !important;
+  color: white; var(--tertiary) !important;
+}
+
 /* Materialize requires these body settings for the footer to stick to page bottom */
 body {
   display: flex;
