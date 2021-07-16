@@ -1,6 +1,8 @@
 // name used by save and load functions to refer to the file object
 storageName = 'searchListObjects'
 
+// testMemoryFunctions();
+
 // function that gets the most recent search
 function getMostRecentSearchObject(){
     if(searchObjectHistory){
@@ -16,11 +18,17 @@ function loadSearchObjects(){
     let PastStorage = JSON.parse(localStorage.getItem(storageName));
     if (PastStorage){
         console.log('Found results in local storage');
-        console.log('resetting current choice index to first element [0]');
-        currentSearchObjectIndex = PastStorage.length-1;
+        // update the global list
+        searchObjectHistory = PastStorage;
+        // set the global current choice to the most recent one in the list
+        updateCurrentSearchIndexAndObj(PastStorage.length-1);
         return PastStorage;
     } else {
-        console.log('No results in local storage at the moment, returning null')
+        console.log('No results in local storage at the moment, returning null');
+        // set the global current choice to 0, it was initialized to -1 for clarity
+        updateCurrentSearchIndexAndObj(0)
+        // reset the global search object list
+        searchObjectHistory = [];
         return null;
     }
 }
@@ -29,28 +37,25 @@ function loadSearchObjects(){
 function resetMemory(){
     localStorage.clear();
     console.log('Memory reset');
+    updateCurrentSearchIndexAndObj(0);
+    // reset the global search object list
+    searchObjectHistory = [];
 }
 
 // accepts a searchObject and appends it to locally stored results, if empty, creates a storage list
 function saveSearchObject(newSearchObject){
-    // load the current list in storage of searchObjects
-    let storage = JSON.parse(localStorage.getItem(storageName));
-    // if it finds there are results already, add the result to the end
-    if(storage){
-        console.log('Found search objects in storage, appended element onto list');
-        storage.push(newSearchObject);
-    } else {
-        // creates an empty string and puts the searchObject into the list for saving
-        console.log('Created new local storage list and appended result')
-        storage = [newSearchObject, ];
-    }
+    // append the search object to the global list
+    searchObjectHistory.push(newSearchObject);
+
+    // set the global current choice to the most recent one in the list
+    updateCurrentSearchIndexAndObj(searchObjectHistory.length-1);
+
     // turn storage element into a string for storage
-    let stringStorage = JSON.stringify(storage);
+    let stringStorage = JSON.stringify(searchObjectHistory);
     // save to local storage
     localStorage.setItem(storageName, stringStorage);
 
-    // load the memory into the global list to update
-    searchObjectHistory = loadSearchObjects();
+    
 }
 
 function testMemoryFunctions(){
@@ -62,11 +67,11 @@ function testMemoryFunctions(){
     console.log('\tShould have printed out: Memory reset')
     
     // empty state test
-    saveSearchObject(testSearchObject);
+    storedObjectCount = saveSearchObject(testSearchObject);
     console.log('\tShould have printed out: Created new local storage list and appended result');
 
     // adding to state test
-    saveSearchObject(test2SearchObject);
+    storedObjectCount = saveSearchObject(test2SearchObject);
     console.log('\tShould have printed out: Found search objects in storage, appended element onto list');
 
     // checking load test
