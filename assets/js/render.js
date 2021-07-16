@@ -20,12 +20,51 @@ function makeStringOfActorsNames(searchObj){
     return result;
 }
 
-//function that prints movie cards to log_results id
-function renderMovieNameToLogResultsDiv(searchObj){
+function createButtonForCurrentSearchObject(){
+
+    let searchHistoryEl = $('#search_history');
+
+    // make display string from searchObject filters names - map the name elements to the return but also replace [ and ] with spaces, then trim whitespace
+    let filterNames = makeStringOfActorsNames(currentSearchObj);
+
+    //sanity log
+    console.log(filterNames);
+
+    let actorTextEl = makeNewJqueryElement('button', 'btn search_history_button', '', filterNames, {'name': 'search-index','value':currentUserChoiceIndex});
+    
+    searchHistoryEl.append(actorTextEl);
+}
+    
+function setActiveButtonToCurrentObject(){
+    // reset the id's of the buttons for styling before rendering
+    resetButtonIds();
+
+    // find the button with the id of the currentUserChoiceIndex
+    let buttons = $('#search_history').children();
+
+    // set the id of the matching button to 'selected_history_button'
+    for(let i = 0; i < buttons.length; i++){
+        let button = $(buttons[i]);
+        let buttonIndexStr = button.attr('data-search-index');
+        let buttonIndexInt = parseInt(buttonIndexStr);
+        if(buttonIndexInt === currentUserChoiceIndex){
+            // this button is the one the user currently has active
+            button.attr('id', 'selected_history_button');
+        }
+    }
+
+}
+
+// this will render the movie results of the current search object
+// it purges the div and then fills it again, simple
+function renderCurrentMovieResults(){
     // clear the dom text for div
     resetDomLogResultDiv();
 
-    console.log(searchObj);
+    // get current object
+    let searchObj = searchObjectHistory[currentUserChoiceIndex];
+
+    console.log();
 
     let logResultsDiv = $('#log_results'); 
     for(let i = 0; i < searchObj.movieObjectList.length; i++){
@@ -43,23 +82,6 @@ function renderMovieNameToLogResultsDiv(searchObj){
         logResultsDiv.append(newColEl)
         //</div>
     }
-}
-
-// render a button for the search object
-function renderSearchObjectButton(searchObj){
-    let searchHistoryEl = $('#search_history');
-    // append the search obj button to this element
-
-    // make display string from searchObject filters names - map the name elements to the return but also replace [ and ] with spaces, then trim whitespace
-    let filterNames = makeStringOfActorsNames(searchObj);
-
-    //sanity log
-    console.log(filterNames);
-
-    //<p class="pri_text_color" data-search-index="$currentSearchObjectIndex">$searchObj.actor1.name+":"+$searchObj.actor2.name</p>
-    let actorTextEl = makeNewJqueryElement('button', 'pri_bg_color sec_text_color btn', null, filterNames, {'name': 'search-index','value':searchObj.index});
-
-    searchHistoryEl.append(actorTextEl);
 }
 
 // function to reset any text we put into the search history div
@@ -98,11 +120,28 @@ function fullResetOfPage(){
     resetDynamicContentOnDom();
 }
 
+// function to clear all ids in buttons
+function resetButtonIds(){
+    let buttons = $('#search_history').children();
+    console.log('buttons: ', buttons);
+    for (let i = 0; i < buttons.length; i++){
+        let button = buttons[i];
+        console.log('button had id: ',$(button).attr('id'));
+        $(button).attr('id','');
+    }
+}
+
 // render all search object history buttons -- ELLA
 
 // render current search object
-function renderSearchObject(searchObj){
+function renderCurrentSearchObject(){
+    let searchObj = searchObjectHistory[currentUserChoiceIndex];
     console.log('rendering search object: ',searchObj);
-    renderSearchObjectButton(searchObj);
-    renderMovieNameToLogResultsDiv(searchObj);
+    console.log('user choice index currently is: ', currentUserChoiceIndex);
+
+    createButtonForCurrentSearchObject();
+
+    setActiveButtonToCurrentObject();
+    
+    renderCurrentMovieResults();
 }

@@ -6,10 +6,9 @@ actorObj2           - actorObject
 shared_movie_list   - list of movieObjects - after filter
 */
 class searchObject{
-    constructor(filters, movieObjectList, index){
+    constructor(filters, movieObjectList){
         this.filters = filters;
         this.movieObjectList = movieObjectList;
-        this.index = index;
     }
 }
 // class accepts
