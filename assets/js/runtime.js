@@ -78,9 +78,6 @@ function loadAndRenderSearchObjects(){
 function validateFormAndSearch(event){
     event.preventDefault();
 
-    // disable search button
-    let startButton = document.getElementById('search_button');
-    startButton.disabled = true;
 
     let buttonElement = $(event.target);
     let parentForm = buttonElement.parents('form');
@@ -124,9 +121,6 @@ function validateFormAndSearch(event){
         // render the object we had in history again
         renderCurrentSearchObject();
     }
-
-    // enable search button
-    startButton.disabled = false;
 }
 
 // Chris's matching function
@@ -281,6 +275,9 @@ async function fetchActorFilmographyList(actorObjs){
 // runs the search for the search strings from page input
 async function runSearchWithInputValues(searchStrings){
 
+    // disable search button
+    document.getElementById("search_button").disabled = true;
+
     // -----------------------------------------LOADING ACTOR ID'S-------------------------------------
     // this function calls both fetches simultaneously to save time since the query's are independent
     let actorObjs = await fetchActorObjects(searchStrings);
@@ -324,5 +321,8 @@ async function runSearchWithInputValues(searchStrings){
 
     // dev: render to front page to confirm all is well with gathered results
     renderCurrentSearchObject();
+
+    // disable search button
+    document.getElementById("search_button").disabled = false;
 
 }
