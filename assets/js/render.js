@@ -152,6 +152,7 @@ function renderCurrentSearchObject() {
 
   renderCurrentMovieResults();
 }
+
 // render all search object history buttons -- ELLA
 function renderCards(searchObj) {
   let cardHorizontal = $("<div>").addClass(["card", "horizontal"]);

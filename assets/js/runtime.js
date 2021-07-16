@@ -1,7 +1,7 @@
 // add event listener for the form
 var searchButton = $('#search_button');
 searchButton.on('click', validateFormAndSearch);
-var singleActorMovieLimit = 1;
+var movieListLengthLimit = 1;
 // this count limit keeps the low popularity/familiarity movies out
 var ratingCountLimit = 200;
 // this is used to keep track of the currently rendered search object
@@ -139,7 +139,7 @@ function getCommonMovieObjects(movieNumberLists){
             }
         }
     }else{
-        resultMovieList = movieNumberList1.slice(0, singleActorMovieLimit);
+        resultMovieList = movieNumberList1;
     }
     
     return resultMovieList;
@@ -315,6 +315,9 @@ async function runSearchWithInputValues(searchStrings){
     // create a new search object with both actor objects and the matched movie list
     // set the index to the current search object index
     var newSearchObj = new searchObject(actorObjs, matchedMovieDetailObjects);
+
+    // sort the movie list in descending order of popularity
+    newSearchObj.sortMovieListDescending();
 
     // save the new object - this also updates the currentChoiceIndex
     saveSearchObject(newSearchObj);
