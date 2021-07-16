@@ -1,12 +1,37 @@
+// function to make a string from an array of actors names 
+// ------------------ this will break in future non actor filter phases
+// function turns Natalie Portman into Natalie P
+function makeStringOfActorsNames(searchObj){
+
+    let ActorFilterNames = searchObj.filters.map(x => {
+        console.log('Starting with actor name: ',x.name);
+        // example is 'Chris Hemsway'
+        let names = x.name.split(' ');
+        let firstName = names[0];
+        let secondName = names[1];
+        let firstInitial = firstName.charAt(0);
+        let secondInitial = secondName.charAt(0);
+        let result = firstName+" "+secondInitial;
+        return result;
+    });
+
+    // return the array list result as a string but replace the comma with a space
+    let result = ActorFilterNames.toString().replace(',', ' ');
+    return result;
+}
+
 //function that prints movie cards to log_results id
 function renderMovieNameToLogResultsDiv(searchObj){
     // clear the dom text for div
     resetDomLogResultDiv();
 
-    let logResultsDiv = $('#log_results'); 
-    searchObj.movieObjectList.forEach((movieObj) => {
-        console.log('Adding movie to dom: ',movieObj.title);
+    console.log(searchObj);
 
+    let logResultsDiv = $('#log_results'); 
+    for(let i = 0; i < searchObj.movieObjectList.length; i++){
+
+        let movieObj = searchObj.movieObjectList[i];
+        console.log('Adding movie to dom: ',movieObj.title);
         //<div class="row" id="log_results">
             // collected above as logResultsDiv
             //<div class="col s6 l3">
@@ -17,7 +42,7 @@ function renderMovieNameToLogResultsDiv(searchObj){
             //</div>
         logResultsDiv.append(newColEl)
         //</div>
-    })
+    }
 }
 
 // render a button for the search object
@@ -25,8 +50,14 @@ function renderSearchObjectButton(searchObj){
     let searchHistoryEl = $('#search_history');
     // append the search obj button to this element
 
+    // make display string from searchObject filters names - map the name elements to the return but also replace [ and ] with spaces, then trim whitespace
+    let filterNames = makeStringOfActorsNames(searchObj);
+
+    //sanity log
+    console.log(filterNames);
+
     //<p class="pri_text_color" data-search-index="$currentSearchObjectIndex">$searchObj.actor1.name+":"+$searchObj.actor2.name</p>
-    let actorTextEl = makeNewJqueryElement('button', 'pri_bg_color sec_text_color btn', null, searchObj.actor1.name+" + "+searchObj.actor2.name, {'name': 'search-index','value':searchObj.index});
+    let actorTextEl = makeNewJqueryElement('button', 'pri_bg_color sec_text_color btn', null, filterNames, {'name': 'search-index','value':searchObj.index});
 
     searchHistoryEl.append(actorTextEl);
 }

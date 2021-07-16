@@ -6,14 +6,12 @@ actorObj2           - actorObject
 shared_movie_list   - list of movieObjects - after filter
 */
 class searchObject{
-    constructor(actor1, actor2, movieObjectList, index){
-        this.actor1 = actor1;
-        this.actor2 = actor2;
+    constructor(filters, movieObjectList, index){
+        this.filters = filters;
         this.movieObjectList = movieObjectList;
         this.index = index;
     }
 }
-
 // class accepts
 /*
 actor_id            -str eg 'nm1234567'
@@ -30,7 +28,6 @@ class actorObject {
         this.movieNumberList = movieNumberList;
     }
 }
-
 // constructor that build Movie sub objects
 // class accepts 
 /* 
