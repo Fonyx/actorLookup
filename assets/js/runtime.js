@@ -1,7 +1,7 @@
 // add event listener for the form
 var searchButton = $('#search_button');
 searchButton.on('click', validateFormAndSearch);
-var movieListLengthLimit = 1;
+var movieListLengthLimit = 5;
 // this count limit keeps the low popularity/familiarity movies out
 var ratingCountLimit = 200;
 // this is used to keep track of the currently rendered search object
@@ -129,18 +129,28 @@ function getCommonMovieObjects(movieNumberLists){
     let movieNumberList1 = movieNumberLists[0];
     let movieNumberList2 = movieNumberLists[1];
 
-    // if there are actually 2 lists, otherwise the match criteria says return everything
+    // two actor case, match up to the specified limit of movies to get more details for
     if(movieNumberList2){
         for(let i = 0; i < movieNumberList1.length; i++){
             for(let j = 0; j < movieNumberList2.length; j++){
                 if(movieNumberList2[j] === movieNumberList1[i]){
-                    resultMovieList.push(movieNumberList1[i]);
+                    if(resultMovieList.length <= movieListLengthLimit){
+                        resultMovieList.push(movieNumberList1[i]);
+                    } else {
+                        console.log('Movie match overrun of limit: ', movieNumberList1[i], movieListLengthLimit);
+                    }
                 }
             }
         }
+    // single actor case, just set first 5 movies of known for
     }else{
-        // remove this slice to start fixing too many request error but this is a safeguard against api exhaustion for now
-        resultMovieList = movieNumberList1.slice(0, movieListLengthLimit);
+        // if there are too many known for movies, cut to first 5
+        if(movieNumberList1.length > movieListLengthLimit){
+            resultMovieList = movieNumberList1.slice(0, movieListLengthLimit);
+        // otherwise return entire movie list 1
+        } else {
+            resultMovieList = movieNumberList1;
+        }
     }
     
     return resultMovieList;
@@ -188,7 +198,7 @@ async function fetchMovieGeneralDetailsResponse(movieNumberList){
     // ends with a list of json data from an asynchronous fetch of numerous urls
     movieObjectsLists = await Promise.all(
         // for each actor obj in the list, asynchronously fetch api response, and map the json data
-        movieNumberList.map(async movieNumber => {
+        movieNumberList.map(async movieNumber => {               
             let movieOverviewEndpointUrl = "https://imdb8.p.rapidapi.com/title/get-overview-details?tconst="+movieNumber+"&currentCountry=US";
             let response = await fetch(movieOverviewEndpointUrl, apiDetails);
             let movieJson = await response.json();
@@ -196,6 +206,7 @@ async function fetchMovieGeneralDetailsResponse(movieNumberList){
             // screen the data for necessary fields
             // filter the details down
             try{
+                console.log('already stripping data values, this should be printed after running query')
                 var id = movieJson.id.substring(7,16);
                 var title = movieJson.title.title;
                 var released = movieJson.title.year;
