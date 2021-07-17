@@ -10,6 +10,12 @@ class searchObject{
         this.filters = filters;
         this.movieObjectList = movieObjectList;
     }
+
+    sortMovieListDescending = function(){
+        this.movieObjectList.sort(function(a, b){
+            return b.ratingsCount - a.ratingsCount;
+        })
+    }
 }
 // class accepts
 /*
@@ -43,6 +49,7 @@ class movieObject {
     constructor(id, title, released, ratingsCount, rating, imageUrl, genres, plotOutline){
         this.id = id;
         this.title = title;
+        // parse numerics for comparisons
         this.released = released;
         this.ratingsCount = ratingsCount;
         this.rating = rating;

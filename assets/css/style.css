@@ -1,10 +1,10 @@
 /* https://color.adobe.com/explore */
 :root {
-  --primary: none;
-  --secondary: none;
-  --tertiary: none;
-  --quaternary: none;
-  --quinary: none;
+  --primary: #45858C;
+  --secondary: #F2D4AE;
+  --tertiary: #BF533B;
+  --quaternary: #80BFB9;
+  --quinary: #F2EBD5;
 }
 
 .icon-block {
@@ -17,6 +17,10 @@
 /* Cards */
 .checked {
   color: orange;
+}
+
+.search_history_button{
+  margin: 4px;
 }
 
 #selected_history_button{
@@ -69,6 +73,17 @@ h1{
 }
 .quin_text_color {
   color: var(--quinary) !important;
+}
+
+/* override linear progress bar color */
+
+.progress {
+  background-color: var(--tertiary) !important;
+}
+
+
+.progress .indeterminate {
+  background-color: var(--quaternary) !important;
 }
 
 /* label color */

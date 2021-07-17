@@ -1,7 +1,7 @@
 // add event listener for the form
 var searchButton = $('#search_button');
 searchButton.on('click', validateFormAndSearch);
-var singleActorMovieLimit = 1;
+var movieListLengthLimit = 5;
 // this count limit keeps the low popularity/familiarity movies out
 var ratingCountLimit = 200;
 // this is used to keep track of the currently rendered search object
@@ -10,7 +10,17 @@ var currentUserChoiceIndex = -1;
 var searchObjectHistory = [];
 // the current searchObject
 var currentSearchObj = null;
+// Loading Bar 
+var loading = document.querySelector('.progress')
 
+// loading bar functions
+function loadingVisible() {
+    loading.style.visibility = 'visible'
+}
+
+function loadingHidden() {
+    loading.style.visibility = 'hidden'
+}
 
 // details for the api queries - currently Nicks second key
 apiDetails = {
@@ -47,6 +57,7 @@ searchHistoryEl.on('click', '.search_history_button', function (event) {
     // using a global
     updateCurrentSearchIndexAndObj(searchIndexInt);
     setActiveButtonToCurrentObject();
+    renderCurrentMovieActorImages();
     renderCurrentMovieResults();
 })
 
@@ -78,12 +89,14 @@ function loadAndRenderSearchObjects(){
 function validateFormAndSearch(event){
     event.preventDefault();
 
-
     let buttonElement = $(event.target);
     let parentForm = buttonElement.parents('form');
 
     // get the two input fields from the form
     let userInputs = parentForm.children().find('input');
+
+    // loading bar visible
+    loadingVisible();
 
     // get text elements out of strings
     let userInputTexts = [];
@@ -97,6 +110,7 @@ function validateFormAndSearch(event){
             userInputTexts.push(textValue);
         }
     }
+
   
     // check if we have already run this search before and if so, will return the index of the search object, else it will be null
     let duplicateIndex = getDuplicateSearchIndex(userInputTexts);
@@ -123,23 +137,36 @@ function validateFormAndSearch(event){
     }
 }
 
+
+
 // Chris's matching function
 function getCommonMovieObjects(movieNumberLists){
     let resultMovieList = [];
     let movieNumberList1 = movieNumberLists[0];
     let movieNumberList2 = movieNumberLists[1];
 
-    // if there are actually 2 lists, otherwise the match criteria says return everything
+    // two actor case, match up to the specified limit of movies to get more details for
     if(movieNumberList2){
         for(let i = 0; i < movieNumberList1.length; i++){
             for(let j = 0; j < movieNumberList2.length; j++){
                 if(movieNumberList2[j] === movieNumberList1[i]){
-                    resultMovieList.push(movieNumberList1[i]);
+                    if(resultMovieList.length <= movieListLengthLimit){
+                        resultMovieList.push(movieNumberList1[i]);
+                    } else {
+                        console.log('Movie match overrun of limit: ', movieNumberList1[i], movieListLengthLimit);
+                    }
                 }
             }
         }
+    // single actor case, just set first 5 movies of known for
     }else{
-        resultMovieList = movieNumberList1.slice(0, singleActorMovieLimit);
+        // if there are too many known for movies, cut to first 5
+        if(movieNumberList1.length > movieListLengthLimit){
+            resultMovieList = movieNumberList1.slice(0, movieListLengthLimit);
+        // otherwise return entire movie list 1
+        } else {
+            resultMovieList = movieNumberList1;
+        }
     }
     
     return resultMovieList;
@@ -166,6 +193,19 @@ function buildQueryStringForIMDb(userInput){
     return queryString;
 }
 
+// function to specify which api endpoint we query filmography or known-for endpoint from
+function getFilmographyOrKnownForUrlRoot(actors){
+    let queryString = "";
+    if(actors.length == 1){
+        // query the known for endpoint
+         queryString = "https://imdb8.p.rapidapi.com/actors/get-known-for?nconst=";
+    } else {
+        // query the filmography endpoint
+        queryString = "https://imdb8.p.rapidapi.com/actors/get-all-filmography?nconst=";
+    }
+    return queryString;
+}
+
 // fetches the general movie details from a list of movie numbers
 async function fetchMovieGeneralDetailsResponse(movieNumberList){
 
@@ -174,7 +214,7 @@ async function fetchMovieGeneralDetailsResponse(movieNumberList){
     // ends with a list of json data from an asynchronous fetch of numerous urls
     movieObjectsLists = await Promise.all(
         // for each actor obj in the list, asynchronously fetch api response, and map the json data
-        movieNumberList.map(async movieNumber => {
+        movieNumberList.map(async movieNumber => {               
             let movieOverviewEndpointUrl = "https://imdb8.p.rapidapi.com/title/get-overview-details?tconst="+movieNumber+"&currentCountry=US";
             let response = await fetch(movieOverviewEndpointUrl, apiDetails);
             let movieJson = await response.json();
@@ -182,6 +222,7 @@ async function fetchMovieGeneralDetailsResponse(movieNumberList){
             // screen the data for necessary fields
             // filter the details down
             try{
+                console.log('already stripping data values, this should be printed after running query')
                 var id = movieJson.id.substring(7,16);
                 var title = movieJson.title.title;
                 var released = movieJson.title.year;
@@ -272,6 +313,44 @@ async function fetchActorFilmographyList(actorObjs){
     return movieNumberLists;
 }
 
+// function that query's actor known for list and pushes it to a list i.e [[known_for_list], ] to match downstream handling
+async function fetchActorKnownForList(actorObj){
+
+    // ends with a list of json data from a single fetch to 'known_for' endpoint;
+    let movieNumberLists = []; 
+    let actorMovieList = [];
+    let filmographyApiUrlRoot = "https://imdb8.p.rapidapi.com/actors/get-known-for?nconst=";
+    let response = await fetch(filmographyApiUrlRoot + actorObj.id, apiDetails);
+    let jsonObject = await response.json();
+
+    for(let i=0; i < jsonObject.length; i++){
+
+        let movieObj = jsonObject[i];
+
+        let titleType = movieObj.title.titleType;
+        let category = movieObj.categories[0];
+        let movieId = movieObj.title.id.substring(7, 16);
+        let imageUrl = movieObj.title.image.url;
+        /* filters: 
+        titleType = movie
+        category = actor or actress
+        image.url exists!
+        */
+        if(titleType === "movie" && (category === "actor" || category === "actress")){
+            // if it has an image
+            if(imageUrl){
+                actorMovieList.push(movieId);
+            }
+        }
+    }
+    
+    // fudge the return structure to be the same as for multiple actors film lists in a list
+    movieNumberLists.push(actorMovieList);
+    
+    console.log('Actor Movie Lists: ',movieNumberLists);
+    return movieNumberLists;
+}
+
 // runs the search for the search strings from page input
 async function runSearchWithInputValues(searchStrings){
 
@@ -283,7 +362,15 @@ async function runSearchWithInputValues(searchStrings){
     let actorObjs = await fetchActorObjects(searchStrings);
     
     // -----------------------------------------QUERYING FILMOGRAPHYS-------------------------------------
-    let movieNumberLists = await fetchActorFilmographyList(actorObjs);
+    /* this is where we choose to query for one actors known for or multiple actors filmographies - both return a list of lists of movie number strings but the first one returns a list of length 1 with a list inside */
+    let movieNumberLists = [];
+    if(actorObjs.length == 1){
+        console.log('getting actor known for since single actor query');
+        movieNumberLists = await fetchActorKnownForList(actorObjs[0]);
+    } else {
+        console.log('getting actor filmographies since two actor query');
+        movieNumberLists = await fetchActorFilmographyList(actorObjs);
+    }
 
     // -----------------------ADDING MOVIE NUMBER LISTS TO ACTOR OBJECTS-------------------------------------
 
@@ -312,9 +399,15 @@ async function runSearchWithInputValues(searchStrings){
 
     // -----------------------------------------STORING AND RENDERING-------------------------------------
 
+    // Loading bar Hidden
+    loadingHidden();
+
     // create a new search object with both actor objects and the matched movie list
     // set the index to the current search object index
     var newSearchObj = new searchObject(actorObjs, matchedMovieDetailObjects);
+
+    // sort the movie list in descending order of popularity
+    newSearchObj.sortMovieListDescending();
 
     // save the new object - this also updates the currentChoiceIndex
     saveSearchObject(newSearchObj);
