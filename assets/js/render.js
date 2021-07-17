@@ -64,28 +64,26 @@ function renderCurrentMovieResults() {
   // clear the dom text for div
   resetDomLogResultDiv();
 
-  // get current object
-  let searchObj = searchObjectHistory[currentUserChoiceIndex];
-
-  console.log();
-
   let logResultsDiv = $("#log_results");
-  for (let i = 0; i < searchObj.movieObjectList.length; i++) {
-    let movieObj = searchObj.movieObjectList[i];
+  for (let i = 0; i < currentSearchObj.movieObjectList.length; i++) {
+    let movieObj = currentSearchObj.movieObjectList[i];
     console.log("Adding movie to dom: ", movieObj.title);
     //<div class="row" id="log_results">
     // collected above as logResultsDiv
     //<div class="col s6 l3">
     let newColEl = makeNewJqueryElement("div", "col");
-    //<p class="pri_text_color">$movieObj.title</p>
-    let newEl = makeNewJqueryElement(
-      "p",
-      "center-align pri_text_color",
-      null,
-      movieObj.title + " Rating: " + movieObj.rating
-    );
-    newColEl.append(newEl);
-    //</div>
+      //<h3 class="pri_text_color">$movieObj.title</p>
+        let titleEl = makeNewJqueryElement("h4","center-align pri_text_color", null, movieObj.title);
+        //<h5 class="sec_text_color">$movieObj.rating</p>
+        let ratingEl = makeNewJqueryElement("h5","center-align sec_text_color", null, "Rating: " + movieObj.rating);
+        //<h5 class="sec_text_color">$movieObj.ratingsCount</p>
+        let ratingsCountEl = makeNewJqueryElement("h5","center-align sec_text_color", null,"Rating Count: " + movieObj.ratingsCount);
+        //<img src="$movieObj.imageUrl">
+        let imgEl = makeNewJqueryElement("img");
+        imgEl.attr('src', movieObj.imageUrl);
+        imgEl.attr('width', '150px');
+      newColEl.append(titleEl, ratingEl, ratingsCountEl, imgEl);
+      //</div>
     logResultsDiv.append(newColEl);
     //</div>
   }
