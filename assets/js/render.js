@@ -62,32 +62,65 @@ function setActiveButtonToCurrentObject() {
 // it purges the div and then fills it again, simple
 function renderCurrentMovieResults() {
   // clear the dom text for div
-  resetDomLogResultDiv();
+  resetDomCardsListDiv();
 
-  let logResultsDiv = $("#log_results");
-  for (let i = 0; i < currentSearchObj.movieObjectList.length; i++) {
+  // parentDiv
+  let parentDiv = $('#result_carousel');
+
+  parentDiv.text("");
+
+  // array of words
+  let words = ['one', 'two', 'three', 'four', 'five'];
+
+  // for each actor
+  for(let i = 0; i < currentSearchObj.movieObjectList.length; i++){
     let movieObj = currentSearchObj.movieObjectList[i];
+    let word = words[i];
+
     console.log("Adding movie to dom: ", movieObj.title);
-    //<div class="row" id="log_results">
-    // collected above as logResultsDiv
-    //<div class="col s6 l3">
-    let newColEl = makeNewJqueryElement("div", "col");
-      //<h3 class="pri_text_color">$movieObj.title</p>
-        let titleEl = makeNewJqueryElement("h4","center-align pri_text_color", null, movieObj.title);
-        //<h5 class="sec_text_color">$movieObj.rating</p>
-        let ratingEl = makeNewJqueryElement("h5","center-align sec_text_color", null, "Rating: " + movieObj.rating);
-        //<h5 class="sec_text_color">$movieObj.ratingsCount</p>
-        let ratingsCountEl = makeNewJqueryElement("h5","center-align sec_text_color", null,"Rating Count: " + movieObj.ratingsCount);
-        //<img src="$movieObj.imageUrl">
-        let imgEl = makeNewJqueryElement("img");
-        imgEl.attr('src', movieObj.imageUrl);
-        imgEl.attr('width', '150px');
-      newColEl.append(titleEl, ratingEl, ratingsCountEl, imgEl);
-      //</div>
-    logResultsDiv.append(newColEl);
-    //</div>
+    
+    //<a class="carousel-item" href="#one!">
+    let linkEl = makeNewJqueryElement('a', 'carousel-item');
+    linkEl.attr('href', '#'+word+"!");
+      //<img src="https://lorempixel.com/250/250/nature/1">
+      let imgEl = makeNewJqueryElement('img');
+      imgEl.attr('src', movieObj.imageUrl);
+    linkEl.append(imgEl);
+    //</a> 
+    parentDiv.append(linkEl); 
   }
+
+  //Carousel//
+  $(document).ready(function () {
+    $("#result_carousel").carousel();
+  });
+
 }
+
+  // let logResultsDiv = $("#cards_list");
+  // for (let i = 0; i < currentSearchObj.movieObjectList.length; i++) {
+  //   let movieObj = currentSearchObj.movieObjectList[i];
+  //   console.log("Adding movie to dom: ", movieObj.title);
+  //   //<div class="row" id="cards_list">
+  //   // collected above as logResultsDiv
+  //   //<div class="col s6 l3">
+  //   let newColEl = makeNewJqueryElement("div", "col");
+  //     //<h3 class="pri_text_color">$movieObj.title</p>
+  //       let titleEl = makeNewJqueryElement("h4","center-align pri_text_color", null, movieObj.title);
+  //       //<h5 class="sec_text_color">$movieObj.rating</p>
+  //       let ratingEl = makeNewJqueryElement("h5","center-align sec_text_color", null, "Rating: " + movieObj.rating);
+  //       //<h5 class="sec_text_color">$movieObj.ratingsCount</p>
+  //       let ratingsCountEl = makeNewJqueryElement("h5","center-align sec_text_color", null,"Rating Count: " + movieObj.ratingsCount);
+  //       //<img src="$movieObj.imageUrl">
+  //       let imgEl = makeNewJqueryElement("img");
+  //       imgEl.attr('src', movieObj.imageUrl);
+  //       imgEl.attr('width', '150px');
+  //     newColEl.append(titleEl, ratingEl, ratingsCountEl, imgEl);
+  //     //</div>
+  //   logResultsDiv.append(newColEl);
+  //   //</div>
+  // }
+
 
 // function to render the actor images
 function renderCurrentMovieActorImages(){
@@ -100,7 +133,7 @@ function renderCurrentMovieActorImages(){
     // parentDiv
     let parentDiv = $('#actor_img_div');
       //<div class="col s6 l3">
-      let colDivEl = makeNewJqueryElement('div', 'centre-align col s8 offset-s2 l6');
+      let colDivEl = makeNewJqueryElement('div', 'centre-align col s8 offset-s2 m6 offset-m3 l6 offset-l3 xl4 offset-xl4');
         //<div class="card horizontal">
         let cardDiv = makeNewJqueryElement('div', 'card horizontal');
           //<div class="card-image">
@@ -126,7 +159,6 @@ function renderCurrentMovieActorImages(){
       //</div
     parentDiv.append(colDivEl);
   }
-  
 }
 
 // function to reset the actor img section
@@ -149,13 +181,6 @@ function resetDomCardsListDiv() {
   cardListDiv.text("");
 }
 
-// function to reset any details we put into the log results section
-function resetDomLogResultDiv() {
-  let logResultsDiv = $("#log_results");
-  console.log("Resetting log results div");
-  logResultsDiv.text("");
-}
-
 // reset the page dom for all dynamic content
 function resetDynamicContentOnDom() {
   // resets the content of each section to be empty, the order of these calls corresponds to
@@ -163,7 +188,6 @@ function resetDynamicContentOnDom() {
   resetDomActorImgDiv();
   resetDomSearchHistoryDiv();
   resetDomCardsListDiv();
-  resetDomLogResultDiv();
 }
 
 // reset the entire page, memory and DOM
