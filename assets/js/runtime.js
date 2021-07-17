@@ -26,7 +26,7 @@ function loadingHidden() {
 apiDetails = {
     "method": "GET",
     "headers": {
-        "x-rapidapi-key": "9d20b81794msh3353fe733317fafp15261fjsn250e70a8d8f1",
+        "x-rapidapi-key": "00",
         "x-rapidapi-host": "imdb8.p.rapidapi.com"
     }
 }
@@ -258,6 +258,11 @@ async function fetchActorObjects(queryStringList){
             console.log('Attempting query string: ',queryString);
             let filmResponse = await fetch(queryString, apiDetails)
             let ActorData =  await filmResponse.json();
+            console.log("what to test for: ", ActorData.message);
+            if(ActorData.message == "Too many requests"){
+                document.getElementById("apiFailsafe").innerHTML = "You have searched too many times, please try again next month!";
+                console.log("ERROR 429");
+            }
             return new actorObject(
                 // parameters are id, name and imgUrl
                 ActorData.d[0].id, 
@@ -285,7 +290,7 @@ async function fetchActorFilmographyList(actorObjs){
             for(let i=0; i < jsonObject.filmography.length; i++){
 
                 let movieObj = jsonObject.filmography[i];
-        
+                
                 let titleType = movieObj.titleType;
                 let category = movieObj.category;
                 let movieId = movieObj.id.substring(7, 16);
@@ -322,6 +327,7 @@ async function fetchActorKnownForList(actorObj){
     let filmographyApiUrlRoot = "https://imdb8.p.rapidapi.com/actors/get-known-for?nconst=";
     let response = await fetch(filmographyApiUrlRoot + actorObj.id, apiDetails);
     let jsonObject = await response.json();
+    
 
     for(let i=0; i < jsonObject.length; i++){
 
