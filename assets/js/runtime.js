@@ -139,7 +139,8 @@ function getCommonMovieObjects(movieNumberLists){
             }
         }
     }else{
-        resultMovieList = movieNumberList1;
+        // remove this slice to start fixing too many request error but this is a safeguard against api exhaustion for now
+        resultMovieList = movieNumberList1.slice(0, movieListLengthLimit);
     }
     
     return resultMovieList;
