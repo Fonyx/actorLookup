@@ -95,14 +95,36 @@ function renderCurrentMovieActorImages(){
 
   // for each actor
   for(let i = 0; i < currentSearchObj.filters.length; i++){
+    let actorObj = currentSearchObj.filters[i];
+    
+    // parentDiv
     let parentDiv = $('#actor_img_div');
-      let actorObj = currentSearchObj.filters[i];
-      // create img elements and make them small
-      // <img src="$movieObj.imgUrl" width="50px">
-      let actorImgEl = makeNewJqueryElement('img');
-      actorImgEl.attr('src', actorObj.imgUrl);
-      actorImgEl.attr('width', '150px');
-    parentDiv.append(actorImgEl);
+      //<div class="col s6 l3">
+      let colDivEl = makeNewJqueryElement('div', 'centre-align col s12 m6 offset-m3 l6 offset-l3');
+        //<div class="card horizontal">
+        let cardDiv = makeNewJqueryElement('div', 'card horizontal');
+          //<div class="card-image">
+          let cardImgDiv = makeNewJqueryElement('div', 'card-image');
+            //<img src="$actorObj.imgUrl">
+            let cardImgEl = makeNewJqueryElement('img');
+            cardImgEl.attr('src', actorObj.imgUrl);
+          cardImgDiv.append(cardImgEl);
+          //</div>
+          //<div class="card-stacked">
+          let cardStacked = makeNewJqueryElement('div', 'card-stacked');
+            //<div class="card-content">
+            let contentDiv = makeNewJqueryElement('div', 'card-content valign-wrapper');
+              //<h2 class="card-title grey-text text-darken-4">$actorObj.name</h2>
+              let titleEl = makeNewJqueryElement('p', 'card-title', null, actorObj.name);
+            contentDiv.append(titleEl); 
+            //</div>
+            cardStacked.append(contentDiv);
+          //</div>
+        cardDiv.append(cardImgDiv, cardStacked);
+        //</div>
+      colDivEl.append(cardDiv);
+      //</div
+    parentDiv.append(colDivEl);
   }
   
 }
