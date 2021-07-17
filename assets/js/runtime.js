@@ -10,7 +10,17 @@ var currentUserChoiceIndex = -1;
 var searchObjectHistory = [];
 // the current searchObject
 var currentSearchObj = null;
+// Loading Bar 
+var loading = document.querySelector('.progress')
 
+// loading bar functions
+function loadingVisible() {
+    loading.style.visibility = 'visible'
+}
+
+function loadingHidden() {
+    loading.style.visibility = 'hidden'
+}
 
 // details for the api queries - currently Nicks second key
 apiDetails = {
@@ -79,12 +89,14 @@ function loadAndRenderSearchObjects(){
 function validateFormAndSearch(event){
     event.preventDefault();
 
-
     let buttonElement = $(event.target);
     let parentForm = buttonElement.parents('form');
 
     // get the two input fields from the form
     let userInputs = parentForm.children().find('input');
+
+    // loading bar visible
+    loadingVisible();
 
     // get text elements out of strings
     let userInputTexts = [];
@@ -98,6 +110,7 @@ function validateFormAndSearch(event){
             userInputTexts.push(textValue);
         }
     }
+
   
     // check if we have already run this search before and if so, will return the index of the search object, else it will be null
     let duplicateIndex = getDuplicateSearchIndex(userInputTexts);
@@ -123,6 +136,8 @@ function validateFormAndSearch(event){
         renderCurrentSearchObject();
     }
 }
+
+
 
 // Chris's matching function
 function getCommonMovieObjects(movieNumberLists){
@@ -383,6 +398,9 @@ async function runSearchWithInputValues(searchStrings){
     
 
     // -----------------------------------------STORING AND RENDERING-------------------------------------
+
+    // Loading bar Hidden
+    loadingHidden();
 
     // create a new search object with both actor objects and the matched movie list
     // set the index to the current search object index
