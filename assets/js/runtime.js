@@ -22,11 +22,11 @@ function loadingHidden() {
     loading.style.visibility = 'hidden'
 }
 
-// details for the api queries - currently Nicks second key
+// details for the api queries - currently Nick's second key
 apiDetails = {
     "method": "GET",
     "headers": {
-        "x-rapidapi-key": "00",
+        "x-rapidapi-key": "9d20b81794msh3353fe733317fafp15261fjsn250e70a8d8f1",
         "x-rapidapi-host": "imdb8.p.rapidapi.com"
     }
 }
