@@ -19,6 +19,10 @@
   color: orange;
 }
 
+.search_history_button{
+  margin: 4px;
+}
+
 #selected_history_button{
   background-color: var(--secondary) !important;
   color: white; var(--tertiary) !important;

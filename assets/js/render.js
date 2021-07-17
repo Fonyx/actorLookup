@@ -10,12 +10,12 @@ function makeStringOfActorsNames(searchObj) {
     let secondName = names[1];
     let firstInitial = firstName.charAt(0);
     let secondInitial = secondName.charAt(0);
-    let result = firstName + " " + secondInitial;
+    let result = firstName + "." + secondInitial;
     return result;
   });
 
   // return the array list result as a string but replace the comma with a space
-  let result = ActorFilterNames.toString().replace(",", " ");
+  let result = ActorFilterNames.toString().replace(",", " + ");
   return result;
 }
 
@@ -100,7 +100,7 @@ function renderCurrentMovieActorImages(){
     // parentDiv
     let parentDiv = $('#actor_img_div');
       //<div class="col s6 l3">
-      let colDivEl = makeNewJqueryElement('div', 'centre-align col s12 m6 offset-m3 l6 offset-l3');
+      let colDivEl = makeNewJqueryElement('div', 'centre-align col s8 offset-s2 l6');
         //<div class="card horizontal">
         let cardDiv = makeNewJqueryElement('div', 'card horizontal');
           //<div class="card-image">
