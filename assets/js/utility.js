@@ -1,17 +1,19 @@
 // global pallet combinations, primary-secondary-tertiary etc limited to 5
 pallettes = [
-    ['#FF7F60', '#FFB26D', '#FDD272', '#3EB2A2', '#385663'],
-    ['#8DA4CF', '#9EA9CE', '#B7B3CC', '#E2C3CC', '#F8CACC'],
-    ['#F22738', '#A63247','#3E3740','#F2DDD0','#F2F2F2'],
-    ['#2E4159', '#51718C','#698FB6','#91B7D9','#E4E4E4'],
-    // nicks additions
-    ['#330136','#5E1742','#962E40','#C9463D','#FF5E35'],
-    ['#EFEDEF','#ACB1B6','#787A76','#04060A','#95050C'],
-    ['#D9D9D9','#260B01','#A68F7B','#594B3F','#D9A566'],
+    // ['#FF7F60', '#FFB26D', '#FDD272', '#3EB2A2', '#385663'],
+    // ['#8DA4CF', '#9EA9CE', '#B7B3CC', '#E2C3CC', '#F8CACC'],
+    // ['#F22738', '#A63247','#3E3740','#F2DDD0','#F2F2F2'],
+    // ['#2E4159', '#51718C','#698FB6','#91B7D9','#E4E4E4'],
+    // // nicks additions
+    // ['#330136','#5E1742','#962E40','#C9463D','#FF5E35'],
+    // ['#EFEDEF','#ACB1B6','#787A76','#04060A','#95050C'],
+    // ['#D9D9D9','#260B01','#A68F7B','#594B3F','#D9A566'],
+    // colors from the presentation
+    ['#F2EBD5','#45858C', '#F2D4AE', '#BF533B', '#80BFB9'],
 ]
 
 currentPallette = randomPallette();
-ChangeColorPallette();
+// ChangeColorPallette();
 
 // makes a jquery element with class and Id
 function makeNewJqueryElement(elementType, classString, idString, textString, dataValue){
