@@ -167,6 +167,19 @@ function buildQueryStringForIMDb(userInput){
     return queryString;
 }
 
+// function to specify which api endpoint we query filmography or known-for endpoint from
+function getFilmographyOrKnownForUrlRoot(actors){
+    let queryString = "";
+    if(actors.length == 1){
+        // query the known for endpoint
+         queryString = "https://imdb8.p.rapidapi.com/actors/get-known-for?nconst=";
+    } else {
+        // query the filmography endpoint
+        queryString = "https://imdb8.p.rapidapi.com/actors/get-all-filmography?nconst=";
+    }
+    return queryString;
+}
+
 // fetches the general movie details from a list of movie numbers
 async function fetchMovieGeneralDetailsResponse(movieNumberList){
 
@@ -273,6 +286,44 @@ async function fetchActorFilmographyList(actorObjs){
     return movieNumberLists;
 }
 
+// function that query's actor known for list and pushes it to a list i.e [[known_for_list], ] to match downstream handling
+async function fetchActorKnownForList(actorObj){
+
+    // ends with a list of json data from a single fetch to 'known_for' endpoint;
+    let movieNumberLists = []; 
+    let actorMovieList = [];
+    let filmographyApiUrlRoot = "https://imdb8.p.rapidapi.com/actors/get-known-for?nconst=";
+    let response = await fetch(filmographyApiUrlRoot + actorObj.id, apiDetails);
+    let jsonObject = await response.json();
+
+    for(let i=0; i < jsonObject.length; i++){
+
+        let movieObj = jsonObject[i];
+
+        let titleType = movieObj.title.titleType;
+        let category = movieObj.categories[0];
+        let movieId = movieObj.title.id.substring(7, 16);
+        let imageUrl = movieObj.title.image.url;
+        /* filters: 
+        titleType = movie
+        category = actor or actress
+        image.url exists!
+        */
+        if(titleType === "movie" && (category === "actor" || category === "actress")){
+            // if it has an image
+            if(imageUrl){
+                actorMovieList.push(movieId);
+            }
+        }
+    }
+    
+    // fudge the return structure to be the same as for multiple actors film lists in a list
+    movieNumberLists.push(actorMovieList);
+    
+    console.log('Actor Movie Lists: ',movieNumberLists);
+    return movieNumberLists;
+}
+
 // runs the search for the search strings from page input
 async function runSearchWithInputValues(searchStrings){
 
@@ -284,7 +335,15 @@ async function runSearchWithInputValues(searchStrings){
     let actorObjs = await fetchActorObjects(searchStrings);
     
     // -----------------------------------------QUERYING FILMOGRAPHYS-------------------------------------
-    let movieNumberLists = await fetchActorFilmographyList(actorObjs);
+    /* this is where we choose to query for one actors known for or multiple actors filmographies - both return a list of lists of movie number strings but the first one returns a list of length 1 with a list inside */
+    let movieNumberLists = [];
+    if(actorObjs.length == 1){
+        console.log('getting actor known for since single actor query');
+        movieNumberLists = await fetchActorKnownForList(actorObjs[0]);
+    } else {
+        console.log('getting actor filmographies since two actor query');
+        movieNumberLists = await fetchActorFilmographyList(actorObjs);
+    }
 
     // -----------------------ADDING MOVIE NUMBER LISTS TO ACTOR OBJECTS-------------------------------------
 

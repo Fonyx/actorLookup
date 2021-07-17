@@ -50,9 +50,9 @@ class movieObject {
         this.id = id;
         this.title = title;
         // parse numerics for comparisons
-        this.released = parseInt(released.trim(), 10);
-        this.ratingsCount = parseInt(ratingsCount.trim(), 10);
-        this.rating = Math.round(parseFloat(rating.trim()), 2);
+        this.released = released;
+        this.ratingsCount = ratingsCount;
+        this.rating = rating;
         this.imageUrl = imageUrl;
         this.genres = genres;
         this.plotOutline = plotOutline;
