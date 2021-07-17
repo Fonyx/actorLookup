@@ -64,30 +64,77 @@ function renderCurrentMovieResults() {
   // clear the dom text for div
   resetDomCardsListDiv();
 
-  let logResultsDiv = $("#cards_list");
-  for (let i = 0; i < currentSearchObj.movieObjectList.length; i++) {
+  // for each actor
+  for(let i = 0; i < currentSearchObj.movieObjectList.length; i++){
     let movieObj = currentSearchObj.movieObjectList[i];
+
+    let wholeStarCount = 3;
+    let halfStarCount = true;
+    // star_border
+    // star
+    // star_half
+
     console.log("Adding movie to dom: ", movieObj.title);
-    //<div class="row" id="cards_list">
-    // collected above as logResultsDiv
-    //<div class="col s6 l3">
-    let newColEl = makeNewJqueryElement("div", "col");
-      //<h3 class="pri_text_color">$movieObj.title</p>
-        let titleEl = makeNewJqueryElement("h4","center-align pri_text_color", null, movieObj.title);
-        //<h5 class="sec_text_color">$movieObj.rating</p>
-        let ratingEl = makeNewJqueryElement("h5","center-align sec_text_color", null, "Rating: " + movieObj.rating);
-        //<h5 class="sec_text_color">$movieObj.ratingsCount</p>
-        let ratingsCountEl = makeNewJqueryElement("h5","center-align sec_text_color", null,"Rating Count: " + movieObj.ratingsCount);
-        //<img src="$movieObj.imageUrl">
-        let imgEl = makeNewJqueryElement("img");
-        imgEl.attr('src', movieObj.imageUrl);
-        imgEl.attr('width', '150px');
-      newColEl.append(titleEl, ratingEl, ratingsCountEl, imgEl);
-      //</div>
-    logResultsDiv.append(newColEl);
-    //</div>
+    // parentDiv
+    let parentDiv = $('#cards_list');
+      //<div class="col s6 l3">
+      let colDivEl = makeNewJqueryElement('div', 'centre-align col s4 offset-s2');
+        //<div class="card horizontal">
+        let cardDiv = makeNewJqueryElement('div', 'card horizontal');
+          //<div class="card-image">
+          let cardImgDiv = makeNewJqueryElement('div', 'card-image');
+            //<img src="$movieObj.imgUrl">
+            let cardImgEl = makeNewJqueryElement('img');
+            cardImgEl.attr('src', movieObj.imageUrl);
+          cardImgDiv.append(cardImgEl);
+          //</div>
+          //<div class="card-stacked">
+          let cardStacked = makeNewJqueryElement('div', 'card-stacked');
+            //<div class="card-content">
+            let contentDiv = makeNewJqueryElement('div', 'card-content valign-wrapper');
+              //<h2 class="card-title">$movieObj.title</h2>
+              // let titleEl = makeNewJqueryElement('p', 'card-title', null, movieObj.title);
+              //<h2 class="card-title">$movieObj.rating</h2>
+              let ratingIcon = makeNewJqueryElement('i', 'large material-icons', null, 'star');
+              let ratingEl = makeNewJqueryElement('p', 'card-content', null, movieObj.rating);
+              //<h2 class="card-title">$movieObj.plotOutline</h2>
+              let plotTextEl = makeNewJqueryElement('p', 'card-content', null, movieObj.plotOutline.slice(0, 30));
+            contentDiv.append(ratingIcon, plotTextEl); 
+            //</div>
+            cardStacked.append(contentDiv);
+          //</div>
+        cardDiv.append(cardImgDiv, cardStacked);
+        //</div>
+      colDivEl.append(cardDiv);
+      //</div
+    parentDiv.append(colDivEl);
   }
 }
+
+  // let logResultsDiv = $("#cards_list");
+  // for (let i = 0; i < currentSearchObj.movieObjectList.length; i++) {
+  //   let movieObj = currentSearchObj.movieObjectList[i];
+  //   console.log("Adding movie to dom: ", movieObj.title);
+  //   //<div class="row" id="cards_list">
+  //   // collected above as logResultsDiv
+  //   //<div class="col s6 l3">
+  //   let newColEl = makeNewJqueryElement("div", "col");
+  //     //<h3 class="pri_text_color">$movieObj.title</p>
+  //       let titleEl = makeNewJqueryElement("h4","center-align pri_text_color", null, movieObj.title);
+  //       //<h5 class="sec_text_color">$movieObj.rating</p>
+  //       let ratingEl = makeNewJqueryElement("h5","center-align sec_text_color", null, "Rating: " + movieObj.rating);
+  //       //<h5 class="sec_text_color">$movieObj.ratingsCount</p>
+  //       let ratingsCountEl = makeNewJqueryElement("h5","center-align sec_text_color", null,"Rating Count: " + movieObj.ratingsCount);
+  //       //<img src="$movieObj.imageUrl">
+  //       let imgEl = makeNewJqueryElement("img");
+  //       imgEl.attr('src', movieObj.imageUrl);
+  //       imgEl.attr('width', '150px');
+  //     newColEl.append(titleEl, ratingEl, ratingsCountEl, imgEl);
+  //     //</div>
+  //   logResultsDiv.append(newColEl);
+  //   //</div>
+  // }
+
 
 // function to render the actor images
 function renderCurrentMovieActorImages(){
