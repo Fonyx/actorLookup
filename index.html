@@ -106,6 +106,10 @@
       <!--   Results Section   -->
 
       <section class="container" id="results_container">
+                <!--   Loading Bar   -->
+                <div class="progress" style="visibility: hidden;">
+                  <div class="indeterminate"></div>
+                </div>
         <!-- this div needs a delegated event handler for when the user clicks a button in the search history 
         it should read the button's data-search-index and pass that for rendering -->
         <h4>Search History</h4>
@@ -115,10 +119,6 @@
         </div>
 
         <h4>Results</h4>
-        <!--   Loading Bar   -->
-        <div class="progress" style="visibility: hidden;">
-          <div class="indeterminate"></div>
-        </div>
         <div class="row" id="cards_list">
           <div class="carousel-item">
             <div class="col s4">
