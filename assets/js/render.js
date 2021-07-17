@@ -62,13 +62,13 @@ function setActiveButtonToCurrentObject() {
 // it purges the div and then fills it again, simple
 function renderCurrentMovieResults() {
   // clear the dom text for div
-  resetDomLogResultDiv();
+  resetDomCardsListDiv();
 
-  let logResultsDiv = $("#log_results");
+  let logResultsDiv = $("#cards_list");
   for (let i = 0; i < currentSearchObj.movieObjectList.length; i++) {
     let movieObj = currentSearchObj.movieObjectList[i];
     console.log("Adding movie to dom: ", movieObj.title);
-    //<div class="row" id="log_results">
+    //<div class="row" id="cards_list">
     // collected above as logResultsDiv
     //<div class="col s6 l3">
     let newColEl = makeNewJqueryElement("div", "col");
@@ -100,7 +100,7 @@ function renderCurrentMovieActorImages(){
     // parentDiv
     let parentDiv = $('#actor_img_div');
       //<div class="col s6 l3">
-      let colDivEl = makeNewJqueryElement('div', 'centre-align col s8 offset-s2 l6');
+      let colDivEl = makeNewJqueryElement('div', 'centre-align col s8 offset-s2');
         //<div class="card horizontal">
         let cardDiv = makeNewJqueryElement('div', 'card horizontal');
           //<div class="card-image">
@@ -126,7 +126,6 @@ function renderCurrentMovieActorImages(){
       //</div
     parentDiv.append(colDivEl);
   }
-  
 }
 
 // function to reset the actor img section
@@ -149,13 +148,6 @@ function resetDomCardsListDiv() {
   cardListDiv.text("");
 }
 
-// function to reset any details we put into the log results section
-function resetDomLogResultDiv() {
-  let logResultsDiv = $("#log_results");
-  console.log("Resetting log results div");
-  logResultsDiv.text("");
-}
-
 // reset the page dom for all dynamic content
 function resetDynamicContentOnDom() {
   // resets the content of each section to be empty, the order of these calls corresponds to
@@ -163,7 +155,6 @@ function resetDynamicContentOnDom() {
   resetDomActorImgDiv();
   resetDomSearchHistoryDiv();
   resetDomCardsListDiv();
-  resetDomLogResultDiv();
 }
 
 // reset the entire page, memory and DOM
