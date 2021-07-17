@@ -47,6 +47,7 @@ searchHistoryEl.on('click', '.search_history_button', function (event) {
     // using a global
     updateCurrentSearchIndexAndObj(searchIndexInt);
     setActiveButtonToCurrentObject();
+    renderCurrentMovieActorImages();
     renderCurrentMovieResults();
 })
 

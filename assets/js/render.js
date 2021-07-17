@@ -89,6 +89,30 @@ function renderCurrentMovieResults() {
   }
 }
 
+// function to render the actor images
+function renderCurrentMovieActorImages(){
+  resetDomActorImgDiv();
+
+  // for each actor
+  for(let i = 0; i < currentSearchObj.filters.length; i++){
+    let parentDiv = $('#actor_img_div');
+      let actorObj = currentSearchObj.filters[i];
+      // create img elements and make them small
+      // <img src="$movieObj.imgUrl" width="50px">
+      let actorImgEl = makeNewJqueryElement('img');
+      actorImgEl.attr('src', actorObj.imgUrl);
+      actorImgEl.attr('width', '150px');
+    parentDiv.append(actorImgEl);
+  }
+  
+}
+
+// function to reset the actor img section
+function resetDomActorImgDiv(){
+  let parentDiv = $('#actor_img_div');
+  parentDiv.text("");
+}
+
 // function to reset any text we put into the search history div
 function resetDomSearchHistoryDiv() {
   let searchResultsDiv = $("#search_history");
@@ -114,6 +138,7 @@ function resetDomLogResultDiv() {
 function resetDynamicContentOnDom() {
   // resets the content of each section to be empty, the order of these calls corresponds to
   // vertically moving down the page
+  resetDomActorImgDiv();
   resetDomSearchHistoryDiv();
   resetDomCardsListDiv();
   resetDomLogResultDiv();
@@ -149,6 +174,8 @@ function renderCurrentSearchObject() {
   setActiveButtonToCurrentObject();
 
   renderCurrentMovieResults();
+
+  renderCurrentMovieActorImages();
 }
 
 // render all search object history buttons -- ELLA
