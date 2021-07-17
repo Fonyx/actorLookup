@@ -13,7 +13,7 @@ class searchObject{
 
     sortMovieListDescending = function(){
         this.movieObjectList.sort(function(a, b){
-            return a.ratingsCount - b.ratingsCount
+            return b.ratingsCount - a.ratingsCount;
         })
     }
 }
