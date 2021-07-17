@@ -64,51 +64,37 @@ function renderCurrentMovieResults() {
   // clear the dom text for div
   resetDomCardsListDiv();
 
+  // parentDiv
+  let parentDiv = $('#result_carousel');
+
+  parentDiv.text("");
+
+  // array of words
+  let words = ['one', 'two', 'three', 'four', 'five'];
+
   // for each actor
   for(let i = 0; i < currentSearchObj.movieObjectList.length; i++){
     let movieObj = currentSearchObj.movieObjectList[i];
-
-    let wholeStarCount = 3;
-    let halfStarCount = true;
-    // star_border
-    // star
-    // star_half
+    let word = words[i];
 
     console.log("Adding movie to dom: ", movieObj.title);
-    // parentDiv
-    let parentDiv = $('#cards_list');
-      //<div class="col s6 l3">
-      let colDivEl = makeNewJqueryElement('div', 'centre-align col s4 offset-s2');
-        //<div class="card horizontal">
-        let cardDiv = makeNewJqueryElement('div', 'card horizontal');
-          //<div class="card-image">
-          let cardImgDiv = makeNewJqueryElement('div', 'card-image');
-            //<img src="$movieObj.imgUrl">
-            let cardImgEl = makeNewJqueryElement('img');
-            cardImgEl.attr('src', movieObj.imageUrl);
-          cardImgDiv.append(cardImgEl);
-          //</div>
-          //<div class="card-stacked">
-          let cardStacked = makeNewJqueryElement('div', 'card-stacked');
-            //<div class="card-content">
-            let contentDiv = makeNewJqueryElement('div', 'card-content valign-wrapper');
-              //<h2 class="card-title">$movieObj.title</h2>
-              // let titleEl = makeNewJqueryElement('p', 'card-title', null, movieObj.title);
-              //<h2 class="card-title">$movieObj.rating</h2>
-              let ratingIcon = makeNewJqueryElement('i', 'large material-icons', null, 'star');
-              let ratingEl = makeNewJqueryElement('p', 'card-content', null, movieObj.rating);
-              //<h2 class="card-title">$movieObj.plotOutline</h2>
-              let plotTextEl = makeNewJqueryElement('p', 'card-content', null, movieObj.plotOutline.slice(0, 30));
-            contentDiv.append(ratingIcon, plotTextEl); 
-            //</div>
-            cardStacked.append(contentDiv);
-          //</div>
-        cardDiv.append(cardImgDiv, cardStacked);
-        //</div>
-      colDivEl.append(cardDiv);
-      //</div
-    parentDiv.append(colDivEl);
+    
+    //<a class="carousel-item" href="#one!">
+    let linkEl = makeNewJqueryElement('a', 'carousel-item');
+    linkEl.attr('href', '#'+word+"!");
+      //<img src="https://lorempixel.com/250/250/nature/1">
+      let imgEl = makeNewJqueryElement('img');
+      imgEl.attr('src', movieObj.imageUrl);
+    linkEl.append(imgEl);
+    //</a> 
+    parentDiv.append(linkEl); 
   }
+
+  //Carousel//
+  $(document).ready(function () {
+    $("#result_carousel").carousel();
+  });
+
 }
 
   // let logResultsDiv = $("#cards_list");
@@ -147,7 +133,7 @@ function renderCurrentMovieActorImages(){
     // parentDiv
     let parentDiv = $('#actor_img_div');
       //<div class="col s6 l3">
-      let colDivEl = makeNewJqueryElement('div', 'centre-align col s8 offset-s2');
+      let colDivEl = makeNewJqueryElement('div', 'centre-align col s8 offset-s2 m6 offset-m3 l6 offset-l3 xl4 offset-xl4');
         //<div class="card horizontal">
         let cardDiv = makeNewJqueryElement('div', 'card horizontal');
           //<div class="card-image">
