@@ -71,6 +71,17 @@ h1{
   color: var(--quinary) !important;
 }
 
+/* override linear progress bar color */
+
+.progress {
+  background-color: var(--tertiary) !important;
+}
+
+
+.progress .indeterminate {
+  background-color: var(--quaternary) !important;
+}
+
 /* label color */
 .input-field label {
     color: var(--tertiary) !important;

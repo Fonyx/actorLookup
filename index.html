@@ -94,6 +94,12 @@
                     <i class="material-icons right sec_text_color tert_bg_color">loop</i>
                 </div>
               </div>
+              <div class="row">
+                <!--   Loading Bar   -->
+                <div class="progress" style="visibility: hidden;">
+                  <div class="indeterminate"></div>
+                </div>
+              </div>
               <div class="row" id="search_history">
                 <!-- this div needs a delegated event handler for when the user clicks a button in the search history it should read the button's data-search-index and pass that for rendering -->
               </div>
@@ -109,12 +115,6 @@
       <!--   Results Section   -->
 
       <section class="container" id="results_container">
-        <!--   Loading Bar   -->
-        <div class="progress" style="visibility: hidden;">
-          <div class="indeterminate"></div>
-        </div>
-
-
         <h4>Results</h4>
         <div class="row" id="cards_list">
           <div class="carousel-item">
