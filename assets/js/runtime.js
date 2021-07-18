@@ -47,13 +47,14 @@ window.addEventListener('load', loadAndRenderSearchObjects);
 // add event delegation to the search history section for buttons
 let searchHistoryEl = $('#search_history');
 searchHistoryEl.on('click', '.search_history_button', function (event) {
-
+    event.preventDefault();
     let searchIndexRaw = event.target.dataset['searchIndex'];
     let searchIndexInt = parseInt(searchIndexRaw, 10);
     // using a global
     updateCurrentSearchIndexAndObj(searchIndexInt);
     setActiveButtonToCurrentObject();
     renderCurrentMovieResults();
+    renderCurrentMovieActorImages();
 })
 
 // function that loads elements from storage
