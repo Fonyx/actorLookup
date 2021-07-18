@@ -32,15 +32,11 @@ apiDetails = {
 }
 
 function updateCurrentSearchIndexAndObj(index){
-    console.log('Updating global variables')
-    console.log('updating index from: ', currentUserChoiceIndex,' to: '+index);
     currentUserChoiceIndex = index;
 
     if(searchObjectHistory.length > 0){
-        console.log('setting current object from: ', currentSearchObj,' to: '+searchObjectHistory[index]);
         currentSearchObj = searchObjectHistory[index];
     } else {
-        console.log('No objects to update to, setting current to null')
         currentSearchObj = null;
     }
 }
@@ -69,13 +65,8 @@ function loadAndRenderSearchObjects(){
   
     // check there are some
     if(searchObjectHistory.length > 0){
-        console.log('resetting current choice index to: ',currentUserChoiceIndex);
-
-        console.log('Found local results: ',searchObjectHistory);
-
         // the button for the current choice is rendered with the object itself below
         for(let i = 0; i < searchObjectHistory.length; i++){
-            console.log('Now rendering current object: ', searchObjectHistory[currentUserChoiceIndex]),
             updateCurrentSearchIndexAndObj(i);
             // call the render method for the movie cards of the current search object
             renderCurrentSearchObject();
@@ -98,9 +89,7 @@ function validateFormAndSearch(event){
     let userInputTexts = [];
     for(let i = 0; i < userInputs.length; i++){
         let userInputEl = userInputs[i];
-        console.log('Input element: ',userInputEl);
         let textValue = userInputEl.value;
-        console.log('Text value of input was: ',textValue);
         // filter out empty strings as they are falsy
         if(textValue){
             userInputTexts.push(textValue);
@@ -123,7 +112,6 @@ function validateFormAndSearch(event){
             let queryString = buildQueryStringForIMDb(inputText);
             return queryString;
         });
-        console.log('Query strings are: ',queryStrings);
         runSearchWithInputValues(queryStrings);
     }else{
         console.log('rendering previous search result: ', duplicateIndex)
@@ -208,7 +196,6 @@ function buildQueryStringForIMDb(userInput){
     let encodedUserInput = userInput.replace(/\W/g, "").replace(/[0-9]/g, "");
     encodedUserInput = encodeURIComponent(encodedUserInput.trim());
     let queryString = rootFilmographyApi + encodedUserInput;
-    console.log(encodedUserInput)
     
     return queryString;
 }
@@ -242,7 +229,6 @@ async function fetchMovieGeneralDetailsResponse(movieNumberList){
             // screen the data for necessary fields
             // filter the details down
             try{
-                console.log('already stripping data values, this should be printed after running query')
                 var id = movieJson.id.substring(7,16);
                 var title = movieJson.title.title;
                 var released = movieJson.title.year;
@@ -266,7 +252,6 @@ async function fetchMovieGeneralDetailsResponse(movieNumberList){
     )
     // remove elements that are too small (unpopular < ratingCountLimit)
     let popularMovieObjectLists = movieObjectsLists.filter(movie => movie !== 'Movie Too Small');
-    console.log('Popular Actor Movie Lists: ',popularMovieObjectLists);
     return popularMovieObjectLists;
 }
 
@@ -275,7 +260,6 @@ async function fetchActorObjects(queryStringList){
     // https://dev.to/jamesliudotcc/how-to-use-async-await-with-map-and-promise-all-1gb5
     actorObjectList = await Promise.all(
         queryStringList.map(async queryString => {
-            console.log('Attempting query string: ',queryString);
             let filmResponse = await fetch(queryString, apiDetails)
             let ActorData =  await filmResponse.json();
             console.log("what to test for: ", ActorData.message);
@@ -291,7 +275,6 @@ async function fetchActorObjects(queryStringList){
             )           
         })
     )
-    console.log('Actor Data List: ',actorObjectList);
     return actorObjectList;
 }
 
@@ -334,7 +317,6 @@ async function fetchActorFilmographyList(actorObjs){
             return actorMovieList;
         })
     )
-    console.log('Actor Movie Lists: ',movieNumberLists);
     return movieNumberLists;
 }
 
@@ -373,7 +355,6 @@ async function fetchActorKnownForList(actorObj){
     // fudge the return structure to be the same as for multiple actors film lists in a list
     movieNumberLists.push(actorMovieList);
     
-    console.log('Actor Movie Lists: ',movieNumberLists);
     return movieNumberLists;
 }
 
@@ -409,18 +390,12 @@ async function runSearchWithInputValues(searchStrings){
     // this is where we use chris's matching function to get the shared movie list
     // make the list of objects that match and save it to the search object
     let matchedMovieNumbers = getCommonMovieObjects(movieNumberLists);
-
-    //sanity log
-    console.log('Matched movie strings: ',matchedMovieNumbers)
     
 
     // -----------------------------------------GET MOVIE OVERVIEW DETAILS----------------------------------
 
     // run fetch on movie numbers to get movie general details
     let matchedMovieDetailObjects = await fetchMovieGeneralDetailsResponse(matchedMovieNumbers);
-
-    // sanity log
-    console.log('Matched movie objects: ',matchedMovieDetailObjects)
     
 
     // -----------------------------------------STORING AND RENDERING-------------------------------------

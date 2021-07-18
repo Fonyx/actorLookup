@@ -11,7 +11,7 @@ function getStarCountForRating(floatMax10rating){
   // get number of stars
   let starCount = Math.round(flattenedInt/4,1);
 
-  // check the remainer from a divide by 1, if it is more than error set to true
+  // check the remainder from a divide by 1, if it is more than error set to true
   let halfStar = (roundedFloat % 1 > 0.1) ? 1 : 0;
 
   // set the total for ease downstream - if remainder total is 5 - starCount + 1
@@ -30,7 +30,6 @@ function getStarCountForRating(floatMax10rating){
   for(let i = 0; i<remainingEmpty; i++){
     result.push('star_border');
   }
-  console.log(result);
   return result
 }
 
@@ -39,12 +38,9 @@ function getStarCountForRating(floatMax10rating){
 // function turns Natalie Portman into Natalie P
 function makeStringOfActorsNames(searchObj) {
   let ActorFilterNames = searchObj.filters.map((x) => {
-    console.log("Starting with actor name: ", x.name);
-    // example is 'Chris Hemsway'
     let names = x.name.split(" ");
     let firstName = names[0];
     let secondName = names[1];
-    let firstInitial = firstName.charAt(0);
     let secondInitial = secondName.charAt(0);
     let result = firstName + "." + secondInitial;
     return result;
@@ -60,9 +56,6 @@ function createButtonForCurrentSearchObject() {
 
   // make display string from searchObject filters names - map the name elements to the return but also replace [ and ] with spaces, then trim whitespace
   let filterNames = makeStringOfActorsNames(currentSearchObj);
-
-  //sanity log
-  console.log(filterNames);
 
   let actorTextEl = makeNewJqueryElement(
     "button",
@@ -132,18 +125,12 @@ function renderCurrentMovieResults() {
   $(document).ready(function () {
     $("#result_carousel").carousel({
       onCycleTo: function(data){
-        console.log(data);
-        console.log(data.dataset);
         // gets attached data index for the movie slide then gets the corresponding movieObj and renders
         let movieObj = currentSearchObj.movieObjectList[data.dataset.movieIndex];
         renderMovieDetails(movieObj);
       }
     });
   });
-
-  var instance = M.Carousel.getInstance(parentDiv);
-  console.log('carousel instance is: ',instance)
-
 }
 
 // function to render movie text outside of carousel
@@ -171,7 +158,6 @@ function renderMovieDetails(movieObj){
   let movieRatingDiv = $('#current_movie_rating');
   let stars = getStarCountForRating(movieObj.rating);
   for(let i = 0; i < stars.length; i++){
-    console.log('added',stars[i]);
     let starType = stars[i];
     let iconEl = makeNewJqueryElement('i', 'small material-icons sec_text_color', null, starType);
     movieRatingDiv.append(iconEl);
@@ -233,41 +219,35 @@ function resetDomActorImgDiv(){
 function resetDomMovieTitle(){
   let movieTitleEl = $('#current_movie_title');
   movieTitleEl.text('');
-  console.log('reset movie title text div');
 }
 
 // function to reset dom movie genres
 function resetDomMovieGenres(){
   let movieGenresEl = $('#current_movie_genres');
   movieGenresEl.text('');
-  console.log('reset movie genres text div');
 }
 
 // function to reset movie rating text
 function resetDomMovieRating(){
   let movieRatingEl = $('#current_movie_rating');
   movieRatingEl.text('');
-  console.log('reset movie rating text div')
 }
 
 // function to reset movie plot outline text
 function resetDomMoviePlot(){
   let moviePlotEl = $('#current_movie_plot');
   moviePlotEl.text('');
-  console.log('reset movie plot text div')
 }
 
 // function to reset any text we put into the search history div
 function resetDomSearchHistoryDiv() {
   let searchResultsDiv = $("#search_history");
-  console.log("Resetting search history div");
   searchResultsDiv.text("");
 }
 
 // function to reset any cards we put into the cards list div
 function resetDomCardCarouselDiv() {
   let cardListDiv = $("#result_carousel");
-  console.log("Resetting carousel div");
   cardListDiv.text("");
 }
 
@@ -293,10 +273,8 @@ function fullResetOfPage() {
 // function to clear all ids in buttons
 function resetButtonIds() {
   let buttons = $("#search_history").children();
-  console.log("buttons: ", buttons);
   for (let i = 0; i < buttons.length; i++) {
     let button = buttons[i];
-    console.log("button had id: ", $(button).attr("id"));
     $(button).attr("id", "");
   }
 }
@@ -315,10 +293,6 @@ function updateRenderCurrentSearchObject() {
 
 // render current search object
 function renderCurrentSearchObject() {
-  let searchObj = searchObjectHistory[currentUserChoiceIndex];
-  console.log("rendering search object: ", searchObj);
-  console.log("user choice index currently is: ", currentUserChoiceIndex);
-  
   createButtonForCurrentSearchObject();
 
   setActiveButtonToCurrentObject();
@@ -328,22 +302,4 @@ function renderCurrentSearchObject() {
   renderCurrentMovieResults();
 
   renderCurrentMovieActorImages();
-}
-
-// render all search object history buttons -- ELLA
-function renderCards(searchObj) {
-  let cardHorizontal = $("<div>").addClass(["card", "horizontal"]);
-  let cardImg = $("div.card-image");
-  let cardStacked = $("<div>").addClass(["card", "stacked"]);
-  let cardContent = $("div.card-content").children();
-  body.appendChild(cardHorizontal, cardImg, cardStacked, cardContent);
-  console.log(searchObj);
-  
-  // let resultSection = $('#search_history');
-  // let cardHorizontal = makeNewJqueryElement('div', 'card horizontal');
-  // let cardImg = makeNewJqueryElement('div', 'card-image');
-  // let cardStacked = makeNewJqueryElement('div', 'card stacked');
-  // let cardContent = makeNewJqueryElement('div', 'card content');
-  // resultSection.append(cardHorizontal, cardImg, cardStacked, cardContent);
-  
 }
