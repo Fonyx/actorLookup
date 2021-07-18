@@ -7,6 +7,10 @@
   --quinary: #F2EBD5;
 }
 
+body{
+  font-family: 'Open Sans', sans-serif;
+}
+
 .icon-block {
   padding: 0 15px;
 }
