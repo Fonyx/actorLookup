@@ -93,13 +93,21 @@ function validateFormAndSearch(event){
         let textValue = userInputEl.value;
         // filter out empty strings as they are falsy
         if(textValue){
-            userInputTexts.push(textValue);
+            userInputTexts.push(textValue.toLowerCase());
         }
     }
 
+    // case for when the user doesn't enter anything
+    if(userInputTexts.length < 1){
+        console.log('No search terms entered');
+        return
+    }
+
+    // case for entering the same name twice - strip duplicates from array as array is dynamic length
+    let uniqueUserInputTexts = [...new Set(userInputTexts)];
   
     // check if we have already run this search before and if so, will return the index of the search object, else it will be null
-    let duplicateIndex = getDuplicateSearchIndex(userInputTexts);
+    let duplicateIndex = getDuplicateSearchIndex(uniqueUserInputTexts);
     if(duplicateIndex < 0){
         // run a new search
         console.log('No duplicates found in history, new api search');
