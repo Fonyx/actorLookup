@@ -22,25 +22,21 @@ function loadingHidden() {
     loading.style.visibility = 'hidden'
 }
 
-// details for the api queries - currently Nicks second key
+// details for the api queries - currently Ella's second key
 apiDetails = {
     "method": "GET",
     "headers": {
-        "x-rapidapi-key": "9d20b81794msh3353fe733317fafp15261fjsn250e70a8d8f1",
+        "x-rapidapi-key": "98715f4491msh274d5b66c7dd486p1027f4jsnb2d0b51ad3c4",
         "x-rapidapi-host": "imdb8.p.rapidapi.com"
     }
 }
 
 function updateCurrentSearchIndexAndObj(index){
-    console.log('Updating global variables')
-    console.log('updating index from: ', currentUserChoiceIndex,' to: '+index);
     currentUserChoiceIndex = index;
 
     if(searchObjectHistory.length > 0){
-        console.log('setting current object from: ', currentSearchObj,' to: '+searchObjectHistory[index]);
         currentSearchObj = searchObjectHistory[index];
     } else {
-        console.log('No objects to update to, setting current to null')
         currentSearchObj = null;
     }
 }
@@ -57,7 +53,6 @@ searchHistoryEl.on('click', '.search_history_button', function (event) {
     // using a global
     updateCurrentSearchIndexAndObj(searchIndexInt);
     setActiveButtonToCurrentObject();
-    renderCurrentMovieActorImages();
     renderCurrentMovieResults();
 })
 
@@ -70,13 +65,8 @@ function loadAndRenderSearchObjects(){
   
     // check there are some
     if(searchObjectHistory.length > 0){
-        console.log('resetting current choice index to: ',currentUserChoiceIndex);
-
-        console.log('Found local results: ',searchObjectHistory);
-
         // the button for the current choice is rendered with the object itself below
         for(let i = 0; i < searchObjectHistory.length; i++){
-            console.log('Now rendering current object: ', searchObjectHistory[currentUserChoiceIndex]),
             updateCurrentSearchIndexAndObj(i);
             // call the render method for the movie cards of the current search object
             renderCurrentSearchObject();
@@ -95,16 +85,11 @@ function validateFormAndSearch(event){
     // get the two input fields from the form
     let userInputs = parentForm.children().find('input');
 
-    // loading bar visible
-    loadingVisible();
-
     // get text elements out of strings
     let userInputTexts = [];
     for(let i = 0; i < userInputs.length; i++){
         let userInputEl = userInputs[i];
-        console.log('Input element: ',userInputEl);
         let textValue = userInputEl.value;
-        console.log('Text value of input was: ',textValue);
         // filter out empty strings as they are falsy
         if(textValue){
             userInputTexts.push(textValue);
@@ -114,9 +99,12 @@ function validateFormAndSearch(event){
   
     // check if we have already run this search before and if so, will return the index of the search object, else it will be null
     let duplicateIndex = getDuplicateSearchIndex(userInputTexts);
-    if(!duplicateIndex){
+    if(duplicateIndex < 0){
         // run a new search
         console.log('No duplicates found in history, new api search');
+
+        // loading bar visible
+        loadingVisible();
 
         // build new query strings
         // take all valid user text values, build a query string for IMDB and make array
@@ -124,16 +112,13 @@ function validateFormAndSearch(event){
             let queryString = buildQueryStringForIMDb(inputText);
             return queryString;
         });
-
-        console.log('Query strings are: ',queryStrings);
-
         runSearchWithInputValues(queryStrings);
     }else{
-        console.log('rendering previous search result: ', duplicateSearchObject)
+        console.log('rendering previous search result: ', duplicateIndex)
         // set the current search object to the object we already have
         updateCurrentSearchIndexAndObj(duplicateIndex)
         // render the object we had in history again
-        renderCurrentSearchObject();
+        updateRenderCurrentSearchObject();
     }
 }
 
@@ -174,8 +159,31 @@ function getCommonMovieObjects(movieNumberLists){
 
 // check the searchObject list we have for the user inputs, if we find them in forwards or backwards order, return the index of the search object
 function getDuplicateSearchIndex(inputStringsArray){
-    // placeholder return so we run a fresh search until this function has been built
-    return null;
+    // loop through search objects
+    let namesMatched = 0;
+
+    for(let i = 0; i < searchObjectHistory.length; i++){
+        let searchObj = searchObjectHistory[i];
+        // loop through the two input actor strings
+        for(let j = 0 ; j < inputStringsArray.length; j++){
+            let inputString = inputStringsArray[j];
+            // loop through the actors in each search object
+            for(let k = 0; k < searchObj.filters.length; k++){
+                let currentActor = searchObj.filters[k];
+                if (currentActor.name.toLowerCase() === inputString.toLowerCase()){
+                    namesMatched += 1;
+                }
+            }
+            // case where both strings match irrespective of order
+            if(namesMatched === inputStringsArray.length){
+                // return the search object index that matches the case
+                return i;
+            }
+        }
+    }
+    // case for no duplicate match, return null
+    return -1;
+
 }
 
 // function makes the query string from user input to query the auto-complete endpoint
@@ -188,7 +196,6 @@ function buildQueryStringForIMDb(userInput){
     let encodedUserInput = userInput.replace(/\W/g, "").replace(/[0-9]/g, "");
     encodedUserInput = encodeURIComponent(encodedUserInput.trim());
     let queryString = rootFilmographyApi + encodedUserInput;
-    console.log(encodedUserInput)
     
     return queryString;
 }
@@ -222,7 +229,6 @@ async function fetchMovieGeneralDetailsResponse(movieNumberList){
             // screen the data for necessary fields
             // filter the details down
             try{
-                console.log('already stripping data values, this should be printed after running query')
                 var id = movieJson.id.substring(7,16);
                 var title = movieJson.title.title;
                 var released = movieJson.title.year;
@@ -246,7 +252,6 @@ async function fetchMovieGeneralDetailsResponse(movieNumberList){
     )
     // remove elements that are too small (unpopular < ratingCountLimit)
     let popularMovieObjectLists = movieObjectsLists.filter(movie => movie !== 'Movie Too Small');
-    console.log('Popular Actor Movie Lists: ',popularMovieObjectLists);
     return popularMovieObjectLists;
 }
 
@@ -255,9 +260,13 @@ async function fetchActorObjects(queryStringList){
     // https://dev.to/jamesliudotcc/how-to-use-async-await-with-map-and-promise-all-1gb5
     actorObjectList = await Promise.all(
         queryStringList.map(async queryString => {
-            console.log('Attempting query string: ',queryString);
             let filmResponse = await fetch(queryString, apiDetails)
             let ActorData =  await filmResponse.json();
+            console.log("what to test for: ", ActorData.message);
+            if(ActorData.message == "Too many requests"){
+                document.getElementById("apiFailsafe").innerHTML = "You have searched too many times, please try again next month!";
+                console.log("ERROR 429");
+            }
             return new actorObject(
                 // parameters are id, name and imgUrl
                 ActorData.d[0].id, 
@@ -266,7 +275,6 @@ async function fetchActorObjects(queryStringList){
             )           
         })
     )
-    console.log('Actor Data List: ',actorObjectList);
     return actorObjectList;
 }
 
@@ -285,7 +293,7 @@ async function fetchActorFilmographyList(actorObjs){
             for(let i=0; i < jsonObject.filmography.length; i++){
 
                 let movieObj = jsonObject.filmography[i];
-        
+                
                 let titleType = movieObj.titleType;
                 let category = movieObj.category;
                 let movieId = movieObj.id.substring(7, 16);
@@ -309,7 +317,6 @@ async function fetchActorFilmographyList(actorObjs){
             return actorMovieList;
         })
     )
-    console.log('Actor Movie Lists: ',movieNumberLists);
     return movieNumberLists;
 }
 
@@ -322,6 +329,7 @@ async function fetchActorKnownForList(actorObj){
     let filmographyApiUrlRoot = "https://imdb8.p.rapidapi.com/actors/get-known-for?nconst=";
     let response = await fetch(filmographyApiUrlRoot + actorObj.id, apiDetails);
     let jsonObject = await response.json();
+    
 
     for(let i=0; i < jsonObject.length; i++){
 
@@ -347,7 +355,6 @@ async function fetchActorKnownForList(actorObj){
     // fudge the return structure to be the same as for multiple actors film lists in a list
     movieNumberLists.push(actorMovieList);
     
-    console.log('Actor Movie Lists: ',movieNumberLists);
     return movieNumberLists;
 }
 
@@ -383,18 +390,12 @@ async function runSearchWithInputValues(searchStrings){
     // this is where we use chris's matching function to get the shared movie list
     // make the list of objects that match and save it to the search object
     let matchedMovieNumbers = getCommonMovieObjects(movieNumberLists);
-
-    //sanity log
-    console.log('Matched movie strings: ',matchedMovieNumbers)
     
 
     // -----------------------------------------GET MOVIE OVERVIEW DETAILS----------------------------------
 
     // run fetch on movie numbers to get movie general details
     let matchedMovieDetailObjects = await fetchMovieGeneralDetailsResponse(matchedMovieNumbers);
-
-    // sanity log
-    console.log('Matched movie objects: ',matchedMovieDetailObjects)
     
 
     // -----------------------------------------STORING AND RENDERING-------------------------------------
