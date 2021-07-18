@@ -1,3 +1,39 @@
+// function that builds a response objet for how many full stars and half stars to use
+function getStarCountForRating(floatMax10rating){
+  // first scale it up to 0-20 by doubling it
+  // next round it to the nearest round number
+  // convert to int
+  // return number int/2 and remainder - number of whole(2 half stars) and if there is a remainder
+
+  let roundedFloat = Math.round(2*floatMax10rating);
+  let flattenedInt = parseInt(roundedFloat);
+
+  // get number of stars
+  let starCount = Math.round(flattenedInt/4,1);
+
+  // check the remainer from a divide by 1, if it is more than error set to true
+  let halfStar = (roundedFloat % 1 > 0.1) ? 1 : 0;
+
+  // set the total for ease downstream - if remainder total is 5 - starCount + 1
+  let remainingEmpty = 5 - halfStar - starCount;
+
+  let result = [];
+  // push stars
+  for(let i = 0; i<starCount; i++){
+    result.push('star');
+  }
+  // push half stars
+  for(let i = 0; i<halfStar; i++){
+    result.push('star_half');
+  }
+  // push empty
+  for(let i = 0; i<remainingEmpty; i++){
+    result.push('star_border');
+  }
+  console.log(result);
+  return result
+}
+
 // function to make a string from an array of actors names
 // ------------------ this will break in future non actor filter phases
 // function turns Natalie Portman into Natalie P
@@ -64,25 +100,27 @@ function renderCurrentMovieResults() {
   // clear the dom text for div
   resetDomCardsListDiv();
 
+
   // parentDiv
   let parentDiv = $('#result_carousel');
 
   parentDiv.text("");
 
-  // array of words
+  // array of words - 5 is the max we will experience due to the movie list limit - movieListLengthLimit global
   let words = ['one', 'two', 'three', 'four', 'five'];
+
 
   // for each actor
   for(let i = 0; i < currentSearchObj.movieObjectList.length; i++){
     let movieObj = currentSearchObj.movieObjectList[i];
     let word = words[i];
 
-    console.log("Adding movie to dom: ", movieObj.title);
+    renderMovieDetails(movieObj);
     
     //<a class="carousel-item" href="#one!">
-    let linkEl = makeNewJqueryElement('a', 'carousel-item');
+    let linkEl = makeNewJqueryElement('a', 'carousel-item', null, null, {name:'movie-index', value:i});
     linkEl.attr('href', '#'+word+"!");
-      //<img src="https://lorempixel.com/250/250/nature/1">
+      //<img src="$movieObj.imageUrl">
       let imgEl = makeNewJqueryElement('img');
       imgEl.attr('src', movieObj.imageUrl);
     linkEl.append(imgEl);
@@ -92,34 +130,58 @@ function renderCurrentMovieResults() {
 
   //Carousel//
   $(document).ready(function () {
-    $("#result_carousel").carousel();
+    $("#result_carousel").carousel({
+      onCycleTo: function(data){
+        console.log(data);
+        console.log(data.dataset);
+        // gets attached data index for the movie slide then gets the corresponding movieObj and renders
+        let movieObj = currentSearchObj.movieObjectList[data.dataset.movieIndex];
+        renderMovieDetails(movieObj);
+      }
+    });
   });
+
+  var instance = M.Carousel.getInstance(parentDiv);
+  console.log('carousel instance is: ',instance)
 
 }
 
-  // let logResultsDiv = $("#cards_list");
-  // for (let i = 0; i < currentSearchObj.movieObjectList.length; i++) {
-  //   let movieObj = currentSearchObj.movieObjectList[i];
-  //   console.log("Adding movie to dom: ", movieObj.title);
-  //   //<div class="row" id="cards_list">
-  //   // collected above as logResultsDiv
-  //   //<div class="col s6 l3">
-  //   let newColEl = makeNewJqueryElement("div", "col");
-  //     //<h3 class="pri_text_color">$movieObj.title</p>
-  //       let titleEl = makeNewJqueryElement("h4","center-align pri_text_color", null, movieObj.title);
-  //       //<h5 class="sec_text_color">$movieObj.rating</p>
-  //       let ratingEl = makeNewJqueryElement("h5","center-align sec_text_color", null, "Rating: " + movieObj.rating);
-  //       //<h5 class="sec_text_color">$movieObj.ratingsCount</p>
-  //       let ratingsCountEl = makeNewJqueryElement("h5","center-align sec_text_color", null,"Rating Count: " + movieObj.ratingsCount);
-  //       //<img src="$movieObj.imageUrl">
-  //       let imgEl = makeNewJqueryElement("img");
-  //       imgEl.attr('src', movieObj.imageUrl);
-  //       imgEl.attr('width', '150px');
-  //     newColEl.append(titleEl, ratingEl, ratingsCountEl, imgEl);
-  //     //</div>
-  //   logResultsDiv.append(newColEl);
-  //   //</div>
-  // }
+// function to render movie text outside of carousel
+function renderMovieDetails(movieObj){
+
+  resetDomMovieTitle();
+  resetDomMovieGenres();
+  resetDomMovieRating();
+  resetDomMoviePlot();
+
+  // render movie title
+  let movieTitleDiv = $('#current_movie_title');
+  let movieTitleEl = makeNewJqueryElement('h2', 'sec_text_color', null, movieObj.title);
+  movieTitleDiv.append(movieTitleEl);
+
+  // render movie genres
+  let movieGenreDiv = $('#current_movie_genres');
+  // since this is an array, space out the string
+  // note that replace only replaces once because it is shit, so we use a regex replacement
+  let arrayString = movieObj.genres.toString().replace(/,/g, " + ");
+  let movieGenreEl = makeNewJqueryElement('h4', 'sec_text_color', null, arrayString);
+  movieGenreDiv.append(movieGenreEl);
+
+  // render movie rating
+  let movieRatingDiv = $('#current_movie_rating');
+  let stars = getStarCountForRating(movieObj.rating);
+  for(let i = 0; i < stars.length; i++){
+    console.log('added',stars[i]);
+    let starType = stars[i];
+    let iconEl = makeNewJqueryElement('i', 'small material-icons sec_text_color', null, starType);
+    movieRatingDiv.append(iconEl);
+  }
+
+  // render movie plot
+  let moviePlotDiv = $('#current_movie_plot');
+  let moviePlotEl = makeNewJqueryElement('p', 'flow-text sec_text_color', null, movieObj.plotOutline);
+  moviePlotDiv.append(moviePlotEl);
+}
 
 
 // function to render the actor images
@@ -167,6 +229,34 @@ function resetDomActorImgDiv(){
   parentDiv.text("");
 }
 
+// function to reset movie title
+function resetDomMovieTitle(){
+  let movieTitleEl = $('#current_movie_title');
+  movieTitleEl.text('');
+  console.log('reset movie title text div');
+}
+
+// function to reset dom movie genres
+function resetDomMovieGenres(){
+  let movieGenresEl = $('#current_movie_genres');
+  movieGenresEl.text('');
+  console.log('reset movie genres text div');
+}
+
+// function to reset movie rating text
+function resetDomMovieRating(){
+  let movieRatingEl = $('#current_movie_rating');
+  movieRatingEl.text('');
+  console.log('reset movie rating text div')
+}
+
+// function to reset movie plot outline text
+function resetDomMoviePlot(){
+  let moviePlotEl = $('#current_movie_plot');
+  moviePlotEl.text('');
+  console.log('reset movie plot text div')
+}
+
 // function to reset any text we put into the search history div
 function resetDomSearchHistoryDiv() {
   let searchResultsDiv = $("#search_history");
@@ -188,6 +278,10 @@ function resetDynamicContentOnDom() {
   resetDomActorImgDiv();
   resetDomSearchHistoryDiv();
   resetDomCardsListDiv();
+  resetDomMovieTitle();
+  resetDomMovieGenres();
+  resetDomMovieRating();
+  resetDomMoviePlot();
 }
 
 // reset the entire page, memory and DOM
@@ -214,10 +308,12 @@ function renderCurrentSearchObject() {
   let searchObj = searchObjectHistory[currentUserChoiceIndex];
   console.log("rendering search object: ", searchObj);
   console.log("user choice index currently is: ", currentUserChoiceIndex);
-
+  
   createButtonForCurrentSearchObject();
 
   setActiveButtonToCurrentObject();
+
+  renderCurrentMovieActorImages();
 
   renderCurrentMovieResults();
 

@@ -76,7 +76,9 @@
                     <label for="userInput_1" class="sec_text_color">Actors Name</label>
                   </div>
                   <div class="col s6 offset-s3 m2 l2">
-                    <i class="medium material-icons hide-on-small-only sec_text_color">add</i>
+                    <a class="btn-floating btn-large pulse">
+                      <i class="medium material-icons hide-on-small-only sec_text_color">add</i>
+                    </a>
                   </div>
                   <div class="input-field col s12 m5 l3">
                     <i class="material-icons prefix sec_text_color">account_circle</i>
@@ -89,6 +91,7 @@
                   <button id="search_button" class="btn-large waves-effect waves-light sec_text_color tert_bg_color" type="submit" name="action">Search
                     <i class="material-icons right sec_text_color tert_bg_color">search</i>
                 </div>
+                
                 <div class="col s6 m6 l3">
                   <button id="reset_button" class="btn-large waves-effect waves-light sec_text_color tert_bg_color" type="button" name="action" onclick="fullResetOfPage();">Reset
                     <i class="material-icons right sec_text_color tert_bg_color">loop</i>
@@ -107,18 +110,13 @@
 
               <!--   Results Section   -->
               <div class="container center-align" id="results_container">
-                
                 <div id="current_movie_title">
-                  <h2>Pirates of the Carribean</h2>
                 </div>
+                <div id="current_movie_genres">
 
+                </div>
                 <div class="carousel" id="result_carousel">
-
-                  <!-- <a class="carousel-item" href="#one!"><img src="https://m.media-amazon.com/images/M/MV5BMTcwODc1MTMxM15BMl5BanBnXkFtZTYwMDg1NzY3._V1_.jpg"></a>
-                  <a class="carousel-item" href="#two!"><img src="https://m.media-amazon.com/images/M/MV5BMjIyNjkxNzEyMl5BMl5BanBnXkFtZTYwMjc3MDE3._V1_.jpg"></a>
-                  <a class="carousel-item" href="#three!"><img src="https://m.media-amazon.com/images/M/MV5BMTYyMTcxNzc5M15BMl5BanBnXkFtZTgwOTg2ODE2MTI@._V1_.jpg"></a> -->
                 </div>
-
                 <div id="current_movie_rating">
                   <i class="small material-icons">star</i>
                   <i class="small material-icons">star</i>
