@@ -121,6 +121,7 @@ function renderCurrentMovieResults() {
     parentDiv.append(linkEl); 
   }
 
+
   //Carousel//
   $(document).ready(function () {
     $("#result_carousel").carousel({
