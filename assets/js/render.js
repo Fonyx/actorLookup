@@ -98,7 +98,7 @@ function setActiveButtonToCurrentObject() {
 // it purges the div and then fills it again, simple
 function renderCurrentMovieResults() {
   // clear the dom text for div
-  resetDomCardsListDiv();
+  resetDomCardCarouselDiv();
 
 
   // parentDiv
@@ -265,9 +265,9 @@ function resetDomSearchHistoryDiv() {
 }
 
 // function to reset any cards we put into the cards list div
-function resetDomCardsListDiv() {
-  let cardListDiv = $("#cards_list");
-  console.log("Resetting cards list div");
+function resetDomCardCarouselDiv() {
+  let cardListDiv = $("#result_carousel");
+  console.log("Resetting carousel div");
   cardListDiv.text("");
 }
 
@@ -277,7 +277,7 @@ function resetDynamicContentOnDom() {
   // vertically moving down the page
   resetDomActorImgDiv();
   resetDomSearchHistoryDiv();
-  resetDomCardsListDiv();
+  resetDomCardCarouselDiv();
   resetDomMovieTitle();
   resetDomMovieGenres();
   resetDomMovieRating();
