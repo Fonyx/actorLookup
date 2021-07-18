@@ -12,7 +12,10 @@
     />
     <!-- Google font framework-->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
+    <!-- Google fonts link for open Sans Font-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap" rel="stylesheet">
     <!-- Font Awesome Icon Library -->
     <link
     rel="stylesheet"
@@ -37,8 +40,8 @@
           <li><a href="https://github.com/Fonyx" class="sec_text_color">NICK</a></li>
           <li><a href="https://github.com/ChristopherBz" class="sec_text_color">CHRIS</a></li>
           <!-- for development testing -->
-          <li><button id="shuffle_pallette_button" class="btn red">Shuffle Palette</button></li>
-          <li><button id="change_pallete_button" class="btn red">Change Palette</button></li>
+          <!-- <li><button id="shuffle_pallette_button" class="btn red">Shuffle Palette</button></li>
+          <li><button id="change_pallete_button" class="btn red">Change Palette</button></li> -->
         </ul>
   
         <ul id="nav-mobile" class="sidenav sec_text_color">
@@ -55,145 +58,81 @@
     <main>
       <!-- Where we display current filters for the search-->
       <section class="container" id="active_search_filters"></section>
+      
       <!-- Top headlines -->
-      <section class="section no-pad-bot" id="index-banner">
-        <div class="container">
-          <h1 class="header center pri_text_color">Find Movies
-            <span class="hide-on-med-and-down"> With Your Favorite Actors</span>
-          </h1>
-          <div class="row center hide-on-small-and-down">
-            <h5 class="header col s12 lite pri_text_color">Simply add the actors names below!</h5>
-          </div>
+      <section class="container-fluid">
+        <h1 class="header center pri_text_color">Find Movies
+          <span class="hide-on-med-and-down"> With Your Favorite Actors</span>
+        </h1>
+        <div class="row center hide-on-small-and-down">
+          <h5 id="apiFailsafe" class="header col s12 lite pri_text_color">Simply add the actors names below!</h5>
         </div>
-        <div class="container">
-          <!-- Input Actors Name -->
-          <div class="row center">
-            <form class="col s12">
-              <div class="row">
-                  <div class="input-field col s12 m5 l3 offset-l2">
-                    <i class="material-icons prefix sec_text_color">account_circle</i>
-                    <input type="text" id="Actor1" class="actor sec_text_color">
-                    <label for="userInput_1" class="sec_text_color">Actors Name</label>
-                  </div>
-                  <div class="col s6 offset-s3 m2 l2">
+        
+        <!-- Input Actors Name -->
+        <div class="row center">
+          <form class="col s12">
+            <div class="row" id="actor_inputs">
+                <div class="input-field col s12 m5 l3 offset-l2">
+                  <i class="material-icons prefix sec_text_color">account_circle</i>
+                  <input type="text" id="Actor1" class="actor sec_text_color">
+                  <label for="userInput_1" class="sec_text_color">Actors Name</label>
+                </div>
+                <div class="col s6 offset-s3 m2 l2">
                     <i class="medium material-icons hide-on-small-only sec_text_color">add</i>
-                  </div>
-                  <div class="input-field col s12 m5 l3">
-                    <i class="material-icons prefix sec_text_color">account_circle</i>
-                    <input type="text" id="Actor2" class="actor sec_text_color">
-                    <label for="userInput_2" class="sec_text_color">Actors Name</label>
-                  </div>
-              </div>
-              <div class="row">
-                <div class="col s6 m6 l3 offset-l3">
-                  <button id="search_button" class="btn-large waves-effect waves-light sec_text_color tert_bg_color" type="submit" name="action">Search
-                    <i class="material-icons right sec_text_color tert_bg_color">search</i>
                 </div>
-                <div class="col s6 m6 l3">
-                  <button id="reset_button" class="btn-large waves-effect waves-light sec_text_color tert_bg_color" type="button" name="action" onclick="fullResetOfPage();">Reset
-                    <i class="material-icons right sec_text_color tert_bg_color">loop</i>
+                <div class="input-field col s12 m5 l3">
+                  <i class="material-icons prefix sec_text_color">account_circle</i>
+                  <input type="text" id="Actor2" class="actor sec_text_color">
+                  <label for="userInput_2" class="sec_text_color">Actors Name</label>
                 </div>
+            </div>
+            <div class="row" id="search_buttons">
+              <div class="col s2 offset-s4">
+                <a id="search_button" class="btn-floating btn-large sec_text_color tert_bg_color pulse">
+                  <i class="material-icons">search</i>
+                </a>
               </div>
-              </button>
-            </form>
-          </div>
+              <div class="col s2">
+                <a id="reset_button" class="btn-floating btn-large sec_text_color tert_bg_color pulse" onclick="fullResetOfPage();">
+                  <i class="material-icons">delete_forever</i>
+                </a>
+              </div>
+            </div>
+            <div class="row" id="loading_bar">
+              <!--   Loading Bar   -->
+              <div class="progress" style="visibility: hidden;">
+                <div class="indeterminate"></div>
+              </div>
+            </div>
+
+            <h3 class="header center pri_text_color">SEARCH HISTORY</h3>
+            <div class="row" id="search_history">
+              <!-- this div needs a delegated event handler for when the user clicks a button in the search history it should read the button's data-search-index and pass that for rendering -->
+            </div>
+
+            <!--   Results Section   -->
+            <div class="container center-align" id="results_container">
+              <div id="current_movie_title">
+              </div>
+              <div id="current_movie_genres">
+
+              </div>
+              <div class="carousel" id="result_carousel">
+              </div>
+              <div id="current_movie_rating">
+              </div>
+
+              <div id="current_movie_plot">
+              </div>
+
+            </div>
+            <div class="row" id="actor_img_div">
+            </div>
+          </form>
         </div>
       </section>
       
-      <!--   Results Section   -->
-
-      <section class="container" id="results_container">
-        <!-- this div needs a delegated event handler for when the user clicks a button in the search history 
-        it should read the button's data-search-index and pass that for rendering -->
-        <h4>Search History</h4>
-
-        <div class="row" id="search_history">
-          
-        </div>
-
-        <h4>Results</h4>
-        <!--   Loading Bar   -->
-        <div class="progress" style="visibility: hidden;">
-          <div class="indeterminate"></div>
-        </div>
-        <div class="row" id="cards_list">
-          <div class="carousel-item">
-            <div class="col s4">
-              <div class="card horizontal">
-                <div class="card-image">
-                  <img src="https://lorempixel.com/100/190/nature/6" />
-                </div>
-                <div class="card-stacked">
-                  <div class="card-content">
-                    <h6>Title</h6>
-                    <span class="fa fa-star checked"></span>
-                    <span class="fa fa-star checked"></span>
-                    <span class="fa fa-star checked"></span>
-                    <span class="fa fa-star"></span>
-                    <span class="fa fa-star"></span>
-                    <p>
-                      I am a very simple card. I am good at containing small
-                      bits of information.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="carousel-item">
-            <div class="col s4">
-              <div class="card horizontal">
-                <div class="card-image">
-                  <img src="https://lorempixel.com/100/190/nature/6" />
-                </div>
-                <div class="card-stacked">
-                  <div class="card-content">
-                    <h6>Title</h6>
-                    <span class="fa fa-star checked"></span>
-                    <span class="fa fa-star checked"></span>
-                    <span class="fa fa-star checked"></span>
-                    <span class="fa fa-star"></span>
-                    <span class="fa fa-star"></span>
-                    <p>
-                      I am a very simple card. I am good at containing small
-                      bits of information.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="carousel-item">
-            <div class="col s4">
-              <div class="card horizontal">
-                <div class="card-image">
-                  <img src="https://lorempixel.com/100/190/nature/6" />
-                </div>
-                <div class="card-stacked">
-                  <div class="card-content">
-                    <h6>Title</h6>
-                    <span class="fa fa-star checked"></span>
-                    <span class="fa fa-star checked"></span>
-                    <span class="fa fa-star checked"></span>
-                    <span class="fa fa-star"></span>
-                    <span class="fa fa-star"></span>
-                    <p>
-                      I am a very simple card. I am good at containing small
-                      bits of information.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <h4>Movie Log</h4>
-
-        <div class="row" id="log_results">
-          
-        </div>
-      </section>
+      
 
     </main>
 
