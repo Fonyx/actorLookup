@@ -176,13 +176,17 @@ function getDuplicateSearchIndex(inputStringsArray){
                 }
             }
             // case where both strings match irrespective of order
-            if(namesMatched === inputStringsArray.length){
-                // return the search object index that matches the case
-                return i;
+            // if the number of search filters is the number of found matches
+            if(namesMatched === searchObj.filters.length){
+                // if number of entered strings is the number of filters
+                if(inputStringsArray.length === searchObj.filters.length){
+                    // return the search object index that matches the case
+                    return i;
+                }
             }
         }
     }
-    // case for no duplicate match, return null
+    // case for no duplicate match, return -1
     return -1;
 
 }
