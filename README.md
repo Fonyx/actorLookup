@@ -1,4 +1,14 @@
 # Group Project 1
+We made an actor based movie lookup web app. Provide one or two actors and see a list of movies to watch and some meta details
+
+![Screenshot](https://github.com/Fonyx/groupProject1/blob/main/screencap.gif?raw=true "Movie finder")  
+repo @ https://github.com/Fonyx/groupProject1  
+deployed @ https://fonyx.github.io/groupProject1/ 
+
+
+
+
+## Resources
 Google Drive: https://drive.google.com/drive/folders/1M8NNKxuqYeKaVUS6RNCmXUf0YGkADUF8?usp=sharing
 Google docs: https://docs.google.com/document/d/1qt4B9-Txtpu4CxRwyemj_UdSn8CZuvV0msMBBmU5FkY/edit
 Google slides: https://docs.google.com/presentation/d/1UiaCCcJ_GaImNjX6xvIHQznuwP9pO0OgAYXBSSx-SCQ/edit#slide=id.ge29cba3059_0_421
@@ -50,30 +60,5 @@ ref-https://rapidapi.com/collection/list-of-free-apis
 ref2-https://rapidapi.com/collection/omdb-imdb-apis
 
 
-## Ideas - descending order of difficulty:  
-### 1: A movie lookup using:
-https://rapidapi.com/apidojo/api/imdb8/  
-https://rapidapi.com/rapidapi/api/movie-database-imdb-alternative/  
-User gives us names of an actor, director etc, we return list of movies  
-+ We could let the user sort by IMDB rating, year produced etc  
-+ We can check if the movie is available on netflix in your current country  
-https://rapidapi.com/rasiqueira/api/netflix-unofficial/  
-and on disney+  
-https://disneyapi.dev/docs  
-
-### 2: A language translator  
-User provides text and desired language  
-https://rapidapi.com/googlecloud/api/google-translate1/  
-browser reads out the new language  
-
-### 3: A cocktail recipe maker using:  
-https://rapidapi.com/thecocktaildb/api/the-cocktail-db/  
-User selects ingredients from a list and we return what they can make  
-+ We could do some cool things with image styling with this one  
-
-### 4: A currency converter using:  
-https://rapidapi.com/warting/api/currency-converter/  
-User inputs a to and from currencies, and we return the converted value  
-+ We could look up historic trends for context i.e. is this a good time to exchange or should you wait?  
 
 
