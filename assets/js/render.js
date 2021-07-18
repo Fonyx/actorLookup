@@ -301,7 +301,17 @@ function resetButtonIds() {
   }
 }
 
-// render all search object history buttons -- ELLA
+// update current search object
+function updateRenderCurrentSearchObject() {
+
+  setActiveButtonToCurrentObject();
+
+  renderCurrentMovieActorImages();
+
+  renderCurrentMovieResults();
+
+  renderCurrentMovieActorImages();
+}
 
 // render current search object
 function renderCurrentSearchObject() {
