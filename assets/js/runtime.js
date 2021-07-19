@@ -26,7 +26,7 @@ function loadingHidden() {
 apiDetails = {
     "method": "GET",
     "headers": {
-        "x-rapidapi-key": "98715f4491msh274d5b66c7dd486p1027f4jsnb2d0b51ad3c4",
+        "x-rapidapi-key": "288a339a3bmsh8b9f2b8fba2c996p1c1c96jsn99a419bf7992",
         "x-rapidapi-host": "imdb8.p.rapidapi.com"
     }
 }
