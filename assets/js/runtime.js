@@ -1,7 +1,7 @@
 // add event listener for the form
 var searchButton = $('#search_button');
 searchButton.on('click', validateFormAndSearch);
-var movieListLengthLimit = 5;
+var movieListLengthLimit = 20;
 // this count limit keeps the low popularity/familiarity movies out
 var ratingCountLimit = 200;
 // this is used to keep track of the currently rendered search object
