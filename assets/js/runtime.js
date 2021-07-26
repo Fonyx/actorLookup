@@ -10,6 +10,8 @@ var currentUserChoiceIndex = -1;
 var searchObjectHistory = [];
 // the current searchObject
 var currentSearchObj = null;
+// current api key
+var apiKey = "288a339a3bmsh8b9f2b8fba2c996p1c1c96jsn99a419bf7992";
 // Loading Bar 
 var loading = document.querySelector('.progress')
 
@@ -26,7 +28,7 @@ function loadingHidden() {
 apiDetails = {
     "method": "GET",
     "headers": {
-        "x-rapidapi-key": "288a339a3bmsh8b9f2b8fba2c996p1c1c96jsn99a419bf7992",
+        "x-rapidapi-key": apiKey,
         "x-rapidapi-host": "imdb8.p.rapidapi.com"
     }
 }
