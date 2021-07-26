@@ -175,15 +175,3 @@ function logPixelSizeAndMaterializePrefix(){
     }
 
 }
-
-testGetRandomIntFromRange();
-
-function testGetRandomIntFromRange(){
-    let min = 0;
-    let max = 10;
-    let result = 0;
-    for(let i = min; i < max; i++){
-        result = getRandomIntFromRange(min, max);
-        console.log(`Result was: ${result} for index:${i}`);
-    }
-}

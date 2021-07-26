@@ -15,6 +15,12 @@ var currentApiDetails = getRandomApiDetails();
 // Loading Bar 
 var loading = document.querySelector('.progress')
 
+
+function ExhaustionException(message) {
+    this.message = message;
+    this.name = 'ExhaustionException';
+}
+
 // loading bar functions
 function loadingVisible() {
     loading.style.visibility = 'visible'
@@ -26,8 +32,10 @@ function loadingHidden() {
 
 function getRandomApiDetails(){
     // api key list, 500 queries per api key per month
-    let apiKeys = ["288a339a3bmsh8b9f2b8fba2c996p1c1c96jsn99a419bf7992", "a4ec962206mshf309408bd994b33p1bda1fjsn30b09c0bd162", 
+    let apiKeys = ["288a339a3bmsh8b9f2b8fba2c996p1c1c96jsn99a419bf7992", 
+    "a4ec962206mshf309408bd994b33p1bda1fjsn30b09c0bd162", 
     "d50580de85mshf5490ea0cca2bd9p1e342fjsn61b6890e257d",
+    "819078de51mshb34b6833898b724p1c6411jsn394a1dc690be",
     "ab94207db6mshf69c29d83b5ee26p1abc45jsnff5a13e8da6d"];
 
     // get random index and make sure it can't be the same index as the one currently in use
@@ -260,24 +268,27 @@ async function fetchMovieGeneralDetailsResponse(movieNumberList){
         movieNumberList.map(async movieNumber => {               
             let movieOverviewEndpointUrl = "https://imdb8.p.rapidapi.com/title/get-overview-details?tconst="+movieNumber+"&currentCountry=US";
             let response = await fetch(movieOverviewEndpointUrl, currentApiDetails.details);
-            let movieJson = await response.json();
+            let jsonObject = await response.json();
+            console.log(`Remaining queries: ${response.headers.get('x-ratelimit-requests-remaining')}`);
+
+            if(jsonObject.message === "Too many requests"){
+                throw new ExhaustionException(`Exhausted at movie overview when querying ${movieNumber}`);
+            }
+
+            // log number of remaining queries using this api key
+            console.log(`Current api key queries remaining: ${response.headers}`)
             
             // screen the data for necessary fields
             // filter the details down
-            try{
-                var id = movieJson.id.substring(7,16);
-                var title = movieJson.title.title;
-                var released = movieJson.title.year;
-                var ratingCount = movieJson.ratings.ratingCount;
-                var rating = movieJson.ratings.rating;
-                var imageUrl = movieJson.title.image.url;
-                var genres = movieJson.genres;
-                var plotOutline = movieJson.plotOutline.text;
+            var id = jsonObject.id.substring(7,16);
+            var title = jsonObject.title.title;
+            var released = jsonObject.title.year;
+            var ratingCount = jsonObject.ratings.ratingCount;
+            var rating = jsonObject.ratings.rating;
+            var imageUrl = jsonObject.title.image.url;
+            var genres = jsonObject.genres;
+            var plotOutline = jsonObject.plotOutline.text;
                 // if we get a result that doesn't have this structure, log error and don't append it to list
-            }catch(error) {
-                console.log('Movie details were: ',movieJson);
-                console.log('but something went wrong for a detail: ',error);
-            }
             // filter out low rating results
             if(ratingCount > ratingCountLimit){
                 return new movieObject(id, title, released, ratingCount, rating, imageUrl, genres, plotOutline);
@@ -296,18 +307,19 @@ async function fetchActorObjects(queryStringList){
     // https://dev.to/jamesliudotcc/how-to-use-async-await-with-map-and-promise-all-1gb5
     actorObjectList = await Promise.all(
         queryStringList.map(async queryString => {
-            let filmResponse = await fetch(queryString, currentApiDetails.details)
-            let ActorData =  await filmResponse.json();
-            console.log("what to test for: ", ActorData.message);
-            if(ActorData.message == "Too many requests"){
+            let response = await fetch(queryString, currentApiDetails.details)
+            let jsonObject =  await response.json();
+            console.log(`Remaining queries: ${response.headers.get('x-ratelimit-requests-remaining')}`);
+            if(jsonObject.message === "Too many requests"){
                 document.getElementById("apiFailsafe").innerHTML = "You have searched too many times, please try again next month!";
                 console.log("ERROR 429");
+                throw new ExhaustionException(`Exhausted at actor id query ${queryString}`);
             }
             return new actorObject(
                 // parameters are id, name and imgUrl
-                ActorData.d[0].id, 
-                ActorData.d[0].l, 
-                ActorData.d[0].i.imageUrl
+                jsonObject.d[0].id, 
+                jsonObject.d[0].l, 
+                jsonObject.d[0].i.imageUrl
             )           
         })
     )
@@ -325,6 +337,12 @@ async function fetchActorFilmographyList(actorObjs){
             let actorMovieList = [];
             let response = await fetch(filmographyApiUrlRoot + actorObj.id, currentApiDetails.details);
             let jsonObject = await response.json();
+            console.log(`Remaining queries: ${response.headers.get('x-ratelimit-requests-remaining')}`);
+            if(jsonObject.message === "Too many requests"){
+                document.getElementById("apiFailsafe").innerHTML = "You have searched too many times, please try again next month!";
+                console.log("ERROR 429");
+                throw new ExhaustionException(`Exhausted at actor filmography query ${actorObj.id}`);
+            }
 
             for(let i=0; i < jsonObject.filmography.length; i++){
 
@@ -365,6 +383,14 @@ async function fetchActorKnownForList(actorObj){
     let filmographyApiUrlRoot = "https://imdb8.p.rapidapi.com/actors/get-known-for?nconst=";
     let response = await fetch(filmographyApiUrlRoot + actorObj.id, currentApiDetails.details);
     let jsonObject = await response.json();
+    console.log(jsonObject.headers);
+    console.log(`Remaining queries: ${response.headers.get('x-ratelimit-requests-remaining')}`);
+
+    if(jsonObject.message === "Too many requests"){
+        document.getElementById("apiFailsafe").innerHTML = "You have searched too many times, please try again next month!";
+        console.log("ERROR 429");
+        throw new ExhaustionException(`Exhausted at actor known for query ${filmographyApiUrlRoot}`);
+    }
     
 
     for(let i=0; i < jsonObject.length; i++){
@@ -394,11 +420,8 @@ async function fetchActorKnownForList(actorObj){
     return movieNumberLists;
 }
 
-// runs the search for the search strings from page input
-async function runSearchWithInputValues(searchStrings){
 
-    // disable search button
-    document.getElementById("search_button").disabled = true;
+async function getSearchObjectFromQueryStrings(searchStrings){
 
     // -----------------------------------------LOADING ACTOR ID'S-------------------------------------
     // this function calls both fetches simultaneously to save time since the query's are independent
@@ -432,16 +455,24 @@ async function runSearchWithInputValues(searchStrings){
 
     // run fetch on movie numbers to get movie general details
     let matchedMovieDetailObjects = await fetchMovieGeneralDetailsResponse(matchedMovieNumbers);
-    
-
-    // -----------------------------------------STORING AND RENDERING-------------------------------------
-
-    // Loading bar Hidden
-    loadingHidden();
 
     // create a new search object with both actor objects and the matched movie list
     // set the index to the current search object index
     var newSearchObj = new searchObject(actorObjs, matchedMovieDetailObjects);
+
+    return newSearchObj
+}
+
+// runs the search for the search strings from page input
+async function runSearchWithInputValues(searchStrings){
+
+    // disable search button
+    document.getElementById("search_button").disabled = true;
+
+    // Loading bar Hidden
+    loadingHidden();
+
+    newSearchObj = await getSearchObjectFromQueryStrings(searchStrings);
 
     // sort the movie list in descending order of popularity
     newSearchObj.sortMovieListDescending();
