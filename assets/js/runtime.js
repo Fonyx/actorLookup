@@ -30,10 +30,15 @@ function getRandomApiDetails(){
     "d50580de85mshf5490ea0cca2bd9p1e342fjsn61b6890e257d",
     "ab94207db6mshf69c29d83b5ee26p1abc45jsnff5a13e8da6d"];
 
-    // let index = getRandomIntFromRange(0, apiKeys.length, currentApiDetails.index);
-    let index = 0;
+    // get random index and make sure it can't be the same index as the one currently in use
+    // initial state
+    if(currentApiDetails){
+        var index = getRandomIntFromRange(0, apiKeys.length-1, currentApiDetails.index);
+    } else {
+        var index = getRandomIntFromRange(0, apiKeys.length-1);
+    }
 
-    apiDetails = {
+    details = {
         "method": "GET",
         "headers": {
             "x-rapidapi-key": apiKeys[index],
@@ -41,9 +46,15 @@ function getRandomApiDetails(){
         }
     }
 
-    return {'index': index, 'details': apiDetails};
+    console.log(`Using api key: ${apiKeys[index]}`);
+
+    return {'index': index, 'details': details};
 }
 
+// helper function for non return based calls to iterate api key acting on the global currentApiDetails object
+function changeApiDetails(){
+    currentApiDetails = getRandomApiDetails();
+}
 
 function updateCurrentSearchIndexAndObj(index){
     currentUserChoiceIndex = index;
@@ -144,8 +155,6 @@ function validateFormAndSearch(event){
         updateRenderCurrentSearchObject();
     }
 }
-
-
 
 // Chris's matching function
 function getCommonMovieObjects(movieNumberLists){
@@ -250,7 +259,7 @@ async function fetchMovieGeneralDetailsResponse(movieNumberList){
         // for each actor obj in the list, asynchronously fetch api response, and map the json data
         movieNumberList.map(async movieNumber => {               
             let movieOverviewEndpointUrl = "https://imdb8.p.rapidapi.com/title/get-overview-details?tconst="+movieNumber+"&currentCountry=US";
-            let response = await fetch(movieOverviewEndpointUrl, apiDetails);
+            let response = await fetch(movieOverviewEndpointUrl, currentApiDetails.details);
             let movieJson = await response.json();
             
             // screen the data for necessary fields
@@ -287,7 +296,7 @@ async function fetchActorObjects(queryStringList){
     // https://dev.to/jamesliudotcc/how-to-use-async-await-with-map-and-promise-all-1gb5
     actorObjectList = await Promise.all(
         queryStringList.map(async queryString => {
-            let filmResponse = await fetch(queryString, apiDetails)
+            let filmResponse = await fetch(queryString, currentApiDetails.details)
             let ActorData =  await filmResponse.json();
             console.log("what to test for: ", ActorData.message);
             if(ActorData.message == "Too many requests"){
@@ -314,7 +323,7 @@ async function fetchActorFilmographyList(actorObjs){
         actorObjs.map(async actorObj => {
             let filmographyApiUrlRoot = "https://imdb8.p.rapidapi.com/actors/get-all-filmography?nconst=";
             let actorMovieList = [];
-            let response = await fetch(filmographyApiUrlRoot + actorObj.id, apiDetails);
+            let response = await fetch(filmographyApiUrlRoot + actorObj.id, currentApiDetails.details);
             let jsonObject = await response.json();
 
             for(let i=0; i < jsonObject.filmography.length; i++){
@@ -354,7 +363,7 @@ async function fetchActorKnownForList(actorObj){
     let movieNumberLists = []; 
     let actorMovieList = [];
     let filmographyApiUrlRoot = "https://imdb8.p.rapidapi.com/actors/get-known-for?nconst=";
-    let response = await fetch(filmographyApiUrlRoot + actorObj.id, apiDetails);
+    let response = await fetch(filmographyApiUrlRoot + actorObj.id, currentApiDetails.details);
     let jsonObject = await response.json();
     
 

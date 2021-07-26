@@ -108,7 +108,7 @@ function updateColorPallette(){
     console.log(`Quinary Color: ${rs.getPropertyValue('--quinary')}`);
 }
 
-// generate a random integer inside a range, exclude a value to recursively search for valid return
+// generate a random integer inside an INCLUSIVE range, exclude a value to recursively search for valid return
 function getRandomIntFromRange(min, max, exclude){
     // if no exclude value was passed 
     let result = Math.floor(Math.random()*(max-min+1)+min);
@@ -174,4 +174,16 @@ function logPixelSizeAndMaterializePrefix(){
         console.log(' Materialize prefix: xl')
     }
 
+}
+
+testGetRandomIntFromRange();
+
+function testGetRandomIntFromRange(){
+    let min = 0;
+    let max = 10;
+    let result = 0;
+    for(let i = min; i < max; i++){
+        result = getRandomIntFromRange(min, max);
+        console.log(`Result was: ${result} for index:${i}`);
+    }
 }
