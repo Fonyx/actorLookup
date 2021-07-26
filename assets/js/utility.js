@@ -108,10 +108,29 @@ function updateColorPallette(){
     console.log(`Quinary Color: ${rs.getPropertyValue('--quinary')}`);
 }
 
-// generate a random integer inside a range
-function getRandomIntFromRange(min, max){
+// generate a random integer inside a range, exclude a value to recursively search for valid return
+function getRandomIntFromRange(min, max, exclude){
+    // if no exclude value was passed 
     let result = Math.floor(Math.random()*(max-min+1)+min);
-    return result
+    if (!exclude){
+        return result
+    // if an exclude value was passed in, check for equality and if match, recall self for new number and return
+    } else {
+        // case when exclude isn't inside generation range (user input error)
+        if(exclude > max || exclude < min){
+            throw new Error(`You can't exclude ${exclude} from range ${min} - ${max}`);
+        // case for valid exclusion consideration
+        } else {
+            // number generated is the exclusion number
+            if(result === exclude){
+                let result = getRandomIntFromRange(min, max, exclude);
+                return result
+            // number generated is valid
+            } else {
+                return result
+            }
+        }
+    }
 };
 
 // get a random color pallette

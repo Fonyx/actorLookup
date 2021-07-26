@@ -10,12 +10,8 @@ var currentUserChoiceIndex = -1;
 var searchObjectHistory = [];
 // the current searchObject
 var currentSearchObj = null;
-// api key list, 500 queries per api key per month
-var apiKeys = ["288a339a3bmsh8b9f2b8fba2c996p1c1c96jsn99a419bf7992", "a4ec962206mshf309408bd994b33p1bda1fjsn30b09c0bd162", 
-"d50580de85mshf5490ea0cca2bd9p1e342fjsn61b6890e257d",
-"ab94207db6mshf69c29d83b5ee26p1abc45jsnff5a13e8da6d"];
 // current api selection
-var currentApiKey = getRandomApiKey();
+var currentApiDetails = getRandomApiDetails();
 // Loading Bar 
 var loading = document.querySelector('.progress')
 
@@ -28,14 +24,26 @@ function loadingHidden() {
     loading.style.visibility = 'hidden'
 }
 
-// details for the api queries - currently Ella's second key
-apiDetails = {
-    "method": "GET",
-    "headers": {
-        "x-rapidapi-key": apiKeys[0],
-        "x-rapidapi-host": "imdb8.p.rapidapi.com"
+function getRandomApiDetails(){
+    // api key list, 500 queries per api key per month
+    let apiKeys = ["288a339a3bmsh8b9f2b8fba2c996p1c1c96jsn99a419bf7992", "a4ec962206mshf309408bd994b33p1bda1fjsn30b09c0bd162", 
+    "d50580de85mshf5490ea0cca2bd9p1e342fjsn61b6890e257d",
+    "ab94207db6mshf69c29d83b5ee26p1abc45jsnff5a13e8da6d"];
+
+    // let index = getRandomIntFromRange(0, apiKeys.length, currentApiDetails.index);
+    let index = 0;
+
+    apiDetails = {
+        "method": "GET",
+        "headers": {
+            "x-rapidapi-key": apiKeys[index],
+            "x-rapidapi-host": "imdb8.p.rapidapi.com"
+        }
     }
+
+    return {'index': index, 'details': apiDetails};
 }
+
 
 function updateCurrentSearchIndexAndObj(index){
     currentUserChoiceIndex = index;
