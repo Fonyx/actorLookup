@@ -13,7 +13,23 @@ var currentSearchObj = null;
 // current api selection
 var currentApiDetails = getRandomApiDetails();
 // Loading Bar 
-var loading = document.querySelector('.progress')
+var loading = document.querySelector('.progress');
+
+// add event handler for body tag onload to load storage and render
+window.addEventListener('load', loadAndRenderSearchObjects);
+
+// add event delegation to the search history section for buttons
+let searchHistoryEl = $('#search_history');
+searchHistoryEl.on('click', '.search_history_button', function (event) {
+    event.preventDefault();
+    let searchIndexRaw = event.target.dataset['searchIndex'];
+    let searchIndexInt = parseInt(searchIndexRaw, 10);
+    // using a global
+    updateCurrentSearchIndexAndObj(searchIndexInt);
+    setActiveButtonToCurrentObject();
+    renderCurrentMovieResults();
+    renderCurrentMovieActorImages();
+})
 
 
 // this creates a current exception the error object (think inheritance)
@@ -81,21 +97,6 @@ function updateCurrentSearchIndexAndObj(index){
     }
 }
 
-// add event handler for body tag onload to load storage and render
-window.addEventListener('load', loadAndRenderSearchObjects);
-
-// add event delegation to the search history section for buttons
-let searchHistoryEl = $('#search_history');
-searchHistoryEl.on('click', '.search_history_button', function (event) {
-    event.preventDefault();
-    let searchIndexRaw = event.target.dataset['searchIndex'];
-    let searchIndexInt = parseInt(searchIndexRaw, 10);
-    // using a global
-    updateCurrentSearchIndexAndObj(searchIndexInt);
-    setActiveButtonToCurrentObject();
-    renderCurrentMovieResults();
-    renderCurrentMovieActorImages();
-})
 
 // function that loads elements from storage
 // then calls render on all searchObjects for their buttons
@@ -318,7 +319,7 @@ async function fetchActorObjects(queryStringList){
                 throw new ExhaustionException;
             }
             // if there is no d (data) in the returned json, throw empty error
-            if(!jsonObject.d){
+            if(jsonObject.d === undefined){
                 throw new EmptyReturnException(`actor fetch returned no valid results: ${queryString}`);
             }
             return new actorObject(
