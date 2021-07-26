@@ -152,9 +152,6 @@ function validateFormAndSearch(event){
         // run a new search
         console.log('No duplicates found in history, new api search');
 
-        // loading bar visible
-        loadingVisible();
-
         // build new query strings
         // take all valid user text values, build a query string for IMDB and make array
         let queryStrings = userInputTexts.map((inputText) => {
@@ -162,6 +159,7 @@ function validateFormAndSearch(event){
             return queryString;
         });
         runSearchWithInputValues(queryStrings);
+
     }else{
         console.log('rendering previous search result: ', duplicateIndex)
         // set the current search object to the object we already have
@@ -476,8 +474,8 @@ async function runSearchWithInputValues(searchStrings){
     // disable search button
     document.getElementById("search_button").disabled = true;
 
-    // Loading bar Hidden
-    loadingHidden();
+    // loading bar visible
+    loadingVisible();
 
     try{
         newSearchObj = await getSearchObjectFromQueryStrings(searchStrings);
@@ -492,6 +490,10 @@ async function runSearchWithInputValues(searchStrings){
 
         // disable search button
         document.getElementById("search_button").disabled = false;
+
+        // Loading bar Hidden
+        loadingHidden();
+        
     } catch(e){
         // if we exhausted the api
         if(e instanceof ExhaustionException){
