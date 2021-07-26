@@ -277,7 +277,6 @@ async function fetchMovieGeneralDetailsResponse(movieNumberList){
 
             console.log(`Remaining queries: ${response.headers.get('x-ratelimit-requests-remaining')}`);
             if(response.status === 429){
-                document.getElementById("apiFailsafe").innerHTML = "You have searched too many times, please try again next month!";
                 throw new ExhaustionException;
             }
             
@@ -316,7 +315,6 @@ async function fetchActorObjects(queryStringList){
 
             console.log(`Remaining queries: ${response.headers.get('x-ratelimit-requests-remaining')}`);
             if(response.status === 429){
-                document.getElementById("apiFailsafe").innerHTML = "You have searched too many times, please try again next month!";
                 throw new ExhaustionException;
             }
             // if there is no d (data) in the returned json, throw empty error
@@ -347,7 +345,6 @@ async function fetchActorFilmographyList(actorObjs){
 
             console.log(`Remaining queries: ${response.headers.get('x-ratelimit-requests-remaining')}`);
             if(response.status === 429){
-                document.getElementById("apiFailsafe").innerHTML = "You have searched too many times, please try again next month!";
                 throw new ExhaustionException;
             }
 
@@ -393,7 +390,6 @@ async function fetchActorKnownForList(actorObj){
 
     console.log(`Remaining queries: ${response.headers.get('x-ratelimit-requests-remaining')}`);
     if(response.status === 429){
-        document.getElementById("apiFailsafe").innerHTML = "You have searched too many times, please try again next month!";
         throw new ExhaustionException;
     }
     
@@ -490,9 +486,6 @@ async function runSearchWithInputValues(searchStrings){
 
         // disable search button
         document.getElementById("search_button").disabled = false;
-
-        // Loading bar Hidden
-        loadingHidden();
         
     } catch(e){
         // if we exhausted the api
@@ -504,8 +497,15 @@ async function runSearchWithInputValues(searchStrings){
         // if we got a different error bubble up
         } else if (e instanceof EmptyReturnException) {
             console.log(`${e.message}`);
+            // Loading bar Hidden
+            loadingHidden();
         } else {
-            throw(e)
+            // Loading bar Hidden
+            loadingHidden();
+            throw(e);
         }
     }
+
+    // Loading bar Hidden
+    loadingHidden();
 }
