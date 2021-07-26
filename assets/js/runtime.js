@@ -10,8 +10,10 @@ var currentUserChoiceIndex = -1;
 var searchObjectHistory = [];
 // the current searchObject
 var currentSearchObj = null;
-// current api key
-var apiKey = "288a339a3bmsh8b9f2b8fba2c996p1c1c96jsn99a419bf7992";
+// api key list, 500 queries per api key per month
+var apiKeys = ["288a339a3bmsh8b9f2b8fba2c996p1c1c96jsn99a419bf7992", "a4ec962206mshf309408bd994b33p1bda1fjsn30b09c0bd162", 
+"d50580de85mshf5490ea0cca2bd9p1e342fjsn61b6890e257d",
+"ab94207db6mshf69c29d83b5ee26p1abc45jsnff5a13e8da6d"];
 // Loading Bar 
 var loading = document.querySelector('.progress')
 
@@ -28,7 +30,7 @@ function loadingHidden() {
 apiDetails = {
     "method": "GET",
     "headers": {
-        "x-rapidapi-key": apiKey,
+        "x-rapidapi-key": apiKeys[0],
         "x-rapidapi-host": "imdb8.p.rapidapi.com"
     }
 }
