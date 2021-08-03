@@ -1,9 +1,9 @@
 # Group Project 1
 We made an actor based movie lookup web app. Provide one or two actors and see a list of movies to watch and some meta details
 
-![Screenshot](https://github.com/Fonyx/groupProject1/blob/main/screencap.gif?raw=true "Movie finder")  
-repo @ https://github.com/Fonyx/groupProject1  
-deployed @ https://fonyx.github.io/groupProject1/ 
+![Screenshot](https://github.com/Fonyx/actorLookup/blob/main/screencap.gif?raw=true "Movie finder")  
+repo @ https://github.com/Fonyx/actorLookup  
+deployed @ https://fonyx.github.io/actorLookup/ 
 
 
 
