@@ -77,8 +77,6 @@ function getRandomApiDetails(){
         }
     }
 
-    console.log(`Using api key: ${apiKeys[index]}`);
-
     return {'index': index, 'details': details};
 }
 
@@ -312,9 +310,9 @@ async function fetchActorObjects(queryStringList){
         queryStringList.map(async queryString => {
             let response = await fetch(queryString, currentApiDetails.details)
             let jsonObject =  await response.json();
-            console.log(jsonObject);
+            // console.log(jsonObject);
 
-            console.log(`Remaining queries: ${response.headers.get('x-ratelimit-requests-remaining')}`);
+            // console.log(`Remaining queries: ${response.headers.get('x-ratelimit-requests-remaining')}`);
             if(response.status === 429){
                 throw new ExhaustionException;
             }
@@ -344,7 +342,7 @@ async function fetchActorFilmographyList(actorObjs){
             let response = await fetch(filmographyApiUrlRoot + actorObj.id, currentApiDetails.details);
             let jsonObject =  await response.json();
 
-            console.log(`Remaining queries: ${response.headers.get('x-ratelimit-requests-remaining')}`);
+            // console.log(`Remaining queries: ${response.headers.get('x-ratelimit-requests-remaining')}`);
             if(response.status === 429){
                 throw new ExhaustionException;
             }
@@ -389,7 +387,7 @@ async function fetchActorKnownForList(actorObj){
     let response = await fetch(filmographyApiUrlRoot + actorObj.id, currentApiDetails.details);
     let jsonObject =  await response.json();
 
-    console.log(`Remaining queries: ${response.headers.get('x-ratelimit-requests-remaining')}`);
+    // console.log(`Remaining queries: ${response.headers.get('x-ratelimit-requests-remaining')}`);
     if(response.status === 429){
         throw new ExhaustionException;
     }
