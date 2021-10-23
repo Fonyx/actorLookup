@@ -306,7 +306,7 @@ async function fetchMovieGeneralDetailsResponse(movieNumberList){
 // function that query's multiple query strings to get actor details
 async function fetchActorObjects(queryStringList){
     // https://dev.to/jamesliudotcc/how-to-use-async-await-with-map-and-promise-all-1gb5
-    actorObjectList = await Promise.all(
+    var actorObjectList = await Promise.all(
         queryStringList.map(async queryString => {
             let response = await fetch(queryString, currentApiDetails.details)
             let jsonObject =  await response.json();
@@ -346,6 +346,8 @@ async function fetchActorFilmographyList(actorObjs){
             if(response.status === 429){
                 throw new ExhaustionException;
             }
+
+            var actorMovieList = [];
 
             for(let i=0; i < jsonObject.filmography.length; i++){
 
